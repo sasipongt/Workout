@@ -205,7 +205,7 @@
   .pr-celebrate-list b{color:var(--gold)}
   .pr-celebrate-btn{padding:13px 30px;border:0.5px solid var(--gold);background:var(--gold);color:#16120C;border-radius:11px;font-family:'Oswald',sans-serif;font-size:14px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer}
 
-  .timer{position:fixed;left:50%;transform:translateX(-50%) translateY(180%);bottom:calc(88px + env(safe-area-inset-bottom));width:calc(100% - 36px);max-width:444px;background:#1C1610;border:0.5px solid var(--gold);border-radius:16px;padding:13px 17px;display:flex;align-items:center;justify-content:space-between;z-index:100;transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);box-shadow:0 -4px 30px rgba(0,0,0,0.6)}
+  .timer{position:fixed;left:50%;transform:translateX(-50%) translateY(180%);bottom:calc(82px + env(safe-area-inset-bottom));width:calc(100% - 36px);max-width:444px;background:#1C1610;border:0.5px solid var(--gold);border-radius:16px;padding:13px 17px;display:flex;align-items:center;justify-content:space-between;z-index:120;transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);box-shadow:0 -4px 30px rgba(0,0,0,0.6)}
   .timer.show{transform:translateX(-50%) translateY(0)}
   .timer.urgent{border-color:var(--red);background:#241310}
   .timer-left{display:flex;align-items:center;gap:13px}
@@ -251,6 +251,46 @@
   .bc-metric{text-align:center;padding:8px;background:var(--bg2);border-radius:8px}
   .bc-metric-v{font-family:'Oswald',sans-serif;font-size:16px;font-weight:600;color:var(--cream)}
   .bc-metric-l{font-size:9px;color:var(--faint);margin-top:2px;letter-spacing:0.03em}
+
+  .week-strip{display:flex;gap:6px;margin-bottom:18px;align-items:center}
+  .ws-day{flex:1;text-align:center;padding:8px 0;border-radius:9px;background:var(--card);border:0.5px solid var(--line);font-family:'Oswald',sans-serif;font-size:11px;color:var(--faint);position:relative}
+  .ws-day .ws-dot{display:block;width:6px;height:6px;border-radius:50%;margin:4px auto 0;background:var(--line2)}
+  .ws-day.trained{border-color:var(--green-dim);color:var(--green)}
+  .ws-day.trained .ws-dot{background:var(--green)}
+  .ws-day.cardioed{border-color:rgba(91,155,213,0.3);color:var(--blue)}
+  .ws-day.cardioed .ws-dot{background:var(--blue)}
+  .ws-day.istoday{box-shadow:0 0 0 1px var(--gold)}
+  .ws-count{font-family:'Oswald',sans-serif;font-size:12px;color:var(--muted);white-space:nowrap;padding-left:6px;letter-spacing:0.04em}
+
+  /* ═══ iPad / LANDSCAPE / WIDE SCREENS ═══ */
+  @media (min-width:768px){
+    body{max-width:1100px;padding:0 32px calc(40px) calc(96px + 32px)}
+    /* sidebar nav on the left */
+    .nav{flex-direction:column;top:0;bottom:0;left:0;transform:none;width:88px;max-width:88px;height:100vh;
+      border-top:none;border-right:0.5px solid var(--line2);justify-content:center;gap:8px;padding:0 0 0 0}
+    .nav-item{flex:0 0 auto;padding:14px 0;gap:5px}
+    .nav-item svg{width:25px;height:25px}
+    .nav-label{font-size:11px}
+    /* two-column exercise grid on Today */
+    #content{display:grid;grid-template-columns:1fr 1fr;gap:11px;align-items:start}
+    #content .sec-label{grid-column:1 / -1}
+    #content .guide-hero{grid-column:1 / -1}
+    .day-title{font-size:68px}
+    /* history / stats / body as 2-col where useful */
+    #histList,#prList{columns:2;column-gap:11px}
+    .hist-item{break-inside:avoid;margin-bottom:11px}
+    .stat-grid{grid-template-columns:repeat(4,1fr)}
+    .bc-metrics{grid-template-columns:repeat(6,1fr)}
+    /* timer sits bottom-center, clear of sidebar */
+    .timer{left:calc(50% + 44px);bottom:24px;max-width:460px}
+    /* modal centered, not bottom sheet */
+    .modal-bg{align-items:center}
+    .modal{max-width:520px;border-radius:20px;max-height:84vh}
+  }
+  @media (min-width:768px) and (max-width:1000px){
+    #content{grid-template-columns:1fr}
+    #histList,#prList{columns:1}
+  }
 </style>
 </head>
 <body>
@@ -270,6 +310,7 @@
       <span class="progress-count"><span class="done-n" id="doneN">0</span> <span class="total-n" id="totalN">/ 0</span></span></div>
     <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
   </div>
+  <div id="weekStrip" class="week-strip"></div>
   <div id="content"></div>
   <div class="complete" id="complete"><div class="complete-h">Session complete</div><div class="complete-p">ครบทุกเซตแล้ว — บันทึกเพื่อเก็บใน History</div></div>
   <div class="actions" id="actions">
@@ -542,8 +583,36 @@ function pick(key){
   renderToday();
 }
 
+function renderWeekStrip(){
+  const strip=document.getElementById('weekStrip');
+  if(!strip)return;
+  // get current week Mon-Sun
+  const now=new Date();
+  const dow=now.getDay();
+  const monday=new Date(now);
+  monday.setDate(now.getDate()-((dow+6)%7));
+  const labels=['จ','อ','พ','พฤ','ศ','ส','อา'];
+  let trained=0,cardioed=0;
+  let cells='';
+  for(let i=0;i<7;i++){
+    const d=new Date(monday);d.setDate(monday.getDate()+i);
+    const ds=d.toISOString().slice(0,10);
+    const entries=state.history.filter(h=>h.date===ds);
+    const hasLift=entries.some(h=>h.ex);
+    const hasCardio=entries.some(h=>h.cardio);
+    if(hasLift)trained++;
+    if(hasCardio)cardioed++;
+    const isToday=ds===todayStr();
+    let cls='ws-day';
+    if(hasLift)cls+=' trained';else if(hasCardio)cls+=' cardioed';
+    if(isToday)cls+=' istoday';
+    cells+=`<div class="${cls}">${labels[i]}<span class="ws-dot"></span></div>`;
+  }
+  strip.innerHTML=cells+`<span class="ws-count">${trained} lift · ${cardioed} cardio</span>`;
+}
 function renderToday(){
   document.getElementById('datePill').textContent=thaiDate();
+  renderWeekStrip();
   const isWorkout=!!WORKOUTS[cur];
   const data=isWorkout?getWorkout(cur):GUIDES[cur];
   const tone=data.tone;

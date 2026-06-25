@@ -11,6 +11,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
 <style>
   :root{
     --bg:#0A0806;--bg2:#13100B;--card:#16120C;--card-done:#13190F;
@@ -33,7 +39,11 @@
   .day-title{font-family:'Oswald',sans-serif;font-size:52px;font-weight:700;line-height:0.94;letter-spacing:0.01em;text-transform:uppercase;margin-bottom:10px}
   .day-sub{font-family:'Oswald',sans-serif;font-size:14px;font-weight:500;letter-spacing:0.13em;color:var(--faint);text-transform:uppercase}
 
-  .daypick{display:flex;gap:6px;margin:22px 0 18px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+  /* Dropdown เลือกโปรแกรมกรณีฉุกเฉินในหน้า Today */
+  .session-selector-box{margin:4px 0 16px}
+  .session-select{width:100%;padding:11px 14px;background:var(--card);border:1px solid var(--line2);border-radius:10px;color:var(--gold);font-family:'Oswald',sans-serif;font-size:15px;font-weight:500;letter-spacing:0.04em;outline:none}
+
+  .daypick{display:flex;gap:6px;margin:10px 0 18px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
   .daypick::-webkit-scrollbar{display:none}
   .dp{flex:0 0 auto;min-width:50px;padding:9px 4px;border:0.5px solid var(--line2);border-radius:22px;background:transparent;font-family:'Oswald',sans-serif;font-size:13px;font-weight:600;letter-spacing:0.06em;color:var(--faint);cursor:pointer;text-align:center;text-transform:uppercase;position:relative;transition:all 0.2s}
   .dp .marker{position:absolute;top:7px;right:10px;width:5px;height:5px;border-radius:50%;background:var(--gold);opacity:0}
@@ -69,6 +79,10 @@
 
   .suggest{font-size:11px;color:var(--green);background:rgba(127,176,74,0.08);border-radius:7px;padding:6px 10px;margin-top:10px;display:flex;align-items:center;gap:6px}
   .suggest svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0}
+  
+  /* ชิปข้อมูลเปรียบเทียบประวัติยกน้ำหนักรอบก่อนหน้าในหน้านี้ */
+  .last-lift-info{font-size:12px;color:var(--muted);background:rgba(168,148,106,0.06);border-radius:7px;padding:5px 9px;margin-top:8px;display:inline-block}
+  .last-lift-info b{color:var(--gold-dim);font-weight:500}
 
   .ex-meta{display:flex;align-items:center;gap:8px;margin-top:11px;flex-wrap:wrap}
   .wt-chip{font-family:'Oswald',sans-serif;font-size:13px;font-weight:600;color:var(--gold);background:rgba(200,162,60,0.08);border:0.5px solid rgba(200,162,60,0.25);border-radius:6px;padding:4px 9px;cursor:pointer}
@@ -77,7 +91,7 @@
   .plate-btn svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2}
 
   .dots{display:flex;gap:9px;margin-top:14px;flex-wrap:wrap;align-items:center}
-  .dot{width:42px;height:42px;border-radius:50%;border:1.5px solid #4A3C26;background:transparent;color:var(--faint);font-family:'Oswald',sans-serif;font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;flex-shrink:0}
+  .dot{width:48px;height:48px;border-radius:50%;border:1.5px solid #4A3C26;background:transparent;color:var(--faint);font-family:'Oswald',sans-serif;font-size:16px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;flex-shrink:0}
   .dot:active{transform:scale(0.92)}
   .dot.fill{background:var(--gold);border-color:var(--gold);color:#16120C}
   .ex.bonus .dot.fill{background:var(--rust-bright);border-color:var(--rust-bright);color:#16120C}
@@ -116,7 +130,7 @@
   .btn-ghost{border-color:var(--line2);background:transparent;color:var(--faint);flex:0 0 auto;padding:14px 16px}
 
   .nav{position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:100%;max-width:480px;background:rgba(10,8,6,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:0.5px solid var(--line2);display:flex;padding:8px 0 calc(8px + env(safe-area-inset-bottom));z-index:90}
-  .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;color:var(--faint);cursor:pointer;padding:6px 0;font-family:'Inter',sans-serif}
+  .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;color:var(--faint);cursor:pointer;padding:10px 0;font-family:'Inter',sans-serif;min-height:48px}
   .nav-item.on{color:var(--gold)}
   .nav-item svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8}
   .nav-label{font-size:10px;font-weight:500;letter-spacing:0.03em}
@@ -192,7 +206,7 @@
   .plate-list-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:0.5px solid var(--line);font-size:13px}
   .plate-list-row:last-child{border-bottom:none}
 
-  .toast{position:fixed;left:50%;transform:translateX(-50%) translateY(-200%);top:calc(12px + env(safe-area-inset-top));background:var(--card-done);border:0.5px solid var(--green-dim);color:var(--green);font-size:13px;padding:12px 20px;border-radius:12px;z-index:300;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);max-width:90%;text-align:center}
+  .toast{position:fixed;left:50%;transform:translateX(-50%) translateY(-200%);top:calc(12px + env(safe-area-inset-top));background:var(--card-done);border:0.5px solid var(--line2);color:var(--cream);font-size:13px;padding:12px 20px;border-radius:12px;z-index:300;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);max-width:90%;text-align:center}
   .toast.show{transform:translateX(-50%) translateY(0)}
 
   .pr-celebrate{position:fixed;inset:0;z-index:250;display:none;align-items:center;justify-content:center;background:rgba(10,8,6,0.85);backdrop-filter:blur(6px)}
@@ -228,9 +242,6 @@
 
   /* roadmap */
   .road-ex{background:var(--card);border:0.5px solid var(--line2);border-radius:14px;padding:16px;margin-bottom:12px}
-  .road-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px}
-  .road-name{font-family:'Oswald',sans-serif;font-size:17px;font-weight:600}
-  .road-now{font-family:'Oswald',sans-serif;font-size:15px;color:var(--gold)}
   .road-track{position:relative;height:6px;background:var(--line);border-radius:3px;margin:18px 0 8px}
   .road-prog{position:absolute;left:0;top:0;height:100%;background:var(--gold);border-radius:3px}
   .road-milestones{display:flex;justify-content:space-between;font-size:10px;color:var(--faint);font-family:'Oswald',sans-serif}
@@ -265,25 +276,20 @@
   /* ═══ iPad / LANDSCAPE / WIDE SCREENS ═══ */
   @media (min-width:768px){
     body{max-width:1100px;padding:0 32px calc(40px) calc(96px + 32px)}
-    /* sidebar nav on the left */
     .nav{flex-direction:column;top:0;bottom:0;left:0;transform:none;width:88px;max-width:88px;height:100vh;
       border-top:none;border-right:0.5px solid var(--line2);justify-content:center;gap:8px;padding:0 0 0 0}
     .nav-item{flex:0 0 auto;padding:14px 0;gap:5px}
     .nav-item svg{width:25px;height:25px}
     .nav-label{font-size:11px}
-    /* two-column exercise grid on Today */
     #content{display:grid;grid-template-columns:1fr 1fr;gap:11px;align-items:start}
     #content .sec-label{grid-column:1 / -1}
     #content .guide-hero{grid-column:1 / -1}
     .day-title{font-size:68px}
-    /* history / stats / body as 2-col where useful */
     #histList,#prList{columns:2;column-gap:11px}
     .hist-item{break-inside:avoid;margin-bottom:11px}
     .stat-grid{grid-template-columns:repeat(4,1fr)}
     .bc-metrics{grid-template-columns:repeat(6,1fr)}
-    /* timer sits bottom-center, clear of sidebar */
     .timer{left:calc(50% + 44px);bottom:24px;max-width:460px}
-    /* modal centered, not bottom sheet */
     .modal-bg{align-items:center}
     .modal{max-width:520px;border-radius:20px;max-height:84vh}
   }
@@ -296,7 +302,6 @@
 <body>
 <div class="safe-top"></div>
 
-<!-- TODAY -->
 <div class="page on" id="page-today">
   <header>
     <div class="eyebrow"><span class="plan-tag">Recomp · A/B/C</span><span class="date-pill" id="datePill">—</span></div>
@@ -304,6 +309,18 @@
     <h1 class="day-title" id="dayTitle">—</h1>
     <div class="day-sub" id="daySub">—</div>
   </header>
+  
+  <div class="session-selector-box">
+    <select id="sessionManualSelect" class="session-select" onchange="forceSwitchSession(this.value)">
+      <option value="">-- สลับตารางซ้อมวันนี้ (กรณีฉุกเฉิน) --</option>
+      <option value="A">Day A — PUSH DAY (อก/ไหล่/ไหล่หน้า/Tricep)</option>
+      <option value="B">Day B — PULL DAY (หลัง/Squat/Bicep)</option>
+      <option value="C">Day C — LB + CORE (ขา/อกบน/หลังแขน/ท้อง)</option>
+      <option value="cardio">Cardio Day — (Pickleball/Recovery)</option>
+      <option value="rest">Full Rest — (วันพักฟื้นกล้ามเนื้อ)</option>
+    </select>
+  </div>
+
   <div class="daypick" id="daypick"></div>
   <div id="progressBlock">
     <div class="progress-head"><span class="progress-lbl">Sets completed</span>
@@ -320,7 +337,6 @@
   </div>
 </div>
 
-<!-- HISTORY -->
 <div class="page" id="page-history">
   <h1 class="page-title">History</h1>
   <div class="page-sub" id="histSub">ประวัติทั้งหมด</div>
@@ -328,7 +344,6 @@
   <div id="histList"></div>
 </div>
 
-<!-- STATS -->
 <div class="page" id="page-stats">
   <h1 class="page-title">Stats</h1>
   <div class="page-sub">สรุปผล · PR · กราฟ progression</div>
@@ -346,7 +361,6 @@
   <div id="stats-road" style="display:none"></div>
 </div>
 
-<!-- BODY -->
 <div class="page" id="page-body">
   <h1 class="page-title">Body</h1>
   <div class="page-sub">Body composition tracking</div>
@@ -358,7 +372,6 @@
   <div id="bcList"></div>
 </div>
 
-<!-- SETTINGS/EXPORT -->
 <div class="page" id="page-more">
   <h1 class="page-title">More</h1>
   <div class="page-sub">Export · backup · ข้อมูล</div>
@@ -371,7 +384,7 @@
       <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJson(event)">
     </div>
     <div style="font-size:11px;color:var(--faint);line-height:1.6;margin-top:14px">
-      ข้อมูลทั้งหมดเก็บในเครื่องนี้ (localStorage). แนะนำ backup .json เป็นระยะ เพราะข้อมูลอาจหายถ้าล้าง Safari cache
+      ข้อมูลซิงค์อัตโนมัติกับฐานข้อมูล Cloud (Firebase) และจัดเก็บสำรองในเครื่อง (IndexedDB) เพื่อรองรับการใช้งานออฟไลน์
     </div>
   </div>
   <div class="ex" style="cursor:default;margin-top:12px">
@@ -380,7 +393,6 @@
   </div>
 </div>
 
-<!-- NAV -->
 <div class="nav">
   <button class="nav-item on" id="nav-today" onclick="switchPage('today')"><svg viewBox="0 0 24 24"><path d="M6 3v4M18 3v4M3 9h18M5 5h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z"></path></svg><span class="nav-label">Today</span></button>
   <button class="nav-item" id="nav-history" onclick="switchPage('history')"><svg viewBox="0 0 24 24"><path d="M12 8v4l3 2M3 12a9 9 0 109-9 9 9 0 00-9 9zM3 12H1m2 0l2-2"></path></svg><span class="nav-label">History</span></button>
@@ -480,23 +492,69 @@ const DOW_LABELS=['SUN','MON','TUE','WED','THU','FRI','SAT'];
 const DOW_MAP=['rest','A','cardio','B','cardio','C','cardio'];
 
 const SEED_HISTORY=[
-  {date:'2026-04-28',day:'C',ex:[['Romanian Deadlift','30.5',4,8],['Incline BB Bench','22',4,8],['T-Bar Row','20',4,8],['BB Reverse Curl','10',4,11],['Calf Raise','10',4,15]],note:'First full Day C'},
-  {date:'2026-04-30',day:'A',ex:[['BB Bench Press','26',4,6],['Deadlift','43',3,5],['BB Overhead Press','17.5',3,8],['BB Curl','12.5',3,12],['Skull Crusher','12.5',3,12]],note:'New BB 6.5kg, 4 PRs'},
-  {date:'2026-05-02',day:'B',ex:[['Back Squat','36.5',4,6],['Bent Over Row','26.5',4,6],['Landmine Press','17',3,8],['Drag Curl','12.5',3,10],['BB Hip Thrust','26.5',3,8]],note:''},
-  {date:'2026-05-05',day:'C',ex:[['Romanian Deadlift','34',4,8],['Incline BB Bench','24',4,8],['T-Bar Row','26.5',4,8],['BB Reverse Curl','10.5',4,12]],note:'PR RDL+T-Bar'},
-  {date:'2026-05-08',day:'A',ex:[['BB Bench Press','27.5',4,6],['Deadlift','45.5',4,6],['BB Overhead Press','18.5',3,8],['BB Curl','13.5',3,8],['Skull Crusher','13.5',3,8]],note:'Deadlift 4x6'},
-  {date:'2026-05-11',day:'C',ex:[['Romanian Deadlift','36.5',4,8],['Incline DB Press','12',4,8],['T-Bar Row','26.5',4,12],['Goblet Squat','16',3,8],['BB Reverse Curl','10.5',3,12],['DB Tricep Kickback','5',3,10]],note:''},
-  {date:'2026-05-13',day:'A',ex:[['BB Bench Press','27.5',4,6],['Deadlift','46.5',4,6],['BB Overhead Press','18.5',3,8],['DB Lateral Raise','5',3,8],['Skull Crusher','13.5',3,12],['DB OH Tricep Ext','7',3,12]],note:''},
-  {date:'2026-05-15',day:'B',ex:[['Back Squat','40.5',4,6],['Bent Over Row','30.5',4,6],['Landmine Press','27.5',3,8],['DB Reverse Fly','4',3,8],['Drag Curl','13.5',3,10],['BB Hip Thrust','27.5',3,8]],note:''},
-  {date:'2026-05-17',day:'C',ex:[['Romanian Deadlift','37.5',4,8],['Incline DB Press','12',4,10],['T-Bar Row','31.5',4,10],['Goblet Squat','16',3,10],['BB Reverse Curl','10.5',3,12],['DB Tricep Kickback','5',3,12]],note:''},
-  {date:'2026-05-20',day:'A',ex:[['BB Bench Press','28.5',4,6],['Deadlift','47.5',4,6],['BB Overhead Press','19.5',3,8],['DB Lateral Raise','5',3,12],['Skull Crusher','14.5',3,12],['DB OH Tricep Ext','8',3,12]],note:''},
-  {date:'2026-05-22',day:'B',ex:[['Back Squat','41.5',4,6],['Bent Over Row','31.5',4,6],['Landmine Press','28.5',3,8],['DB Reverse Fly','4',3,12],['Drag Curl','13.5',3,10],['BB Hip Thrust','28.5',3,8]],note:''},
-  {date:'2026-05-23',day:'C',ex:[['Romanian Deadlift','40.5',4,8],['Incline DB Press','14',4,6],['T-Bar Row','31.5',4,10],['Goblet Squat','18',3,8],['BB Reverse Curl','11.5',3,8],['DB Tricep Kickback','6',3,8]],note:'PR'},
-  {date:'2026-06-08',day:'A',ex:[['BB Bench Press','26.5',3,8],['Deadlift','42.5',3,5],['BB Overhead Press','17.5',3,8],['DB Lateral Raise','5',3,8],['Skull Crusher','12.5',3,12],['DB OH Tricep Ext','7',3,12]],note:'Return after 13-day break'},
-  {date:'2026-06-10',day:'B',ex:[['Back Squat','38.5',4,6],['Bent Over Row','28.5',4,6],['Landmine Press','26.5',3,8],['DB Reverse Fly','4',3,12],['Drag Curl','12.5',3,10],['BB Hip Thrust','26.5',3,8]],note:'Session 2 return'},
-  {date:'2026-06-13',day:'C',ex:[['Romanian Deadlift','36.5',3,8],['Incline DB Press','12',3,10],['T-Bar Row','28.5',3,8],['Goblet Squat','16',3,10],['BB Reverse Curl','10.5',3,12],['DB Tricep Kickback','5',3,12]],note:'Soreness present'},
-  {date:'2026-06-16',day:'A',ex:[['BB Bench Press','28.5',4,6],['Deadlift','47.5',4,6],['BB Overhead Press','19.5',3,8],['DB Lateral Raise','5',3,8],['Skull Crusher','14.5',3,12],['DB OH Tricep Ext','8',3,12]],note:'Back to PR'},
-  {date:'2026-06-18',day:'B',ex:[['Back Squat','41.5',4,6],['Bent Over Row','31.5',4,6],['Landmine Press','28.5',3,8],['DB Reverse Fly','4',3,12],['Drag Curl','13.5',3,10],['BB Hip Thrust','28.5',3,8]],note:''},
+  {date:'2026-01-05',day:'A',ex:[['BB Bench Press','7',4,20],['Incline DB Press','7',3,12],['DB Lateral Raise','5',3,12],['BB Overhead Press','4',3,12],['DB Overhead Tricep Ext','5.5',3,15]],note:'Rep 20->15'},
+  {date:'2026-01-06',day:'B',ex:[['Lunges','0',4,12],['Goblet Squat','5.5',3,20],['DB Step-Ups','2',3,12]]},
+  {date:'2026-01-08',day:'A',ex:[['Chest-Supported Row','4',4,12],['One-Arm Row','4',4,12],['DB Reverse Fly','2',3,12],['BB Curl','4',3,12]],note:'HIIT 16min (1.5km, 110kcal, 6 rounds, 9/4.5km/h)'},
+  {date:'2026-01-10',day:'C',ex:[['Single-Leg DB RDL','4',3,8],['Single-Leg Hip Thrust','4',3,8],['DB Leg rls','4',3,8],['Calf Raise','4',4,15]]},
+  {date:'2026-01-12',day:'A',ex:[['BB Bench Press','7',4,15],['Incline DB Press','7',3,12],['DB Lateral Raise','4',3,12],['BB Overhead Press','4',3,12],['DB Overhead Tricep Ext','6',3,15]],note:'Treadmill Incline Walk 35min (2.8km, 327kcal, 5km/h, 10%)'},
+  {date:'2026-01-13',day:'B',ex:[['Lunges','1',4,12],['Goblet Squat','6',3,15],['DB Step-Ups','2',3,8]],note:'Treadmill Incline Walk 37min (3km, 383kcal, 5km/h, 12%)'},
+  {date:'2026-01-14',day:'C',ex:[['Dead Bug','BW',3,10],['Bench Leg Raise','BW',3,10],['Plank','BW',3,30]],note:'LISS Walk 46min (4.14km, 381kcal, 5.5km/h, 2%)'},
+  {date:'2026-01-15',day:'A',ex:[['Chest-Supported Row','5',4,12],['One-Arm Row','5',4,12],['DB Reverse Fly','3',3,8],['BB Curl','5',3,8]],note:'HIIT 16min (1.83km, 176kcal, 6 rounds, 12/6km/h)'},
+  {date:'2026-01-19',day:'A',ex:[['BB Bench Press','8',4,8],['Incline DB Press','8',3,8],['DB Lateral Raise','5',3,8],['BB Overhead Press','4',3,12],['DB Overhead Tricep Ext','6',3,15]],note:'Treadmill Incline Walk 40min (3.2km, 419kcal, 5km/h, 10%)'},
+  {date:'2026-03-02',day:'A',ex:[['BB Bench Press','7',4,12],['Bent Over Row','7',4,12],['Incline DB Press','7',4,12],['Incline DB Row','7',4,12],['DB Fly','4',4,12],['Straight Arm DB Row','4',4,12],['Crunch','BW',3,12],['Dead Bug','BW',3,12]]},
+  {date:'2026-03-04',day:'B',ex:[['Back Squat','5',3,12],['Sumo Squat','5',3,12],['DB Lunge','0',3,12],['DB Stiff Leg Deadlift','5',3,12],['Calf Raise','5',3,12]]},
+  {date:'2026-03-06',day:'C',ex:[['BB Overhead Press','5',3,12],['DB Lateral Raise','2',3,12],['DB Front Raise','2',3,12],['DB Reverse Fly','5',3,12],['Alternate DB Curl','5',3,12],['DB Overhead Tricep Ext','4',3,12]]},
+  {date:'2026-03-16',day:'A',ex:[['BB Bench Press','15.5',4,12],['Bent Over Row','15.5',4,12],['Incline BB Bench','15.5',4,12],['Incline DB Row','15.5',4,10],['DB Fly','5',4,8],['Straight Arm DB Row','5',4,8]]},
+  {date:'2026-03-20',day:'B',note:'BB OHP [no data] | BB Curl [no data]'},
+  {date:'2026-03-30',day:'A',ex:[['BB Bench Press','19.5',3,8],['Incline BB Bench','17.5',3,12],['BB Overhead Press','12',3,12],['Landmine Press','8.25',3,8],['DB Overhead Tricep Ext','10',3,12],['Skull Crusher','6.5',3,12]]},
+  {date:'2026-04-01',day:'B',ex:[['Deadlift','25.5',3,8],['Bent Over Row','15.5',3,8],['T-Bar Row','10.5',3,8],['BB Curl','14',3,8],['Drag Curl','12',3,8]]},
+  {date:'2026-04-13',day:'A',ex:[['BB Bench Press','20',3,8],['Incline BB Bench','20',3,8],['BB Overhead Press','14.5',3,8],['Landmine Press','10',3,8],['DB Overhead Tricep Ext','12',3,8],['Skull Crusher','8.5',3,12]]},
+  {date:'2026-04-14',day:'cardio',cardio:'Outdoor walk 1.34km, 25:41, 74kcal active, avg HR 100, max HR 108\nIndoor run 3.00km, 38:25, 220kcal active, avg HR 137, max HR 147'},
+  {date:'2026-04-15',day:'B',ex:[['Deadlift','35.5',3,8],['Bent Over Row','16.5',3,8],['T-Bar Row','15.5',3,8],['BB Curl','14.5',3,8],['Drag Curl','12',3,8]]},
+  {date:'2026-04-15',day:'cardio',cardio:'Indoor run 2.52km, 34:17, 196kcal active, avg HR 139, max HR 148, pace 13:36/km'},
+  {date:'2026-04-17',day:'C',ex:[['Back Squat','19.5',3,8],['Front Squat','19.5',3,8],['Romanian Deadlift','25',3,8]]},
+  {date:'2026-04-18',day:'cardio',cardio:'Pickleball 48:23, 452kcal active, avg HR 150, max HR 173, aerobic stress 3.2'},
+  {date:'2026-04-19',day:'A',ex:[['BB Bench Press','20.5',3,8],['Incline BB Bench','20.5',3,8],['BB Overhead Press','15.5',3,8],['Landmine Press','10',3,8],['DB Overhead Tricep Ext','12.5',3,8],['Skull Crusher','9.5',3,12]]},
+  {date:'2026-04-20',day:'B',ex:[['Deadlift','35.5',4,8],['Bent Over Row','18.5',3,8],['T-Bar Row','17',4,8],['BB Curl','14.5',3,8],['Drag Curl','12',3,8]]},
+  {date:'2026-04-21',day:'cardio',cardio:'Pickleball 1:01:29, 600kcal active, avg HR 154, max HR 184, aerobic stress 3.7'},
+  {date:'2026-04-22',day:'C',ex:[['Back Squat','24.5',6,8],['Front Squat','24.5',3,8],['Romanian Deadlift','28.5',3,8]]},
+  {date:'2026-04-23',day:'A',ex:[['BB Bench Press','24.5',4,6],['Deadlift','40',3,5],['BB Overhead Press','16.5',3,8],['BB Curl','10.5',3,12],['Skull Crusher','10.5',3,12],['Dead Bug','BW',3,10],['Plank','BW',3,45]],note:'Strong session, 4 PRs'},
+  {date:'2026-04-26',day:'cardio',cardio:'Pickleball 58:13, 509kcal active, avg HR 145, max HR 168, aerobic stress 3.1'},
+  {date:'2026-04-27',day:'B',ex:[['Back Squat','30',4,6],['Bent Over Row','24.5',4,6],['Landmine Press','12.5',3,8],['Drag Curl','12',3,10],['Bench Leg Raise','BW',3,10],['Dead Bug','BW',3,10]],note:'BB Hip Thrust skipped. Squat and Row heavier than planned, good session'},
+  {date:'2026-04-28',day:'C',ex:[['Romanian Deadlift','30.5',4,8],['Incline BB Bench','22',4,8],['T-Bar Row','20',4,8],['BB Reverse Curl','10',4,11],['Calf Raise','BW',4,15],['Ab Wheel Rollout','BW',3,8]],note:'First full Day C in new A/B/C program, PR on RDL+Incline+T-Bar'},
+  {date:'2026-04-29',day:'rest',note:'REST'},
+  {date:'2026-04-30',day:'A',ex:[['BB Bench Press','26',4,6],['Deadlift','43',3,5],['BB Overhead Press','17.5',3,8],['BB Curl','12.5',3,12],['Skull Crusher','12.5',3,12],['Dead Bug','BW',3,10],['Plank','BW',3,30]],note:'New BB 6.5kg, Day A after Day C short chest rest, 4 PRs'},
+  {date:'2026-05-01',day:'cardio',cardio:'Pickleball 1:00:07, 533kcal active, avg HR 146, max HR 165, aerobic stress 3.2'},
+  {date:'2026-05-02',day:'B',ex:[['Back Squat','36.5',4,6],['Bent Over Row','26.5',4,6],['Landmine Press','17',3,8],['Drag Curl','12.5',3,10],['BB Hip Thrust','26.5',3,8],['Bench Leg Raise','BW',3,12],['Dead Bug','BW',3,10]]},
+  {date:'2026-05-03',day:'rest',note:'REST'},
+  {date:'2026-05-04',day:'cardio',cardio:'Pickleball 1:02:09, 574kcal active, avg HR 149, max HR 170, aerobic stress 3.5'},
+  {date:'2026-05-05',day:'C',ex:[['Romanian Deadlift','34',4,8],['Incline BB Bench','24',4,8],['T-Bar Row','26.5',4,8],['BB Reverse Curl','10.5',4,12],['Calf Raise','BW',4,20],['Ab Wheel Rollout','BW',3,10],['Side Plank','BW',3,30]],note:'PR on RDL+T-Bar Row, T-Bar jumped +6.5kg'},
+  {date:'2026-05-07',day:'cardio',cardio:'Pickleball 1:00:10, 589kcal active, avg HR 154, max HR 171, aerobic stress 3.6, recovery 29h'},
+  {date:'2026-05-08',day:'A',ex:[['BB Bench Press','27.5',4,6],['Deadlift','45.5',4,6],['BB Overhead Press','18.5',3,8],['BB Curl','13.5',3,8],['Skull Crusher','13.5',3,8],['Dead Bug','BW',3,10],['Plank','BW',3,30]],note:'Deadlift upgraded to 4x6, PR all compound lifts'},
+  {date:'2026-05-09',day:'B',ex:[['Back Squat','40.5',4,5],['Bent Over Row','28.5',4,6],['Landmine Press','26.5',3,10],['Drag Curl','13.5',3,10],['BB Hip Thrust','27.5',3,8],['Bench Leg Raise','BW',3,12],['Dead Bug','BW',3,10]],note:'Squat felt heavy, keep same weight next session'},
+  {date:'2026-05-11',day:'C',ex:[['Romanian Deadlift','36.5',4,8],['Incline DB Press','12',4,8],['T-Bar Row','26.5',4,12],['Goblet Squat','16',3,8],['BB Reverse Curl','10.5',3,12],['DB Tricep Kickback','5',3,10]],note:'Ab Wheel Rollout, Side Plank BW สองท่าสุดท้ายหมดแรง'},
+  {date:'2026-05-12',day:'cardio',cardio:'Pickleball 1:00:05, 563kcal active, avg HR 150, max HR 173, aerobic stress 3.5, recovery 27h'},
+  {date:'2026-05-13',day:'A',ex:[['BB Bench Press','27.5',4,6],['Deadlift','46.5',4,6],['BB Overhead Press','18.5',3,8],['DB Lateral Raise','5',3,8],['Skull Crusher','13.5',3,12],['DB OH Tricep Ext','7',3,12],['Dead Bug','BW',3,10],['Plank','BW',3,45]]},
+  {date:'2026-05-14',day:'cardio',cardio:'Pickleball 1:04:49, 550kcal active, avg HR 142, max HR 162, aerobic stress 3.2, recovery 18h'},
+  {date:'2026-05-15',day:'B',ex:[['Back Squat','40.5',4,6],['Bent Over Row','30.5',4,6],['Landmine Press','27.5',3,8],['DB Reverse Fly','4',3,8],['Drag Curl','13.5',3,10],['BB Hip Thrust','27.5',3,8]]},
+  {date:'2026-05-16',day:'cardio',cardio:'Pickleball 1:04:28, 558kcal active, avg HR 144, max HR 169, aerobic stress 3.3, recovery 19h'},
+  {date:'2026-05-17',day:'C',ex:[['Romanian Deadlift','37.5',4,8],['Incline DB Press','12',4,10],['T-Bar Row','31.5',4,10],['Goblet Squat','16',3,10],['BB Reverse Curl','10.5',3,12],['DB Tricep Kickback','5',3,12]]},
+  {date:'2026-05-20',day:'A',ex:[['BB Bench Press','28.5',4,6],['Deadlift','47.5',4,6],['BB Overhead Press','19.5',3,8],['DB Lateral Raise','5',3,12],['Skull Crusher','14.5',3,12],['DB OH Tricep Ext','8',3,12]]},
+  {date:'2026-05-22',day:'B',ex:[['Back Squat','41.5',4,6],['Bent Over Row','31.5',4,6],['Landmine Press','28.5',3,8],['DB Reverse Fly','4',3,12],['Drag Curl','13.5',3,10],['BB Hip Thrust','28.5',3,8],['Bench Leg Raise','BW',3,15],['Dead Bug','BW',3,10]]},
+  {date:'2026-05-23',day:'C',ex:[['Romanian Deadlift','40.5',4,8],['Incline DB Press','14',4,6],['T-Bar Row','31.5',4,10],['Goblet Squat','18',3,8],['BB Reverse Curl','11.5',3,8],['DB Tricep Kickback','6',3,8],['Ab Wheel Rollout','BW',3,10],['Side Plank','BW',3,30]]},
+  {date:'2026-06-05',day:'cardio',cardio:'Pickleball 1:00:00, 504kcal active, avg HR 142, max HR 164, aerobic stress 3.0, recovery 16h'},
+  {date:'2026-06-08',day:'A',ex:[['BB Bench Press','26.5',3,8],['Deadlift','42.5',3,5],['BB Overhead Press','17.5',3,8],['DB Lateral Raise','5',3,8],['Skull Crusher','12.5',3,12],['DB OH Tricep Ext','7',3,12],['Dead Bug','BW',3,10],['Plank','BW',3,45]],note:'Return after 13-day break, deload session'},
+  {date:'2026-06-09',day:'cardio',cardio:'Pickleball 1:00:00, 649kcal active, avg HR 144, max HR 163, aerobic stress 3.4, recovery 20h'},
+  {date:'2026-06-10',day:'B',ex:[['Back Squat','38.5',4,6],['Bent Over Row','28.5',4,6],['Landmine Press','26.5',3,8],['DB Reverse Fly','4',3,12],['Drag Curl','12.5',3,10],['BB Hip Thrust','26.5',3,8],['Bench Leg Raise','BW',3,15],['Dead Bug','BW',3,10]],note:'Session 2 return after break'},
+  {date:'2026-06-13',day:'C',ex:[['Romanian Deadlift','36.5',3,8],['Incline DB Press','12',3,10],['T-Bar Row','28.5',3,8],['Goblet Squat','16',3,10],['BB Reverse Curl','10.5',3,12],['DB Tricep Kickback','5',3,12],['Ab Wheel Rollout','BW',3,8],['Side Plank','BW',3,30]],note:'Session 3 return, muscle soreness still present'},
+  {date:'2026-06-14',day:'cardio',cardio:'Pickleball 1:00:00, 580kcal active, avg HR 153, max HR 173, aerobic stress 3.6, recovery 20h'},
+  {date:'2026-06-16',day:'A',ex:[['BB Bench Press','28.5',4,6],['Deadlift','47.5',4,6],['BB Overhead Press','19.5',3,8],['DB Lateral Raise','5',3,8],['Skull Crusher','14.5',3,12],['DB OH Tricep Ext','8',3,12],['Dead Bug','BW',3,10],['Plank','BW',3,45]],note:'Back to PR weights'},
+  {date:'2026-06-17',day:'cardio',cardio:'Pickleball 1:17:00, 735kcal active, avg HR 151, max HR 177, aerobic stress 3.8, recovery 20h'},
+  {date:'2026-06-18',day:'B',ex:[['Back Squat','41.5',4,6],['Bent Over Row','31.5',4,6],['Landmine Press','28.5',3,8],['DB Reverse Fly','4',3,12],['Drag Curl','13.5',3,10],['BB Hip Thrust','28.5',3,8],['Bench Leg Raise','BW',3,12],['Dead Bug','BW',3,10]]},
+  {date:'2026-06-20',day:'cardio',cardio:'Pickleball 1:08:00, 671kcal active, avg HR 154, max HR 175, aerobic stress 3.8, recovery 31h'},
+  {date:'2026-06-21',day:'C',ex:[['Romanian Deadlift','34.5',4,8],['Incline DB Press','14',4,6],['Goblet Squat','18',3,8],['DB preacher curl','5',3,12],['DB Tricep Kickback','6',3,12],['Side Plank','BW',3,30]],note:'T-Bar Row skip, BB Reverse Curl skip, Ab Wheel skip due to wrist pain'},
+  {date:'2026-06-22',day:'cardio',cardio:'Pickleball 1:00:00, 536kcal active, avg HR 147, max HR 167, aerobic stress 3.3, recovery 20h'},
+  {date:'2026-06-23',day:'A',ex:[['BB Bench Press','29.5',4,6],['Deadlift','50.5',4,6],['BB Overhead Press','20.5',3,6],['DB Lateral Raise','5.5',3,6],['Skull Crusher','15.5',3,12],['DB OH Tricep Ext','10',3,12],['DB preacher curl','5.5',3,12],['Dead Bug','BW',3,10],['Plank','BW',3,45]],note:'increase PR, decrease rep'}
 ];
 
 const SEED_BODY=[
@@ -506,28 +564,92 @@ const SEED_BODY=[
   {date:'2026-06-20',weight:68.95,fat:19.5,muscle:52.65,visceral:9,score:94},
 ];
 
-let state=loadState();
-let cur=null,curPage='today',curStatsTab='pr';
-let restTimer=null,restLeft=90,restTotal=90;
-let progChart=null,volChart=null,bcChart=null;
+// =========================================================
+// 1. ข้อมูลเชื่อมต่อ Firebase Configuration ของคุณ
+// =========================================================
+const firebaseConfig = {
+  apiKey: "AIzaSyB-wjKlyhB5cnBfCsGY0FdMToWBJDOLNNU",
+  authDomain: "sasipong-workout.firebaseapp.com",
+  projectId: "sasipong-workout",
+  storageBucket: "sasipong-workout.firebasestorage.app",
+  messagingSenderId: "105076861755",
+  appId: "1:105076861755:web:afa7cfbc732f356c67e51e",
+  measurementId: "G-B6CCF6ZET4"
+};
 
-function loadState(){
-  try{const s=localStorage.getItem(STORE_KEY);if(s)return JSON.parse(s);}catch(e){}
-  return {checks:{},dateStamp:todayStr(),history:SEED_HISTORY.slice(),custom:{},body:SEED_BODY.slice(),notes:{}};
-}
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const DOC_REF = db.collection("workout_app").doc("user_state");
+
 function saveState(){try{localStorage.setItem(STORE_KEY,JSON.stringify(state));}catch(e){}}
 function todayStr(){return new Date().toISOString().slice(0,10);}
 function thaiDate(d){const dt=d?new Date(d):new Date();const m=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];return `${DOW_LABELS[dt.getDay()]} ${dt.getDate()} ${m[dt.getMonth()]}`;}
-if(!state.history)state.history=SEED_HISTORY.slice();
-if(!state.custom)state.custom={};
-if(!state.body)state.body=SEED_BODY.slice();
-if(!state.notes)state.notes={};
-if(state.dateStamp!==todayStr()){state.checks={};state.dateStamp=todayStr();saveState();}
+
+// ฟังก์ชันบันทึกข้อมูลแบบ String ไร้ข้อจำกัดเรื่อง Nested Array บน Firestore Cloud
+async function saveState(){
+  try{ 
+    await DOC_REF.set({ payload: JSON.stringify(state) }); 
+    await localforage.setItem(STORE_KEY, state); 
+  }catch(e){ 
+    console.error('Cloud save error, fallback to local:', e); 
+    showToast('⚠️ Offline: บันทึกลงเครื่องแล้ว');
+    await localforage.setItem(STORE_KEY, state);
+  }
+}
+
+// ฟังก์ชันดึงข้อมูลแบบ Real-time Listener
+function initApp() {
+  DOC_REF.onSnapshot(async (doc) => {
+    const isExists = typeof doc.exists === 'function' ? doc.exists() : doc.exists;
+    if (isExists) {
+      const cloudData = doc.data();
+      if (cloudData.payload) {
+        state = JSON.parse(cloudData.payload);
+      } else {
+        state = cloudData; 
+      }
+    } else {
+      const local = await localforage.getItem(STORE_KEY);
+      state = local || {checks:{},dateStamp:todayStr(),history:SEED_HISTORY.slice(),custom:{},body:SEED_BODY.slice(),notes:{}};
+      await saveState(); 
+    }
+
+    if(!state.history)state.history=SEED_HISTORY.slice();
+    if(!state.custom)state.custom={};
+    if(!state.body)state.body=SEED_BODY.slice();
+    if(!state.notes)state.notes={};
+    
+    if(state.dateStamp!==todayStr()){
+      state.checks={};
+      state.dateStamp=todayStr();
+      await saveState();
+    }
+
+    buildDaypick();
+    // คืนค่าโปรแกรมซ้อมให้เป็นไปตามวันในสัปดาห์ในรอบแรก
+    if (!cur) cur = DAY_BY_DOW[new Date().getDay()];
+    pick(cur);
+    
+    if(curPage==='history') renderHistory();
+    if(curPage==='stats') statsTab(curStatsTab);
+    if(curPage==='body') renderBody();
+
+  }, async (error) => {
+    console.error("Firebase listen failed, using offline local storage:", error);
+    showToast('🔴 Offline Mode');
+    const local = await localforage.getItem(STORE_KEY);
+    state = local || {checks:{},dateStamp:todayStr(),history:SEED_HISTORY.slice(),custom:{},body:SEED_BODY.slice(),notes:{}};
+    buildDaypick();
+    if (!cur) cur = DAY_BY_DOW[new Date().getDay()];
+    pick(cur);
+  });
+}
 
 function fmt(n){return parseFloat(n.toFixed(2));}
 
 function getWorkout(key){
   const base=JSON.parse(JSON.stringify(WORKOUTS[key]));
+  if(!base) return null;
   if(state.custom[key]){
     [...base.ex,...base.bonus].forEach(e=>{
       const c=state.custom[key][e.n];
@@ -535,6 +657,12 @@ function getWorkout(key){
     });
   }
   return base;
+}
+// ตัวช่วยคำนวณเซตสำหรับแสดงแถบ Progress
+function getTotalWorkoutSets(key) {
+  const data = getWorkout(key);
+  if(!data) return 0;
+  return [...data.ex, ...data.bonus].reduce((acc, curr) => acc + curr.sets, 0);
 }
 function rxOf(e){return `${e.sets} × ${e.reps}`;}
 
@@ -578,15 +706,27 @@ function buildDaypick(){
   for(let i=0;i<7;i++){const key=DOW_MAP[i];const el=document.createElement('button');el.className='dp';el.dataset.dow=i;el.dataset.key=key;el.innerHTML=`${DOW_LABELS[i]}<span class="marker"></span>`;el.onclick=()=>pick(key);dp.appendChild(el);}
 }
 function pick(key){
-  cur=key;const tone=WORKOUTS[key]?.tone||GUIDES[key]?.tone||'gold';
+  cur=key;
+  const tone=WORKOUTS[key]?.tone||GUIDES[key]?.tone||'gold';
   document.querySelectorAll('.dp').forEach(el=>{const isCur=el.dataset.key===key;el.className='dp'+(isCur?' on tone-'+tone:'');if(parseInt(el.dataset.dow)===new Date().getDay())el.classList.add('istoday');});
+  
+  // ปรับการไฮไลต์ค่าในกล่องสลับตารางให้ตรงกับแท็บปัจจุบัน
+  const selector = document.getElementById('sessionManualSelect');
+  if(selector) selector.value = key;
+
   renderToday();
+}
+
+// ฟังก์ชันสำหรับบังคับสลับตารางออกกำลังกายหน้างาน (Manual Override)
+function forceSwitchSession(value) {
+  if(!value) return;
+  cur = value;
+  pick(cur);
 }
 
 function renderWeekStrip(){
   const strip=document.getElementById('weekStrip');
   if(!strip)return;
-  // get current week Mon-Sun
   const now=new Date();
   const dow=now.getDay();
   const monday=new Date(now);
@@ -628,7 +768,7 @@ function renderToday(){
   pb.style.display='block';ac.style.display='flex';
   const w=data;const all=[...w.ex,...w.bonus];
   if(!state.checks[cur]||state.checks[cur].length!==all.length)state.checks[cur]=all.map(e=>new Array(e.sets).fill(false));
-  let html=`<div class="sec-label">Main lifts</div>`;
+  let html=`<div class="sec-label">Main Lifts</div>`;
   w.ex.forEach((e,i)=>html+=exCard(e,i,false));
   html+=`<div class="sec-label bonus-label">Bonus</div>`;
   w.bonus.forEach((e,i)=>html+=exCard(e,w.ex.length+i,true));
@@ -645,11 +785,17 @@ function exCard(e,i,isBonus){
   const sug=e.wt!=='BW'?suggestWeight(e):null;
   const showSug=sug&&parseFloat(sug.wt)!==parseFloat(e.wt);
   const isOne=ONE_SIDE_EX.includes(e.n);
+
+  // 🛠️ แก้ไข UI: ดึงข้อมูลประวัติซ้อมและน้ำหนักของครั้งก่อนมาสร้างชิปข้อมูลให้เปรียบเทียบง่ายขึ้น
+  const lastLift = lastEntry(e.n);
+  const lastLiftHtml = lastLift ? `<div class="last-lift-info">ครั้งก่อน: <b>${lastLift.wt === 'BW' ? 'Bodyweight' : lastLift.wt + ' kg'}</b> × ${lastLift.sets}×${lastLift.reps} (${lastLift.date.slice(5)})</div>` : '';
+
   return `<div class="ex${allDone?' done':''}${isBonus?' bonus':''}" id="ex-${i}">
     <div class="ex-head">
       <div><div class="ex-name" onclick="toggleHow(${i})">${e.n}${isPR?'<span class="pr-flag">PR</span>':''}</div><div class="ex-cue">${e.cue}</div></div>
       <div class="ex-rx" onclick="editExercise('${cur}','${e.n}')">${rxOf(e)}</div>
     </div>
+    ${lastLiftHtml}
     ${showSug?`<div class="suggest"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"></path></svg>แนะนำ ${sug.wt}kg · ${sug.reason}</div>`:''}
     <div class="ex-meta">
       <span class="wt-chip" onclick="editExercise('${cur}','${e.n}')">${e.wt==='BW'?'Bodyweight':e.wt+' kg'}<span class="edit-ico">✎</span></span>
@@ -673,11 +819,19 @@ function toggleSet(i,j){
 }
 function toggleHow(i){document.getElementById('how-'+i).classList.toggle('open');}
 function updateProgress(){
-  const all=[...getWorkout(cur).ex,...getWorkout(cur).bonus];let total=0,done=0;
+  const data = getWorkout(cur);
+  if(!data){
+    document.getElementById('doneN').textContent = 0;
+    document.getElementById('totalN').textContent = '/ 0';
+    document.getElementById('progressFill').style.width = '0%';
+    document.getElementById('complete').classList.remove('show');
+    return;
+  }
+  let total=0,done=0;
   state.checks[cur].forEach(arr=>arr.forEach(f=>{total++;if(f)done++;}));
   document.getElementById('doneN').textContent=done;
   document.getElementById('totalN').textContent='/ '+total;
-  document.getElementById('progressFill').style.width=(done/total*100)+'%';
+  document.getElementById('progressFill').style.width=(total > 0 ? (done/total*100) : 0)+'%';
   document.getElementById('complete').classList.toggle('show',done===total&&total>0);
 }
 
@@ -708,7 +862,7 @@ function editExercise(dayKey,exName){
   const body=document.getElementById('modalBody');
   body.innerHTML=`<div class="modal-handle"></div><div class="modal-title">${e.n}</div>
     <div class="field-row">
-      <div class="field"><div class="field-lbl">น้ำหนัก (kg)</div><input type="text" id="ed-wt" value="${e.wt}"></div>
+      <div class="field"><div class="field-lbl">น้ำหนัก (kg)</div><input type="number" inputmode="decimal" id="ed-wt" value="${e.wt}"></div>
       <div class="field"><div class="field-lbl">เซต</div><input type="number" id="ed-sets" value="${e.sets}" min="1" max="10"></div>
       <div class="field"><div class="field-lbl">Rep</div><input type="number" id="ed-reps" value="${e.reps}" min="1" max="60"></div>
     </div>
@@ -747,15 +901,29 @@ function saveNote(){
 
 /* ── LOG TODAY + PR DETECT ── */
 function logToday(){
-  const w=getWorkout(cur);const all=[...w.ex,...w.bonus];const exData=[];
+  const w=getWorkout(cur);
+  const note=state.notes[todayStr()+'_'+cur]||'';
+  const existing=state.history.findIndex(h=>h.date===todayStr()&&h.day===cur);
+  let entry={date:todayStr(),day:cur,note};
+
+  if(!w) {
+    // กรณีตารางซ้อมวันพักฟื้นหรือ Cardio ให้บันทึกตามคู่มือคำแนะนำ
+    if(cur==='cardio') entry.cardio="Pickleball / Active Cardio Session";
+    else if(cur==='rest') entry.note=note || "Rest Day";
+    if(existing>=0)state.history[existing]=entry;else state.history.push(entry);
+    saveState();
+    showToast('บันทึกลง History แล้ว ✓');
+    return;
+  }
+
+  const all=[...w.ex,...w.bonus];const exData=[];
   all.forEach((e,i)=>{const doneSets=(state.checks[cur][i]||[]).filter(x=>x).length;if(doneSets>0)exData.push([e.n,e.wt,doneSets,e.reps]);});
   if(exData.length===0){showToast('ยังไม่ได้บันทึกเซตใดเลย');return;}
   const prevPRs=getPRs();
   const newPRs=[];
   exData.forEach(e=>{const w2=parseFloat(e[1]);if(!isNaN(w2)&&(!prevPRs[e[0]]||w2>prevPRs[e[0]].wt))newPRs.push(`${e[0]} — ${e[1]}kg`);});
-  const note=state.notes[todayStr()+'_'+cur]||'';
-  const existing=state.history.findIndex(h=>h.date===todayStr()&&h.day===cur);
-  const entry={date:todayStr(),day:cur,ex:exData,note};
+  
+  entry.ex = exData;
   if(existing>=0)state.history[existing]=entry;else state.history.push(entry);
   saveState();
   if(newPRs.length>0){
@@ -770,19 +938,29 @@ function renderHistory(){
   const sorted=[...state.history].sort((a,b)=>b.date.localeCompare(a.date));
   document.getElementById('histSub').textContent=`${sorted.length} sessions ที่บันทึกไว้`;
   if(sorted.length===0){list.innerHTML=`<div class="empty"><svg viewBox="0 0 24 24"><path d="M12 8v4l3 2M3 12a9 9 0 1018 0 9 9 0 00-18 0z"></path></svg><div class="empty-h">ยังไม่มีประวัติ</div><div class="empty-p">บันทึก session แรกจากหน้า Today</div></div>`;return;}
+  
+  // 🛠️ แก้ไข UI: เพิ่มระบบรายละเอียด Accordion Collapse และปุ่มลบ Session สำหรับ Cardio/Rest
   list.innerHTML=sorted.map((h,idx)=>{
     const realIdx=state.history.indexOf(h);let summary='',detail='';
     if(h.cardio){summary=h.cardio;}
     else if(h.ex){summary=h.ex.slice(0,3).map(e=>e[0]).join(' · ')+(h.ex.length>3?` +${h.ex.length-3}`:'');detail=h.ex.map(e=>`<div class="hist-ex-row"><span class="hist-ex-name">${e[0]}</span><span class="hist-ex-val">${e[1]==='BW'?'BW':e[1]+'kg'} × ${e[2]}×${e[3]}</span></div>`).join('');}
+    else {summary=h.note || "Rest day";}
+    
     return `<div class="hist-item" onclick="toggleHist(${idx})">
       <div class="hist-top"><span class="hist-date">${thaiDate(h.date)} · ${h.date.slice(5)}</span><span class="hist-badge badge-${h.day}">${h.day==='cardio'?'Cardio':h.day==='rest'?'Rest':'Day '+h.day}</span></div>
       <div class="hist-summary">${summary}</div>
-      ${detail||h.note?`<div class="hist-detail" id="hd-${idx}"><div class="hist-detail-inner">${detail}${h.note?`<div class="hist-note">${h.note}</div>`:''}<button class="btn btn-ghost" style="width:100%;margin-top:12px;flex:1" onclick="event.stopPropagation();deleteHist(${realIdx})">ลบ session นี้</button></div></div>`:''}
+      <div class="hist-detail" id="hd-${idx}">
+        <div class="hist-detail-inner">
+          ${detail}
+          ${h.note && h.ex ? `<div class="hist-note">${h.note}</div>`:''}
+          <button class="btn btn-ghost" style="width:100%;margin-top:12px;flex:1;border-color:rgba(226,75,74,0.2);color:var(--red)" onclick="event.stopPropagation();deleteHist(${realIdx})">ลบ session นี้</button>
+        </div>
+      </div>
     </div>`;
   }).join('');
 }
 function toggleHist(idx){const el=document.getElementById('hd-'+idx);if(el)el.classList.toggle('open');}
-function deleteHist(realIdx){state.history.splice(realIdx,1);saveState();renderHistory();showToast('ลบแล้ว');}
+function deleteHist(realIdx){if(confirm('ต้องการลบประวัติการออกกำลังกายรอบนี้ใช่หรือไม่?')){state.history.splice(realIdx,1);saveState();renderHistory();showToast('ลบประวัติแล้ว');}}
 
 /* ── ADD BACKDATED ── */
 function openAddLog(){
@@ -904,8 +1082,8 @@ function openAddBody(){
   const body=document.getElementById('modalBody');
   body.innerHTML=`<div class="modal-handle"></div><div class="modal-title">บันทึกผลชั่ง</div>
     <div class="field"><div class="field-lbl">วันที่</div><input type="date" id="bd-date" value="${todayStr()}"></div>
-    <div class="field-row"><div class="field"><div class="field-lbl">น้ำหนัก (kg)</div><input type="number" step="0.01" id="bd-weight"></div><div class="field"><div class="field-lbl">Body fat (%)</div><input type="number" step="0.1" id="bd-fat"></div></div>
-    <div class="field-row"><div class="field"><div class="field-lbl">Muscle (kg)</div><input type="number" step="0.01" id="bd-muscle"></div><div class="field"><div class="field-lbl">Visceral fat</div><input type="number" id="bd-visceral"></div></div>
+    <div class="field-row"><div class="field"><div class="field-lbl">น้ำหนัก (kg)</div><input type="number" inputmode="decimal" step="0.01" id="bd-weight"></div><div class="field"><div class="field-lbl">Body fat (%)</div><input type="number" inputmode="decimal" step="0.1" id="bd-fat"></div></div>
+    <div class="field-row"><div class="field"><div class="field-lbl">Muscle (kg)</div><input type="number" inputmode="decimal" step="0.01" id="bd-muscle"></div><div class="field"><div class="field-lbl">Visceral fat</div><input type="number" inputmode="numeric" id="bd-visceral"></div></div>
     <div class="field"><div class="field-lbl">Body score</div><input type="number" id="bd-score"></div>
     <div class="modal-actions"><button class="btn btn-save" onclick="saveBody()">บันทึก</button><button class="btn btn-ghost" onclick="closeModal()">ยกเลิก</button></div>`;
   openModal();
@@ -933,16 +1111,37 @@ function exportJson(){download('workout_backup.json',JSON.stringify(state,null,2
 function importJson(ev){
   const file=ev.target.files[0];if(!file)return;
   const reader=new FileReader();
-  reader.onload=e=>{try{const data=JSON.parse(e.target.result);if(data.history){state=data;saveState();showToast('Import สำเร็จ ✓');switchPage('history');}else showToast('ไฟล์ไม่ถูกต้อง');}catch(err){showToast('อ่านไฟล์ไม่ได้');}};
+  reader.onload=async e=>{
+    try{
+      const data=JSON.parse(e.target.result);
+      if(data.history){
+        state=data;
+        await saveState(); 
+        showToast('Import สำเร็จ ✓');
+        switchPage('history');
+      }else showToast('ไฟล์ไม่ถูกต้อง');
+    }catch(err){showToast('อ่านไฟล์ไม่ได้');}
+  };
   reader.readAsText(file);
 }
 function download(name,content,type){
   const blob=new Blob([content],{type});const url=URL.createObjectURL(blob);
   const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
 }
-function resetAll(){
-  if(confirm('ล้างข้อมูลทั้งหมด? ไม่สามารถกู้คืนได้ (แนะนำ backup ก่อน)')){
-    localStorage.removeItem(STORE_KEY);state=loadState();saveState();switchPage('today');showToast('ล้างข้อมูลแล้ว');
+async function resetAll(){
+  if(confirm('ล้างข้อมูลเพื่อโหลดประวัติ 54 sessions ชุดใหม่?')){
+    state = {
+      checks: {},
+      dateStamp: todayStr(),
+      history: SEED_HISTORY.slice(),
+      custom: {},
+      body: SEED_BODY.slice(),
+      notes: {}
+    };
+    await saveState();
+    switchPage('today');
+    if(curPage==='history') renderHistory();
+    showToast('โหลดข้อมูลชุดใหม่สำเร็จ ✓');
   }
 }
 
@@ -963,16 +1162,35 @@ function closeModal(){document.getElementById('modalBg').classList.remove('show'
 
 const R=19,CIRC=2*Math.PI*R;
 document.getElementById('ring').style.strokeDasharray=CIRC;
-function startRest(){restLeft=90;restTotal=90;const t=document.getElementById('timer');t.classList.add('show');t.classList.remove('urgent');if(restTimer)clearInterval(restTimer);tickRest();restTimer=setInterval(tickRest,1000);}
+
+function startRest(){
+  restLeft=90;restTotal=90;
+  const t=document.getElementById('timer');
+  t.classList.add('show');
+  t.classList.remove('urgent');
+  if(restTimer){
+    clearInterval(restTimer);
+    restTimer=null;
+  }
+  tickRest();
+  restTimer=setInterval(tickRest,1000);
+}
 function tickRest(){const m=Math.floor(restLeft/60),s=restLeft%60;document.getElementById('timerTime').textContent=m+':'+String(s).padStart(2,'0');document.getElementById('ring').style.strokeDashoffset=CIRC*(1-restLeft/restTotal);if(restLeft<=10)document.getElementById('timer').classList.add('urgent');if(restLeft<=0){stopRest();return;}restLeft--;}
 function addRest(n){restLeft+=n;restTotal=Math.max(restTotal,restLeft);tickRest();}
-function stopRest(){if(restTimer)clearInterval(restTimer);document.getElementById('timer').classList.remove('show','urgent');}
 
-function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600);}
+function stopRest(){
+  if(restTimer){
+    clearInterval(restTimer);
+    restTimer=null;
+  }
+  document.getElementById('timer').classList.remove('show','urgent');
+}
+
+// แนะนำ 3000ms เพื่อให้อ่านสถานะแจ้งเตือน Cloud บนหน้าจอพกพาได้ครบถ้วน
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
 function resetDay(){const all=[...getWorkout(cur).ex,...getWorkout(cur).bonus];state.checks[cur]=all.map(e=>new Array(e.sets).fill(false));saveState();renderToday();showToast('ล้างเซตแล้ว');}
 
-buildDaypick();
-pick(DAY_BY_DOW[new Date().getDay()]);
+initApp();
 
 </script>
 </body>

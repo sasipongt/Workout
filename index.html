@@ -39,15 +39,9 @@
   .day-title{font-family:'Oswald',sans-serif;font-size:52px;font-weight:700;line-height:0.94;letter-spacing:0.01em;text-transform:uppercase;margin-bottom:10px}
   .day-sub{font-family:'Oswald',sans-serif;font-size:14px;font-weight:500;letter-spacing:0.13em;color:var(--faint);text-transform:uppercase}
 
-  /* Dropdown เลือกโปรแกรมกรณีฉุกเฉินในหน้า Today */
-  .session-selector-box{margin:4px 0 16px}
-  .session-select{width:100%;padding:11px 14px;background:var(--card);border:1px solid var(--line2);border-radius:10px;color:var(--gold);font-family:'Oswald',sans-serif;font-size:15px;font-weight:500;letter-spacing:0.04em;outline:none}
-
-  .daypick{display:flex;gap:6px;margin:10px 0 18px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+  .daypick{display:flex;gap:6px;margin:22px 0 18px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
   .daypick::-webkit-scrollbar{display:none}
   .dp{flex:0 0 auto;min-width:50px;padding:9px 4px;border:0.5px solid var(--line2);border-radius:22px;background:transparent;font-family:'Oswald',sans-serif;font-size:13px;font-weight:600;letter-spacing:0.06em;color:var(--faint);cursor:pointer;text-align:center;text-transform:uppercase;position:relative;transition:all 0.2s}
-  .dp .marker{position:absolute;top:7px;right:10px;width:5px;height:5px;border-radius:50%;background:var(--gold);opacity:0}
-  .dp.istoday .marker{opacity:1}
   .dp.on.tone-gold{border-color:var(--gold);background:rgba(200,162,60,0.1);color:var(--gold)}
   .dp.on.tone-rust{border-color:var(--rust-bright);background:rgba(216,99,44,0.1);color:var(--rust-bright)}
   .dp.on.tone-cream{border-color:#C9C4B8;background:rgba(201,196,184,0.08);color:#C9C4B8}
@@ -79,10 +73,6 @@
 
   .suggest{font-size:11px;color:var(--green);background:rgba(127,176,74,0.08);border-radius:7px;padding:6px 10px;margin-top:10px;display:flex;align-items:center;gap:6px}
   .suggest svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0}
-  
-  /* ชิปข้อมูลเปรียบเทียบประวัติยกน้ำหนักรอบก่อนหน้าในหน้านี้ */
-  .last-lift-info{font-size:12px;color:var(--muted);background:rgba(168,148,106,0.06);border-radius:7px;padding:5px 9px;margin-top:8px;display:inline-block}
-  .last-lift-info b{color:var(--gold-dim);font-weight:500}
 
   .ex-meta{display:flex;align-items:center;gap:8px;margin-top:11px;flex-wrap:wrap}
   .wt-chip{font-family:'Oswald',sans-serif;font-size:13px;font-weight:600;color:var(--gold);background:rgba(200,162,60,0.08);border:0.5px solid rgba(200,162,60,0.25);border-radius:6px;padding:4px 9px;cursor:pointer}
@@ -91,6 +81,7 @@
   .plate-btn svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2}
 
   .dots{display:flex;gap:9px;margin-top:14px;flex-wrap:wrap;align-items:center}
+  /* ขยายขนาด Touch Target .dot จาก 42px เป็น 48px */
   .dot{width:48px;height:48px;border-radius:50%;border:1.5px solid #4A3C26;background:transparent;color:var(--faint);font-family:'Oswald',sans-serif;font-size:16px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;flex-shrink:0}
   .dot:active{transform:scale(0.92)}
   .dot.fill{background:var(--gold);border-color:var(--gold);color:#16120C}
@@ -99,6 +90,11 @@
   .rest-trigger{width:100%;margin-top:14px;padding:12px;border:0.5px solid var(--line2);border-radius:10px;background:transparent;color:var(--faint);font-family:'Oswald',sans-serif;font-size:14px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
   .rest-trigger:active{background:var(--bg2)}
   .rest-trigger svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2}
+
+  .cable-toggle{font-size:11px;color:var(--purple);background:rgba(155,127,212,0.08);border:0.5px solid rgba(155,127,212,0.25);border-radius:7px;padding:6px 10px;margin-top:10px;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:'Inter',sans-serif;width:100%;text-align:left}
+  .cable-toggle svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0}
+  .cable-toggle.on{color:#16120C;background:var(--purple);border-color:var(--purple);font-weight:600}
+  .cable-tag{font-size:10px;background:var(--purple);color:#16120C;padding:2px 7px;border-radius:10px;font-family:'Oswald',sans-serif;font-weight:600;letter-spacing:0.04em}
 
   .how-toggle{font-size:12px;color:var(--blue);background:none;border:none;padding:8px 0 0;cursor:pointer;font-family:'Inter',sans-serif}
   .how-body{max-height:0;overflow:hidden;transition:max-height 0.3s ease}
@@ -129,6 +125,7 @@
   .btn-save{border-color:var(--gold);background:var(--gold);color:#16120C}
   .btn-ghost{border-color:var(--line2);background:transparent;color:var(--faint);flex:0 0 auto;padding:14px 16px}
 
+  /* ปรับแถบ Nav ให้สูงขึ้นเพื่อกดง่ายบน iPad/มือถือ */
   .nav{position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:100%;max-width:480px;background:rgba(10,8,6,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:0.5px solid var(--line2);display:flex;padding:8px 0 calc(8px + env(safe-area-inset-bottom));z-index:90}
   .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;color:var(--faint);cursor:pointer;padding:10px 0;font-family:'Inter',sans-serif;min-height:48px}
   .nav-item.on{color:var(--gold)}
@@ -206,6 +203,11 @@
   .plate-list-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:0.5px solid var(--line);font-size:13px}
   .plate-list-row:last-child{border-bottom:none}
 
+  .pc-hint{font-size:11px;color:var(--faint);margin:-6px 0 18px;line-height:1.6}
+  .pc-empty{text-align:center;padding:40px 18px;color:var(--faint);font-size:13px;line-height:1.7}
+  .pc-step-badge{font-family:'Oswald',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.1em;color:var(--muted);text-transform:uppercase}
+  .pc-warn{font-size:11px;color:var(--rust-bright);margin-top:6px}
+
   .toast{position:fixed;left:50%;transform:translateX(-50%) translateY(-200%);top:calc(12px + env(safe-area-inset-top));background:var(--card-done);border:0.5px solid var(--line2);color:var(--cream);font-size:13px;padding:12px 20px;border-radius:12px;z-index:300;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);max-width:90%;text-align:center}
   .toast.show{transform:translateX(-50%) translateY(0)}
 
@@ -242,6 +244,9 @@
 
   /* roadmap */
   .road-ex{background:var(--card);border:0.5px solid var(--line2);border-radius:14px;padding:16px;margin-bottom:12px}
+  .road-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px}
+  .road-name{font-family:'Oswald',sans-serif;font-size:17px;font-weight:600}
+  .road-now{font-family:'Oswald',sans-serif;font-size:15px;color:var(--gold)}
   .road-track{position:relative;height:6px;background:var(--line);border-radius:3px;margin:18px 0 8px}
   .road-prog{position:absolute;left:0;top:0;height:100%;background:var(--gold);border-radius:3px}
   .road-milestones{display:flex;justify-content:space-between;font-size:10px;color:var(--faint);font-family:'Oswald',sans-serif}
@@ -276,26 +281,62 @@
   /* ═══ iPad / LANDSCAPE / WIDE SCREENS ═══ */
   @media (min-width:768px){
     body{max-width:1100px;padding:0 32px calc(40px) calc(96px + 32px)}
+    /* sidebar nav on the left */
     .nav{flex-direction:column;top:0;bottom:0;left:0;transform:none;width:88px;max-width:88px;height:100vh;
       border-top:none;border-right:0.5px solid var(--line2);justify-content:center;gap:8px;padding:0 0 0 0}
     .nav-item{flex:0 0 auto;padding:14px 0;gap:5px}
     .nav-item svg{width:25px;height:25px}
     .nav-label{font-size:11px}
+    /* two-column exercise grid on Today */
     #content{display:grid;grid-template-columns:1fr 1fr;gap:11px;align-items:start}
     #content .sec-label{grid-column:1 / -1}
     #content .guide-hero{grid-column:1 / -1}
     .day-title{font-size:68px}
+    /* history / stats / body as 2-col where useful */
     #histList,#prList{columns:2;column-gap:11px}
     .hist-item{break-inside:avoid;margin-bottom:11px}
     .stat-grid{grid-template-columns:repeat(4,1fr)}
     .bc-metrics{grid-template-columns:repeat(6,1fr)}
+    /* timer sits bottom-center, clear of sidebar */
     .timer{left:calc(50% + 44px);bottom:24px;max-width:460px}
+    /* modal centered, not bottom sheet */
     .modal-bg{align-items:center}
     .modal{max-width:520px;border-radius:20px;max-height:84vh}
   }
   @media (min-width:768px) and (max-width:1000px){
     #content{grid-template-columns:1fr}
     #histList,#prList{columns:1}
+  }
+  /* ประวัติ 3 ครั้งล่าสุด */
+  .past-records {
+    background: rgba(200, 162, 60, 0.03);
+    border: 0.5px solid var(--line);
+    border-radius: 8px;
+    padding: 8px 10px;
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .past-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+  }
+  .past-date {
+    color: var(--faint);
+    font-family: 'Oswald', sans-serif;
+    letter-spacing: 0.05em;
+  }
+  .past-val {
+    color: var(--cream);
+    font-family: 'Oswald', sans-serif;
+    font-weight: 500;
+  }
+  .past-val b {
+    color: var(--gold);
+    font-weight: 600;
   }
 </style>
 </head>
@@ -309,18 +350,6 @@
     <h1 class="day-title" id="dayTitle">—</h1>
     <div class="day-sub" id="daySub">—</div>
   </header>
-  
-  <div class="session-selector-box">
-    <select id="sessionManualSelect" class="session-select" onchange="forceSwitchSession(this.value)">
-      <option value="">-- สลับตารางซ้อมวันนี้ (กรณีฉุกเฉิน) --</option>
-      <option value="A">Day A — PUSH DAY (อก/ไหล่/ไหล่หน้า/Tricep)</option>
-      <option value="B">Day B — PULL DAY (หลัง/Squat/Bicep)</option>
-      <option value="C">Day C — LB + CORE (ขา/อกบน/หลังแขน/ท้อง)</option>
-      <option value="cardio">Cardio Day — (Pickleball/Recovery)</option>
-      <option value="rest">Full Rest — (วันพักฟื้นกล้ามเนื้อ)</option>
-    </select>
-  </div>
-
   <div class="daypick" id="daypick"></div>
   <div id="progressBlock">
     <div class="progress-head"><span class="progress-lbl">Sets completed</span>
@@ -372,6 +401,29 @@
   <div id="bcList"></div>
 </div>
 
+<div class="page" id="page-plate">
+  <h1 class="page-title">Plate Calc</h1>
+  <div class="page-sub">คำนวณแผ่นน้ำหนัก 5 step ถัดไป</div>
+
+  <div class="seg">
+    <button class="seg-btn on" id="seg-plate-bb" onclick="platesModeSet('barbell')">Barbell</button>
+    <button class="seg-btn" id="seg-plate-db" onclick="platesModeSet('dumbbell')">Dumbbell</button>
+  </div>
+
+  <div class="seg" id="pc-oneside-wrap">
+    <button class="seg-btn on" id="seg-plate-both" onclick="platesSideSet(false)">ทั้งสองข้าง</button>
+    <button class="seg-btn" id="seg-plate-one" onclick="platesSideSet(true)">ด้านเดียว</button>
+  </div>
+
+  <div class="field">
+    <div class="field-lbl">น้ำหนักที่ต้องการ (kg)</div>
+    <input type="number" inputmode="decimal" step="0.5" id="pc-target" placeholder="เช่น 50" oninput="calcPlateSteps()">
+  </div>
+  <div class="pc-hint" id="pc-hint">หักน้ำหนัก Barbell 6.5 kg · คำนวณเพิ่มทีละ 1 kg จำนวน 5 step</div>
+
+  <div id="pc-results"><div class="pc-empty">กรอกน้ำหนักที่ต้องการด้านบน<br>เพื่อดูแผ่นที่ต้องใส่ 5 step ถัดไป</div></div>
+</div>
+
 <div class="page" id="page-more">
   <h1 class="page-title">More</h1>
   <div class="page-sub">Export · backup · ข้อมูล</div>
@@ -398,6 +450,7 @@
   <button class="nav-item" id="nav-history" onclick="switchPage('history')"><svg viewBox="0 0 24 24"><path d="M12 8v4l3 2M3 12a9 9 0 109-9 9 9 0 00-9 9zM3 12H1m2 0l2-2"></path></svg><span class="nav-label">History</span></button>
   <button class="nav-item" id="nav-stats" onclick="switchPage('stats')"><svg viewBox="0 0 24 24"><path d="M3 3v18h18M7 14l4-4 3 3 5-6"></path></svg><span class="nav-label">Stats</span></button>
   <button class="nav-item" id="nav-body" onclick="switchPage('body')"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="3"></circle><path d="M12 8v8M8 12h8M9 21l3-5 3 5"></path></svg><span class="nav-label">Body</span></button>
+  <button class="nav-item" id="nav-plate" onclick="switchPage('plate')"><svg viewBox="0 0 24 24"><rect x="2" y="8" width="3" height="8"></rect><rect x="19" y="8" width="3" height="8"></rect><rect x="6" y="5" width="3" height="14"></rect><rect x="15" y="5" width="3" height="14"></rect><line x1="9" y1="12" x2="15" y2="12"></line></svg><span class="nav-label">Plate</span></button>
   <button class="nav-item" id="nav-more" onclick="switchPage('more')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg><span class="nav-label">More</span></button>
 </div>
 
@@ -426,38 +479,38 @@ const ONE_SIDE_EX=['Landmine Press','T-Bar Row'];
 
 const WORKOUTS={
   A:{title:'PUSH DAY',tone:'gold',sub:'อก · Deadlift · ไหล่ · Tricep',ex:[
-    {n:'BB Bench Press',cue:'ลด bar 4 วิ แตะอก press เร็ว',wt:'28.5',sets:4,reps:6,plate:'แต่ละข้าง: 10 + 1',how:['นอนหงาย มือกว้างกว่าไหล่นิดๆ','ลด bar ลงช้า 4 วิ จนแตะอก','press ขึ้นเร็ว ข้อศอกเอนเข้า ~75°'],tip:'arch หลังเล็กน้อย ปกป้องไหล่'},
-    {n:'Deadlift',cue:'hip hinge ก่อน bar ชิดขา',wt:'47.5',sets:4,reps:6,plate:'แต่ละข้าง: 10+5+2.5+2.5+0.5',how:['bar เหนือกลางเท้า จับ pronated','หลังตรง core เกร็ง ยืนขึ้นช้า','bar ชิดขาตลอด'],tip:'สะโพกถอยหลัง ไม่ใช่ย่อเข่า'},
-    {n:'BB Overhead Press',cue:'strict press ไม่ leg drive',wt:'19.5',sets:3,reps:8,plate:'แต่ละข้าง: 5 + 1 + 0.5',how:['ยืนตรง จับ bar กว้างกว่าไหล่','press ขึ้นตรง bar เลยศีรษะ','lockout ข้อศอกด้านบน'],tip:'หน้าท้องเกร็ง อย่าให้หลังแอ่น'},
-    {n:'DB Lateral Raise',cue:'ยกช้า ไม่ swing',wt:'5',sets:3,reps:12,plate:'DB ข้างละ 5',how:['ยืนตรง DB ข้างลำตัว','ยกออกข้างถึงระดับไหล่','ลงช้า 3 วิ'],tip:'ถ้า swing = ลดน้ำหนัก'},
-    {n:'Skull Crusher',cue:'ข้อศอกชี้ขึ้น ไม่บาน',wt:'14.5',sets:3,reps:12,plate:'แต่ละข้าง: 2.5 + 1 + 0.5',how:['นอน bench จับ bar neutral grip','ลด bar ลงหน้าผาก ช้า 3 วิ','press กลับด้วย tricep'],tip:'neutral grip ปกป้องข้อมือ'},
-    {n:'DB Overhead Tricep Ext',cue:'long head — ยืดเต็มที่',wt:'8',sets:3,reps:12,plate:'DB ชิ้นเดียว สองมือ',how:['จับ DB ชิ้นเดียวสองมือ ยกเหนือหัว','งอข้อศอกลงหลัง ช้า 3 วิ','extend กลับ'],tip:'ข้อศอกอยู่กับที่'},
-    {n:'Dead Bug',cue:'core — กดหลังแนบพื้น',wt:'BW',sets:3,reps:10,plate:'',how:['นอนหงาย แขนชี้ขึ้น เข่า 90°','กดหลังแนบพื้นตลอด','ยืดแขนซ้าย+ขาขวาพร้อมกัน'],tip:'หลังลอย = ทำช้าลง'},
-    {n:'Plank',cue:'ลำตัวตรง เกร็ง glute',wt:'BW',sets:3,reps:45,plate:'',how:['ข้อศอกแนบพื้น ลำตัวตรง','เกร็ง core + glute ตลอด'],tip:'สะโพกหย่อน = พักก่อน'},
+    {n:'BB Bench Press',cue:'ลด bar 4 วิ แตะอก press เร็ว',wt:'28.5',sets:4,reps:6,plate:'แต่ละข้าง: 10 + 1',how:['นอนหงาย มือกว้างกว่าไหล่นิดๆ','ลด bar ลงช้า 4 วิ จนแตะอก','press ขึ้นเร็ว ข้อศอกเอนเข้า ~75°'],tip:'arch หลังเล็กน้อย ปกป้องไหล่',alt:{n:'Cable Chest Press',cue:'ยืนหันหลังให้รอก ดันไปข้างหน้า',wt:'15',how:['ปรับรอกกลางระดับอก แยกขาหน้า-หลัง','ดันมือทั้งสองไปข้างหน้าจนแขนเหยียด','ดึงกลับช้าๆ คุมแรงต้าน'],tip:'core เกร็งกันตัวเอียง แรงต้านคงที่กว่าบาร์เบล'}},
+    {n:'Deadlift',cue:'hip hinge ก่อน bar ชิดขา',wt:'47.5',sets:4,reps:6,plate:'แต่ละข้าง: 10+5+2.5+2.5+0.5',how:['bar เหนือกลางเท้า จับ pronated','หลังตรง core เกร็ง ยืนขึ้นช้า','bar ชิดขาตลอด'],tip:'สะโพกถอยหลัง ไม่ใช่ย่อเข่า',alt:{n:'Cable Pull-Through',cue:'hinge สะโพก ดึงเชือกผ่านขา',wt:'15',how:['หันหลังให้เครื่อง เชือกอยู่ระหว่างขา','ก้มสะโพกลง มือดึงเชือกไปด้านหลัง','ยืนขึ้น squeeze glute'],tip:'ทางเลือกวันหลังล่างล้า ไม่รับน้ำหนักกระดูกสันหลังเท่า deadlift'}},
+    {n:'BB Overhead Press',cue:'strict press ไม่ leg drive',wt:'19.5',sets:3,reps:8,plate:'แต่ละข้าง: 5 + 1 + 0.5',how:['ยืนตรง จับ bar กว้างกว่าไหล่','press ขึ้นตรง bar เลยศีรษะ','lockout ข้อศอกด้านบน'],tip:'หน้าท้องเกร็ง อย่าให้หลังแอ่น',alt:{n:'Cable Overhead Press',cue:'สองรอกต่ำ ดันขึ้นเหนือหัว',wt:'8',how:['ปรับรอกสองข้างระดับไหล่','ดันขึ้นเหนือหัวจนแขนเหยียด','ลงช้าควบคุม'],tip:'core เกร็ง อย่าแอ่นหลัง'}},
+    {n:'DB Lateral Raise',cue:'ยกช้า ไม่ swing',wt:'5',sets:3,reps:12,plate:'DB ข้างละ 5',how:['ยืนตรง DB ข้างลำตัว','ยกออกข้างถึงระดับไหล่','ลงช้า 3 วิ'],tip:'ถ้า swing = ลดน้ำหนัก',alt:{n:'Cable Lateral Raise',cue:'สายเดียว มีแรงต้านตั้งแต่ต้น',wt:'4',how:['ยืนข้างเครื่อง รอกต่ำ มือจับข้ามลำตัว','ยกออกข้างถึงระดับไหล่','ลงช้า คุมแรงต้าน'],tip:'ต่างจาก DB ตรงมีแรงต้านตั้งแต่จุดเริ่ม'}},
+    {n:'Skull Crusher',cue:'ข้อศอกชี้ขึ้น ไม่บาน',wt:'14.5',sets:3,reps:12,plate:'แต่ละข้าง: 2.5 + 1 + 0.5',how:['นอน bench จับ bar neutral grip','ลด bar ลงหน้าผาก ช้า 3 วิ','press กลับด้วย tricep'],tip:'neutral grip ปกป้องข้อมือ',alt:{n:'Cable OH Tricep Ext (Rope)',cue:'long head — ยืนหันหลังให้รอก',wt:'10',how:['จับเชือก ยืนหันหลังให้เครื่อง','ยกข้อศอกเหนือหัว extend ไปข้างหน้า','งอกลับช้าๆ ข้อศอกนิ่ง'],tip:'ปลอดภัยกับข้อศอกกว่า skull crusher'}},
+    {n:'DB Overhead Tricep Ext',cue:'long head — ยืดเต็มที่',wt:'8',sets:3,reps:12,plate:'DB ชิ้นเดียว สองมือ',how:['จับ DB ชิ้นเดียวสองมือ ยกเหนือหัว','งอข้อศอกลงหลัง ช้า 3 วิ','extend กลับ'],tip:'ข้อศอกอยู่กับที่',alt:{n:'Cable Rope Pushdown',cue:'ข้อศอกล็อกข้างลำตัว',wt:'12',how:['จับเชือก ยืนหน้าเครื่อง รอกสูง','กดลงจนแขนเหยียด แยกปลายเชือก','ดึงกลับช้าๆ'],tip:'ท่าคลาสสิกที่สุดสำหรับไทรเซปส์'}},
+    {n:'Dead Bug',cue:'core — กดหลังแนบพื้น',wt:'BW',sets:3,reps:10,plate:'',how:['นอนหงาย แขนชี้ขึ้น เข่า 90°','กดหลังแนบพื้นตลอด','ยืดแขนซ้าย+ขาขวาพร้อมกัน'],tip:'หลังลอย = ทำช้าลง',alt:{n:'Cable Pallof Press',cue:'core ต้านแรงบิด',wt:'5',how:['ยืนข้างเครื่อง รอกกลาง','ดันมือออกจากอกตรงหน้า','ต้านไม่ให้ตัวหมุน'],tip:'ฝึกความมั่นคงแกนกลางแบบ anti-rotation'}},
+    {n:'Plank',cue:'ลำตัวตรง เกร็ง glute',wt:'BW',sets:3,reps:45,plate:'',how:['ข้อศอกแนบพื้น ลำตัวตรง','เกร็ง core + glute ตลอด'],tip:'สะโพกหย่อน = พักก่อน',alt:{n:'Cable Pallof Hold',cue:'core — ค้างต้านแรงบิด',wt:'5',how:['ยืนข้างเครื่อง มือดันออกตรงหน้า','เกร็ง core ต้านไม่ให้ตัวหมุน','ค้างตามเวลาที่กำหนด'],tip:'ทางเลือกแทน plank ถ้าอยากได้แรงต้านเพิ่ม'}},
   ],bonus:[
     {n:'Tricep Dips',cue:'lateral head — bonus',wt:'BW',sets:2,reps:0,plate:'ใช้เก้าอี้/bench',how:['มือวางขอบ bench หลังตรง','ลดตัวจนข้อศอก 90°','ดันขึ้น'],tip:'ดีสุดสำหรับ lateral head'},
   ]},
   B:{title:'PULL DAY',tone:'cream',sub:'Squat · Row · Landmine · Rear Delt',ex:[
-    {n:'Back Squat',cue:'ลงต่ำกว่า parallel',wt:'41.5',sets:4,reps:6,plate:'แต่ละข้าง: 10 + 5 + 2.5',how:['bar พาด trap ไม่ใช่คอ','เท้ากว้างสะโพก ปลายเท้าเปิด 30°','ลงช้า 4 วิ depth ต่ำกว่า parallel'],tip:'มองตรง อย่าก้มหน้า'},
-    {n:'Bent Over Row',cue:'squeeze สะบักด้านบน',wt:'31.5',sets:4,reps:6,plate:'แต่ละข้าง: 10 + 2.5',how:['เอียงตัว 45° หลังตรง','ดึงเข้าหน้าท้องส่วนล่าง','squeeze สะบักด้านบนสุด'],tip:'ถ้า swing = หนักเกิน'},
-    {n:'Landmine Press',cue:'ใส่แผ่นด้านเดียว',wt:'28.5',sets:3,reps:8,plate:'ด้านเดียว: 10 + 10 + 2',how:['ยืนข้างๆ ปลาย bar','จับปลาย bar มือเดียว','press ขึ้น diagonal สลับข้าง'],tip:'ช่วย rotator cuff'},
-    {n:'DB Reverse Fly',cue:'rear delt — บีบสะบัก',wt:'4',sets:3,reps:12,plate:'DB ข้างละ 4-5',how:['เอนตัวหน้า 45° DB ห้อยลง','ยกออกข้าง บีบสะบัก','ข้อศอกงอเล็กน้อย'],tip:'rear delt ชอบ volume'},
-    {n:'Drag Curl',cue:'bar ชิดลำตัว',wt:'13.5',sets:3,reps:10,plate:'แต่ละข้าง: 2.5 + 1',how:['จับ bar supinated','ดึงขึ้นชิดลำตัว ข้อศอกถอยหลัง','เป้า long head'],tip:'bar ชิดเนื้อตลอด'},
-    {n:'BB Hip Thrust',cue:'squeeze glute ด้านบน',wt:'28.5',sets:3,reps:8,plate:'แต่ละข้าง: 10 + 1',how:['หลังพิง bench bar พาด hip','เท้ากว้างสะโพก เข่า 90°','ยก hip จนตัวตรง'],tip:'มี foam รองที่ hip'},
-    {n:'Bench Leg Raise',cue:'core — หลังแนบม้านั่ง',wt:'BW',sets:3,reps:15,plate:'',how:['นอน bench จับขอบด้านหัว','ยกขาตรง 90° ช้าๆ','หลังแนบม้านั่ง'],tip:'หลังลอย = งอเข่า'},
-    {n:'Dead Bug',cue:'core',wt:'BW',sets:3,reps:10,plate:'',how:['นอนหงาย กดหลังแนบพื้น','ยืดแขน+ขาตรงข้าม','สลับข้าง'],tip:'ช้าดีกว่าเร็ว'},
+    {n:'Back Squat',cue:'ลงต่ำกว่า parallel',wt:'41.5',sets:4,reps:6,plate:'แต่ละข้าง: 10 + 5 + 2.5',how:['bar พาด trap ไม่ใช่คอ','เท้ากว้างสะโพก ปลายเท้าเปิด 30°','ลงช้า 4 วิ depth ต่ำกว่า parallel'],tip:'มองตรง อย่าก้มหน้า',alt:{n:'Cable Squat',cue:'ใช้เสริม/deload ไม่แทน squat หนัก',wt:'15',how:['หันหน้าเข้าเครื่อง ถือด้ามคู่รอกต่ำ','squat ลงคุมจังหวะ','ยืนขึ้นเกร็ง quad'],tip:'รับน้ำหนักได้จำกัด ไม่เหมาะแทนวันที่เน้น PR'}},
+    {n:'Bent Over Row',cue:'squeeze สะบักด้านบน',wt:'31.5',sets:4,reps:6,plate:'แต่ละข้าง: 10 + 2.5',how:['เอียงตัว 45° หลังตรง','ดึงเข้าหน้าท้องส่วนล่าง','squeeze สะบักด้านบนสุด'],tip:'ถ้า swing = หนักเกิน',alt:{n:'Seated Cable Row',cue:'ดึงศอกชิดลำตัว บีบสะบัก',wt:'25',how:['นั่งเท้าดันแป้น จับด้าม','ดึงเข้าหาลำตัว ศอกชิดข้างลำตัว','ยืดแขนกลับช้าๆ หลังตรง'],tip:'ปลดโหลดหลังล่างเทียบกับ bent over row'}},
+    {n:'Landmine Press',cue:'ใส่แผ่นด้านเดียว',wt:'28.5',sets:3,reps:8,plate:'ด้านเดียว: 10 + 10 + 2',how:['ยืนข้างๆ ปลาย bar','จับปลาย bar มือเดียว','press ขึ้น diagonal สลับข้าง'],tip:'ช่วย rotator cuff',alt:{n:'Single-Arm Cable Press',cue:'ยืนหันหลังให้รอก ดันมือเดียว',wt:'10',how:['ยืนหันหลังให้รอกระดับไหล่','ดันมือเดียวไปข้างหน้า สลับข้าง','คุม core ไม่ให้ตัวบิด'],tip:'ได้ core stability เพิ่มจาก landmine'}},
+    {n:'DB Reverse Fly',cue:'rear delt — บีบสะบัก',wt:'4',sets:3,reps:12,plate:'DB ข้างละ 4-5',how:['เอนตัวหน้า 45° DB ห้อยลง','ยกออกข้าง บีบสะบัก','ข้อศอกงอเล็กน้อย'],tip:'rear delt ชอบ volume',alt:{n:'Cable Face Pull',cue:'rear delt — ดึงเข้าหาหน้าผาก',wt:'8',how:['ปรับรอกระดับหน้า จับเชือก','ดึงเข้าหาหน้าผาก ข้อศอกสูง','บีบสะบักท้ายจังหวะ'],tip:'ได้ทั้ง rear delt และท่าทาง'}},
+    {n:'Drag Curl',cue:'bar ชิดลำตัว',wt:'13.5',sets:3,reps:10,plate:'แต่ละข้าง: 2.5 + 1',how:['จับ bar supinated','ดึงขึ้นชิดลำตัว ข้อศอกถอยหลัง','เป้า long head'],tip:'bar ชิดเนื้อตลอด',alt:{n:'Cable Drag Curl',cue:'bar ชิดลำตัวตลอด',wt:'10',how:['ยืนหน้ารอกต่ำ จับบาร์ตรง','ดึงขึ้นชิดลำตัว ศอกถอยหลัง','ลงช้าคุมแรงต้าน'],tip:'แรงต้านคงที่กว่า barbell'}},
+    {n:'BB Hip Thrust',cue:'squeeze glute ด้านบน',wt:'28.5',sets:3,reps:8,plate:'แต่ละข้าง: 10 + 1',how:['หลังพิง bench bar พาด hip','เท้ากว้างสะโพก เข่า 90°','ยก hip จนตัวตรง'],tip:'มี foam รองที่ hip',alt:{n:'Cable Pull-Through',cue:'squeeze glute ปลายท่า',wt:'15',how:['หันหลังให้เครื่อง เชือกระหว่างขา','ก้มสะโพกลง ดึงเชือกยืนขึ้น','squeeze glute บนสุด'],tip:'ทางเลือกไม่ต้องตั้ง bench+แผ่น'}},
+    {n:'Bench Leg Raise',cue:'core — หลังแนบม้านั่ง',wt:'BW',sets:3,reps:15,plate:'',how:['นอน bench จับขอบด้านหัว','ยกขาตรง 90° ช้าๆ','หลังแนบม้านั่ง'],tip:'หลังลอย = งอเข่า',alt:{n:'Cable Reverse Crunch',cue:'core — ดึงเข่าเข้าหาอก',wt:'5',how:['นอนหงายใต้รอกต่ำ ติดสายที่ข้อเท้า','ดึงเข่าเข้าหาอก ม้วนสะโพก','คลายช้าๆ'],tip:'core ล้วน ไม่พึ่ง hip flexor'}},
+    {n:'Dead Bug',cue:'core',wt:'BW',sets:3,reps:10,plate:'',how:['นอนหงาย กดหลังแนบพื้น','ยืดแขน+ขาตรงข้าม','สลับข้าง'],tip:'ช้าดีกว่าเร็ว',alt:{n:'Cable Pallof Press',cue:'core ต้านแรงบิด',wt:'5',how:['ยืนข้างเครื่อง รอกกลาง','ดันมือออกจากอกตรงหน้า','ต้านไม่ให้ตัวหมุน'],tip:'ฝึกความมั่นคงแกนกลางแบบ anti-rotation'}},
   ],bonus:[
     {n:'Face Pull',cue:'shoulder health — bonus',wt:'เบา',sets:3,reps:15,plate:'ใช้ band',how:['ดึง band เข้าหาหน้า','ข้อศอกสูงระดับไหล่','บีบสะบักด้านหลัง'],tip:'เสริมสุขภาพไหล่'},
   ]},
   C:{title:'LB + CORE',tone:'rust',sub:'RDL · Incline · T-Bar · Quad · Tricep',ex:[
-    {n:'Romanian Deadlift',cue:'ลงจนตึง hamstring',wt:'40.5',sets:4,reps:8,plate:'แต่ละข้าง: 10 + 5 + 2',how:['ยืนตรง hinge สะโพกถอยหลัง','ลด bar ชิดขา จนตึง hamstring','ขึ้นโดย squeeze glute'],tip:'ไม่ต้องลงถึงพื้น'},
-    {n:'Incline DB Press',cue:'bench 30-45°',wt:'14',sets:4,reps:8,plate:'DB ข้างละ 14',how:['bench 30-45° DB ระดับอก','press ขึ้น ควบคุม','ลงช้าจนยืด pec'],tip:'DB ดีกว่า BB เรื่องไหล่'},
-    {n:'T-Bar Row',cue:'ใส่แผ่นด้านเดียว',wt:'31.5',sets:4,reps:8,plate:'ด้านเดียว: 10 + 10 + 5',how:['เอียงตัว 45° จับ handle','ดึงเข้าอก ข้อศอกชิดลำตัว','squeeze สะบัก'],tip:'ระวังข้อมือ'},
-    {n:'Goblet Squat',cue:'quad — ถือ DB แนวตั้ง',wt:'18',sets:3,reps:12,plate:'DB ชิ้นเดียว แนวตั้ง',how:['ถือ DB แนวตั้งระดับอก','squat ลงลึก','ขึ้นเร็ว เน้น quad'],tip:'เพิ่ม quad frequency'},
-    {n:'BB Reverse Curl',cue:'brachialis — grip คว่ำ',wt:'11.5',sets:3,reps:12,plate:'แต่ละข้าง: 2.5',how:['จับ bar pronated','ม้วนขึ้นช้า ข้อศอกแนบลำตัว','เป้า brachialis'],tip:'เน้น form มากกว่าน้ำหนัก'},
-    {n:'DB Tricep Kickback',cue:'extend จนตรง',wt:'6',sets:3,reps:12,plate:'DB ข้างละ 6',how:['เอนตัวหน้า ต้นแขนชิดลำตัว','extend แขนไปหลังจนตรง','squeeze tricep'],tip:'ต้นแขนนิ่ง'},
-    {n:'Ab Wheel Rollout',cue:'core — roll ช้าๆ',wt:'BW',sets:3,reps:10,plate:'',how:['คุกเข่า roll ออกช้าๆ','หยุดก่อนหน้าท้องแตะพื้น','ดึงกลับด้วย core'],tip:'roll ครึ่งทางก่อนได้'},
-    {n:'Side Plank',cue:'core — ตัวเป็นเส้นตรง',wt:'BW',sets:3,reps:40,plate:'',how:['นอนตะแคง ข้อศอกแนบพื้น','ยก hip ตัวเป็นเส้นตรง','สลับข้าง'],tip:'anti-lateral flexion'},
+    {n:'Romanian Deadlift',cue:'ลงจนตึง hamstring',wt:'40.5',sets:4,reps:8,plate:'แต่ละข้าง: 10 + 5 + 2',how:['ยืนตรง hinge สะโพกถอยหลัง','ลด bar ชิดขา จนตึง hamstring','ขึ้นโดย squeeze glute'],tip:'ไม่ต้องลงถึงพื้น',alt:{n:'Cable RDL',cue:'ยืนหันหน้าเครื่อง รอกต่ำ',wt:'20',how:['ยืนหน้าเครื่อง มือจับด้ามรอกต่ำ','hinge สะโพกถอยหลัง ลงจนตึง hamstring','ยืนขึ้น squeeze glute'],tip:'แรงต้านต่อเนื่องตลอดช่วงการเคลื่อนไหว'}},
+    {n:'Incline DB Press',cue:'bench 30-45°',wt:'14',sets:4,reps:8,plate:'DB ข้างละ 14',how:['bench 30-45° DB ระดับอก','press ขึ้น ควบคุม','ลงช้าจนยืด pec'],tip:'DB ดีกว่า BB เรื่องไหล่',alt:{n:'Cable Incline Press',cue:'ปรับม้านั่งใต้รอกคู่',wt:'10',how:['ตั้งม้านั่ง 30-45° ใต้รอกสองข้าง','ดันมือขึ้นบน-หน้า','ลงช้าจนยืด pec'],tip:'แรงต้านตลอดช่วงต่างจาก DB'}},
+    {n:'T-Bar Row',cue:'ใส่แผ่นด้านเดียว',wt:'31.5',sets:4,reps:8,plate:'ด้านเดียว: 10 + 10 + 5',how:['เอียงตัว 45° จับ handle','ดึงเข้าอก ข้อศอกชิดลำตัว','squeeze สะบัก'],tip:'ระวังข้อมือ',alt:{n:'Seated Cable Row (Wide Grip)',cue:'จับกว้าง ดึงเข้าอก',wt:'25',how:['นั่งจับด้ามกว้าง เท้าดันแป้น','ดึงเข้าอก ศอกกางออก','ยืดแขนกลับช้าๆ'],tip:'ข้อมือเป็นกลางกว่า T-bar เหมาะวันข้อมือไม่พร้อม'}},
+    {n:'Goblet Squat',cue:'quad — ถือ DB แนวตั้ง',wt:'18',sets:3,reps:12,plate:'DB ชิ้นเดียว แนวตั้ง',how:['ถือ DB แนวตั้งระดับอก','squat ลงลึก','ขึ้นเร็ว เน้น quad'],tip:'เพิ่ม quad frequency',alt:{n:'Cable Squat',cue:'quad — รอกต่ำ ถือด้ามเดียว',wt:'12',how:['หันหน้าเข้าเครื่อง ถือด้ามรอกต่ำแนบอก','squat ลงลึก','ขึ้นเร็วเน้น quad'],tip:'แรงต้านช่วยพยุง balance'}},
+    {n:'BB Reverse Curl',cue:'brachialis — grip คว่ำ',wt:'11.5',sets:3,reps:12,plate:'แต่ละข้าง: 2.5',how:['จับ bar pronated','ม้วนขึ้นช้า ข้อศอกแนบลำตัว','เป้า brachialis'],tip:'เน้น form มากกว่าน้ำหนัก',alt:{n:'Cable Reverse Curl',cue:'brachialis — ข้อมือเป็นกลาง',wt:'8',how:['จับบาร์ตรง grip คว่ำที่รอกต่ำ','ม้วนขึ้นช้า ศอกแนบลำตัว','ลงคุมแรงต้าน'],tip:'ข้อมือสบายกว่า barbell'}},
+    {n:'DB Tricep Kickback',cue:'extend จนตรง',wt:'6',sets:3,reps:12,plate:'DB ข้างละ 6',how:['เอนตัวหน้า ต้นแขนชิดลำตัว','extend แขนไปหลังจนตรง','squeeze tricep'],tip:'ต้นแขนนิ่ง',alt:{n:'Cable Kickback',cue:'แรงต้านตลอดช่วงต่างจาก DB',wt:'5',how:['เอนตัวหน้า ต้นแขนชิดลำตัว รอกต่ำ','extend แขนไปหลังจนตรง','งอกลับช้าคุมแรงต้าน'],tip:'DB kickback แรงต้านหายตอนแขนงอ แต่ cable ไม่หาย'}},
+    {n:'Ab Wheel Rollout',cue:'core — roll ช้าๆ',wt:'BW',sets:3,reps:10,plate:'',how:['คุกเข่า roll ออกช้าๆ','หยุดก่อนหน้าท้องแตะพื้น','ดึงกลับด้วย core'],tip:'roll ครึ่งทางก่อนได้',alt:{n:'Cable Kneeling Crunch',cue:'core — ม้วนตัวลง',wt:'15',how:['คุกเข่าหน้ารอกสูง จับเชือกข้างหู','ม้วนตัวลง เกร็ง core ไม่ใช้แขนดึง','คลายกลับช้าๆ'],tip:'ทางเลือกวันข้อมือไม่พร้อมสำหรับ ab wheel'}},
+    {n:'Side Plank',cue:'core — ตัวเป็นเส้นตรง',wt:'BW',sets:3,reps:40,plate:'',how:['นอนตะแคง ข้อศอกแนบพื้น','ยก hip ตัวเป็นเส้นตรง','สลับข้าง'],tip:'anti-lateral flexion',alt:{n:'Cable Woodchopper Hold',cue:'core ด้านข้าง — ต้านการหมุน',wt:'8',how:['ยืนข้างรอก จับเชือกสองมือ','หมุนลำตัวออกจากเครื่อง','ค้างหรือทำช้าๆ ควบคุม'],tip:'ทางเลือกเสริม anti-rotation'}},
   ],bonus:[
     {n:'Walking Lunge',cue:'quad — bonus',wt:'DB เบา',sets:2,reps:12,plate:'',how:['ก้าวยาว เข่าหลังเกือบแตะพื้น','ดันขึ้นด้วยส้นเท้าหน้า','สลับขา'],tip:'เสริม quad'},
   ]},
@@ -492,29 +545,29 @@ const DOW_LABELS=['SUN','MON','TUE','WED','THU','FRI','SAT'];
 const DOW_MAP=['rest','A','cardio','B','cardio','C','cardio'];
 
 const SEED_HISTORY=[
-  {date:'2026-01-05',day:'A',ex:[['BB Bench Press','7',4,20],['Incline DB Press','7',3,12],['DB Lateral Raise','5',3,12],['BB Overhead Press','4',3,12],['DB Overhead Tricep Ext','5.5',3,15]],note:'Rep 20->15'},
+  {date:'2026-01-05',day:'A',ex:[['DB Bench Press','7',4,20],['Incline DB Press','7',3,12],['DB Lateral Raise','5',3,12],['Seated DB OHP','4',3,12],['DB OH Tricep Ext','5.5',3,15]],note:'Rep 20->15'},
   {date:'2026-01-06',day:'B',ex:[['Lunges','0',4,12],['Goblet Squat','5.5',3,20],['DB Step-Ups','2',3,12]]},
-  {date:'2026-01-08',day:'A',ex:[['Chest-Supported Row','4',4,12],['One-Arm Row','4',4,12],['DB Reverse Fly','2',3,12],['BB Curl','4',3,12]],note:'HIIT 16min (1.5km, 110kcal, 6 rounds, 9/4.5km/h)'},
+  {date:'2026-01-08',day:'A',ex:[['Chest-Supported Row','4',4,12],['One-Arm Row','4',4,12],['DB Reverse Fly','2',3,12],['DB Curls','4',3,12]],note:'HIIT 16min (1.5km, 110kcal, 6 rounds, 9/4.5km/h)'},
   {date:'2026-01-10',day:'C',ex:[['Single-Leg DB RDL','4',3,8],['Single-Leg Hip Thrust','4',3,8],['DB Leg rls','4',3,8],['Calf Raise','4',4,15]]},
-  {date:'2026-01-12',day:'A',ex:[['BB Bench Press','7',4,15],['Incline DB Press','7',3,12],['DB Lateral Raise','4',3,12],['BB Overhead Press','4',3,12],['DB Overhead Tricep Ext','6',3,15]],note:'Treadmill Incline Walk 35min (2.8km, 327kcal, 5km/h, 10%)'},
+  {date:'2026-01-12',day:'A',ex:[['DB Bench Press','7',4,15],['Incline DB Press','7',3,12],['DB Lateral Raise','4',3,12],['Seated DB OHP','4',3,12],['DB OH Tricep Ext','6',3,15]],note:'Treadmill Incline Walk 35min (2.8km, 327kcal, 5km/h, 10%)'},
   {date:'2026-01-13',day:'B',ex:[['Lunges','1',4,12],['Goblet Squat','6',3,15],['DB Step-Ups','2',3,8]],note:'Treadmill Incline Walk 37min (3km, 383kcal, 5km/h, 12%)'},
   {date:'2026-01-14',day:'C',ex:[['Dead Bug','BW',3,10],['Bench Leg Raise','BW',3,10],['Plank','BW',3,30]],note:'LISS Walk 46min (4.14km, 381kcal, 5.5km/h, 2%)'},
-  {date:'2026-01-15',day:'A',ex:[['Chest-Supported Row','5',4,12],['One-Arm Row','5',4,12],['DB Reverse Fly','3',3,8],['BB Curl','5',3,8]],note:'HIIT 16min (1.83km, 176kcal, 6 rounds, 12/6km/h)'},
-  {date:'2026-01-19',day:'A',ex:[['BB Bench Press','8',4,8],['Incline DB Press','8',3,8],['DB Lateral Raise','5',3,8],['BB Overhead Press','4',3,12],['DB Overhead Tricep Ext','6',3,15]],note:'Treadmill Incline Walk 40min (3.2km, 419kcal, 5km/h, 10%)'},
-  {date:'2026-03-02',day:'A',ex:[['BB Bench Press','7',4,12],['Bent Over Row','7',4,12],['Incline DB Press','7',4,12],['Incline DB Row','7',4,12],['DB Fly','4',4,12],['Straight Arm DB Row','4',4,12],['Crunch','BW',3,12],['Dead Bug','BW',3,12]]},
-  {date:'2026-03-04',day:'B',ex:[['Back Squat','5',3,12],['Sumo Squat','5',3,12],['DB Lunge','0',3,12],['DB Stiff Leg Deadlift','5',3,12],['Calf Raise','5',3,12]]},
-  {date:'2026-03-06',day:'C',ex:[['BB Overhead Press','5',3,12],['DB Lateral Raise','2',3,12],['DB Front Raise','2',3,12],['DB Reverse Fly','5',3,12],['Alternate DB Curl','5',3,12],['DB Overhead Tricep Ext','4',3,12]]},
+  {date:'2026-01-15',day:'A',ex:[['Chest-Supported Row','5',4,12],['One-Arm Row','5',4,12],['DB Reverse Fly','3',3,8],['DB Curls','5',3,8]],note:'HIIT 16min (1.83km, 176kcal, 6 rounds, 12/6km/h)'},
+  {date:'2026-01-19',day:'A',ex:[['DB Bench Press','8',4,8],['Incline DB Press','8',3,8],['DB Lateral Raise','5',3,8],['Seated DB OHP','4',3,12],['DB OH Tricep Ext','6',3,15]],note:'Treadmill Incline Walk 40min (3.2km, 419kcal, 5km/h, 10%)'},
+  {date:'2026-03-02',day:'A',ex:[['DB Bench Press','7',4,12],['Bent Over DB Row','7',4,12],['Incline DB Press','7',4,12],['Incline DB Row','7',4,12],['DB Fly','4',4,12],['Straight Arm DB Row','4',4,12],['Crunch','BW',3,12],['Dead Bug','BW',3,12]]},
+  {date:'2026-03-04',day:'B',ex:[['DB Squat','5',3,12],['Sumo Squat','5',3,12],['DB Lunge','0',3,12],['DB Stiff Leg Deadlift','5',3,12],['Calf Raise','5',3,12]]},
+  {date:'2026-03-06',day:'C',ex:[['DB Shoulder Press','5',3,12],['DB Lateral Raise','2',3,12],['DB Front Raise','2',3,12],['DB Reverse Fly','5',3,12],['Alternate DB Curl','5',3,12],['DB OH Tricep Ext','4',3,12]]},
   {date:'2026-03-16',day:'A',ex:[['BB Bench Press','15.5',4,12],['Bent Over Row','15.5',4,12],['Incline BB Bench','15.5',4,12],['Incline DB Row','15.5',4,10],['DB Fly','5',4,8],['Straight Arm DB Row','5',4,8]]},
   {date:'2026-03-20',day:'B',note:'BB OHP [no data] | BB Curl [no data]'},
-  {date:'2026-03-30',day:'A',ex:[['BB Bench Press','19.5',3,8],['Incline BB Bench','17.5',3,12],['BB Overhead Press','12',3,12],['Landmine Press','8.25',3,8],['DB Overhead Tricep Ext','10',3,12],['Skull Crusher','6.5',3,12]]},
+  {date:'2026-03-30',day:'A',ex:[['BB Bench Press','19.5',3,8],['Incline BB Bench','17.5',3,12],['BB Overhead Press','12',3,12],['Landmine Press','8.25',3,8],['DB OH Tricep Ext','10',3,12],['Skull Crusher','6.5',3,12]]},
   {date:'2026-04-01',day:'B',ex:[['Deadlift','25.5',3,8],['Bent Over Row','15.5',3,8],['T-Bar Row','10.5',3,8],['BB Curl','14',3,8],['Drag Curl','12',3,8]]},
-  {date:'2026-04-13',day:'A',ex:[['BB Bench Press','20',3,8],['Incline BB Bench','20',3,8],['BB Overhead Press','14.5',3,8],['Landmine Press','10',3,8],['DB Overhead Tricep Ext','12',3,8],['Skull Crusher','8.5',3,12]]},
+  {date:'2026-04-13',day:'A',ex:[['BB Bench Press','20',3,8],['Incline BB Bench','20',3,8],['BB Overhead Press','14.5',3,8],['Landmine Press','10',3,8],['DB OH Tricep Ext','12',3,8],['Skull Crusher','8.5',3,12]]},
   {date:'2026-04-14',day:'cardio',cardio:'Outdoor walk 1.34km, 25:41, 74kcal active, avg HR 100, max HR 108\nIndoor run 3.00km, 38:25, 220kcal active, avg HR 137, max HR 147'},
   {date:'2026-04-15',day:'B',ex:[['Deadlift','35.5',3,8],['Bent Over Row','16.5',3,8],['T-Bar Row','15.5',3,8],['BB Curl','14.5',3,8],['Drag Curl','12',3,8]]},
   {date:'2026-04-15',day:'cardio',cardio:'Indoor run 2.52km, 34:17, 196kcal active, avg HR 139, max HR 148, pace 13:36/km'},
   {date:'2026-04-17',day:'C',ex:[['Back Squat','19.5',3,8],['Front Squat','19.5',3,8],['Romanian Deadlift','25',3,8]]},
   {date:'2026-04-18',day:'cardio',cardio:'Pickleball 48:23, 452kcal active, avg HR 150, max HR 173, aerobic stress 3.2'},
-  {date:'2026-04-19',day:'A',ex:[['BB Bench Press','20.5',3,8],['Incline BB Bench','20.5',3,8],['BB Overhead Press','15.5',3,8],['Landmine Press','10',3,8],['DB Overhead Tricep Ext','12.5',3,8],['Skull Crusher','9.5',3,12]]},
+  {date:'2026-04-19',day:'A',ex:[['BB Bench Press','20.5',3,8],['Incline BB Bench','20.5',3,8],['BB Overhead Press','15.5',3,8],['Landmine Press','10',3,8],['DB OH Tricep Ext','12.5',3,8],['Skull Crusher','9.5',3,12]]},
   {date:'2026-04-20',day:'B',ex:[['Deadlift','35.5',4,8],['Bent Over Row','18.5',3,8],['T-Bar Row','17',4,8],['BB Curl','14.5',3,8],['Drag Curl','12',3,8]]},
   {date:'2026-04-21',day:'cardio',cardio:'Pickleball 1:01:29, 600kcal active, avg HR 154, max HR 184, aerobic stress 3.7'},
   {date:'2026-04-22',day:'C',ex:[['Back Squat','24.5',6,8],['Front Squat','24.5',3,8],['Romanian Deadlift','28.5',3,8]]},
@@ -565,7 +618,7 @@ const SEED_BODY=[
 ];
 
 // =========================================================
-// 1. ข้อมูลเชื่อมต่อ Firebase Configuration ของคุณ
+// 1. นำข้อมูล Firebase Configuration ของคุณมาวางแทนที่ตรงนี้
 // =========================================================
 const firebaseConfig = {
   apiKey: "AIzaSyB-wjKlyhB5cnBfCsGY0FdMToWBJDOLNNU",
@@ -577,17 +630,25 @@ const firebaseConfig = {
   measurementId: "G-B6CCF6ZET4"
 };
 
+// =========================================================
+// เริ่มต้นใช้งาน Firebase
+// =========================================================
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const DOC_REF = db.collection("workout_app").doc("user_state");
 
-function saveState(){try{localStorage.setItem(STORE_KEY,JSON.stringify(state));}catch(e){}}
+let state=null;
+let cur=null,curPage='today',curStatsTab='pr';
+let restTimer=null,restLeft=90,restTotal=90;
+let progChart=null,volChart=null,bcChart=null;
+
 function todayStr(){return new Date().toISOString().slice(0,10);}
 function thaiDate(d){const dt=d?new Date(d):new Date();const m=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];return `${DOW_LABELS[dt.getDay()]} ${dt.getDate()} ${m[dt.getMonth()]}`;}
 
-// ฟังก์ชันบันทึกข้อมูลแบบ String ไร้ข้อจำกัดเรื่อง Nested Array บน Firestore Cloud
+// ฟังก์ชันเซฟข้อมูลขึ้น Cloud และสำรองลงเครื่อง
 async function saveState(){
   try{ 
+    // 💡 แก้ไข: แปลง state ทั้งก้อนเป็นข้อความ (JSON String) เพื่อเลี่ยงกฎ Nested Array ของ Firebase
     await DOC_REF.set({ payload: JSON.stringify(state) }); 
     await localforage.setItem(STORE_KEY, state); 
   }catch(e){ 
@@ -597,12 +658,13 @@ async function saveState(){
   }
 }
 
-// ฟังก์ชันดึงข้อมูลแบบ Real-time Listener
+// ฟังก์ชันดึงข้อมูลและเฝ้าดูการเปลี่ยนแปลงจาก Cloud แบบ Real-time
 function initApp() {
   DOC_REF.onSnapshot(async (doc) => {
     const isExists = typeof doc.exists === 'function' ? doc.exists() : doc.exists;
     if (isExists) {
       const cloudData = doc.data();
+      // 💡 แก้ไข: แปลงข้อความกลับมาเป็นก้อนข้อมูล (Object) เพื่อใช้งานในแอป
       if (cloudData.payload) {
         state = JSON.parse(cloudData.payload);
       } else {
@@ -610,7 +672,7 @@ function initApp() {
       }
     } else {
       const local = await localforage.getItem(STORE_KEY);
-      state = local || {checks:{},dateStamp:todayStr(),history:SEED_HISTORY.slice(),custom:{},body:SEED_BODY.slice(),notes:{}};
+      state = local || {checks:{},dateStamp:todayStr(),history:SEED_HISTORY.slice(),custom:{},body:SEED_BODY.slice(),notes:{},altEx:{}};
       await saveState(); 
     }
 
@@ -618,6 +680,7 @@ function initApp() {
     if(!state.custom)state.custom={};
     if(!state.body)state.body=SEED_BODY.slice();
     if(!state.notes)state.notes={};
+    if(!state.altEx)state.altEx={};
     
     if(state.dateStamp!==todayStr()){
       state.checks={};
@@ -626,9 +689,7 @@ function initApp() {
     }
 
     buildDaypick();
-    // คืนค่าโปรแกรมซ้อมให้เป็นไปตามวันในสัปดาห์ในรอบแรก
-    if (!cur) cur = DAY_BY_DOW[new Date().getDay()];
-    pick(cur);
+    pick(cur || DAY_BY_DOW[new Date().getDay()]);
     
     if(curPage==='history') renderHistory();
     if(curPage==='stats') statsTab(curStatsTab);
@@ -638,10 +699,10 @@ function initApp() {
     console.error("Firebase listen failed, using offline local storage:", error);
     showToast('🔴 Offline Mode');
     const local = await localforage.getItem(STORE_KEY);
-    state = local || {checks:{},dateStamp:todayStr(),history:SEED_HISTORY.slice(),custom:{},body:SEED_BODY.slice(),notes:{}};
+    state = local || {checks:{},dateStamp:todayStr(),history:SEED_HISTORY.slice(),custom:{},body:SEED_BODY.slice(),notes:{},altEx:{}};
+    if(!state.altEx)state.altEx={};
     buildDaypick();
-    if (!cur) cur = DAY_BY_DOW[new Date().getDay()];
-    pick(cur);
+    pick(DAY_BY_DOW[new Date().getDay()]);
   });
 }
 
@@ -649,20 +710,24 @@ function fmt(n){return parseFloat(n.toFixed(2));}
 
 function getWorkout(key){
   const base=JSON.parse(JSON.stringify(WORKOUTS[key]));
-  if(!base) return null;
+  const allEx=[...base.ex,...base.bonus];
+  allEx.forEach((e,idx)=>{
+    e.origN=e.n;e.origCue=e.cue;e.origHow=e.how;e.origTip=e.tip;e.origWt=e.wt;
+    const altKey=key+'_'+idx;
+    if(e.alt&&state.altEx&&state.altEx[altKey]){
+      const a=e.alt;
+      e.n=a.n;e.cue=a.cue;e.how=a.how;e.tip=a.tip;e.wt=a.wt;e.plate='';e.isCable=true;
+      if(a.sets)e.sets=a.sets;
+      if(a.reps)e.reps=a.reps;
+    }
+  });
   if(state.custom[key]){
-    [...base.ex,...base.bonus].forEach(e=>{
+    allEx.forEach(e=>{
       const c=state.custom[key][e.n];
       if(c){if(c.wt!==undefined)e.wt=c.wt;if(c.sets!==undefined)e.sets=c.sets;if(c.reps!==undefined)e.reps=c.reps;}
     });
   }
   return base;
-}
-// ตัวช่วยคำนวณเซตสำหรับแสดงแถบ Progress
-function getTotalWorkoutSets(key) {
-  const data = getWorkout(key);
-  if(!data) return 0;
-  return [...data.ex, ...data.bonus].reduce((acc, curr) => acc + curr.sets, 0);
 }
 function rxOf(e){return `${e.sets} × ${e.reps}`;}
 
@@ -689,39 +754,79 @@ function suggestWeight(e){
   }
   return {wt:last.wt,reason:`คงน้ำหนัก ${last.wt}kg ให้ครบก่อน`};
 }
+// แปลงวันที่ให้สั้นลงสำหรับแสดงในกล่องเล็ก (เช่น "23 มิ.ย.")
+function shortDate(dStr) {
+  const dt = new Date(dStr);
+  const m = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+  return `${dt.getDate()} ${m[dt.getMonth()]}`;
+}
 
+// ดึงประวัติ 3 ครั้งล่าสุดของท่านั้นๆ
+function getLast3Entries(exName) {
+  const past = [];
+  // กรองเฉพาะประวัติที่มีการยกเวท และเรียงจากล่าสุดไปเก่าสุด
+  const sorted = [...state.history].filter(h => h.ex).sort((a,b) => b.date.localeCompare(a.date));
+  
+  for(const h of sorted) {
+    const e = h.ex.find(x => x[0] === exName);
+    if(e) {
+      past.push({
+        date: h.date,
+        wt: e[1],
+        sets: e[2],
+        reps: e[3]
+      });
+      if(past.length === 3) break; // เอาแค่ 3 ครั้ง
+    }
+  }
+  return past;
+}
 /* ── PLATE CALC ── */
-function calcPlates(target,oneSide){
-  const per=oneSide?(target-BAR):(target-BAR)/2;
-  if(per<0)return{used:[],achieved:target,exact:true};
+function calcPlates(target,oneSide,isBarbell=true){
+  const bar=isBarbell?BAR:0;
+  const per=oneSide?(target-bar):(target-bar)/2;
+  if(per<0)return{used:[],achieved:target,exact:true,per:0};
   let rem=fmt(per);const used=[];
   for(const p of PLATES){if(rem<=0.001)break;const n=Math.min(p.av,Math.floor(rem/p.w+0.001));if(n>0){used.push({...p,n});rem=fmt(rem-n*p.w);}}
-  const achieved=fmt(BAR+(oneSide?(per-rem):(per-rem)*2));
+  const achieved=fmt(bar+(oneSide?(per-rem):(per-rem)*2));
   return{used,achieved,exact:rem<=0.001,per:fmt(per-rem)};
 }
 
 /* ── DAYPICK ── */
-function buildDaypick(){
-  const dp=document.getElementById('daypick');dp.innerHTML='';
-  for(let i=0;i<7;i++){const key=DOW_MAP[i];const el=document.createElement('button');el.className='dp';el.dataset.dow=i;el.dataset.key=key;el.innerHTML=`${DOW_LABELS[i]}<span class="marker"></span>`;el.onclick=()=>pick(key);dp.appendChild(el);}
-}
-function pick(key){
-  cur=key;
-  const tone=WORKOUTS[key]?.tone||GUIDES[key]?.tone||'gold';
-  document.querySelectorAll('.dp').forEach(el=>{const isCur=el.dataset.key===key;el.className='dp'+(isCur?' on tone-'+tone:'');if(parseInt(el.dataset.dow)===new Date().getDay())el.classList.add('istoday');});
+const PLAN_OPTIONS = [
+  { key: 'A', label: 'Day A' },
+  { key: 'B', label: 'Day B' },
+  { key: 'C', label: 'Day C' },
+  { key: 'cardio', label: 'Cardio' },
+  { key: 'rest', label: 'Rest' }
+];
+
+function buildDaypick() {
+  const dp = document.getElementById('daypick');
+  dp.innerHTML = '';
   
-  // ปรับการไฮไลต์ค่าในกล่องสลับตารางให้ตรงกับแท็บปัจจุบัน
-  const selector = document.getElementById('sessionManualSelect');
-  if(selector) selector.value = key;
-
-  renderToday();
+  PLAN_OPTIONS.forEach(opt => {
+    const el = document.createElement('button');
+    // ใช้คลาสเดิมเพื่อให้สไตล์ยังคงความสวยงาม
+    el.className = 'dp'; 
+    el.dataset.key = opt.key;
+    el.innerHTML = opt.label;
+    el.onclick = () => pick(opt.key);
+    dp.appendChild(el);
+  });
 }
 
-// ฟังก์ชันสำหรับบังคับสลับตารางออกกำลังกายหน้างาน (Manual Override)
-function forceSwitchSession(value) {
-  if(!value) return;
-  cur = value;
-  pick(cur);
+function pick(key) {
+  cur = key; 
+  const tone = WORKOUTS[key]?.tone || GUIDES[key]?.tone || 'gold';
+  
+  // อัปเดตสถานะปุ่มที่ถูกเลือก
+  document.querySelectorAll('.dp').forEach(el => {
+    const isCur = el.dataset.key === key;
+    el.className = 'dp' + (isCur ? ' on tone-' + tone : '');
+  });
+  
+  renderToday();
 }
 
 function renderWeekStrip(){
@@ -768,7 +873,7 @@ function renderToday(){
   pb.style.display='block';ac.style.display='flex';
   const w=data;const all=[...w.ex,...w.bonus];
   if(!state.checks[cur]||state.checks[cur].length!==all.length)state.checks[cur]=all.map(e=>new Array(e.sets).fill(false));
-  let html=`<div class="sec-label">Main Lifts</div>`;
+  let html=`<div class="sec-label">Main lifts</div>`;
   w.ex.forEach((e,i)=>html+=exCard(e,i,false));
   html+=`<div class="sec-label bonus-label">Bonus</div>`;
   w.bonus.forEach((e,i)=>html+=exCard(e,w.ex.length+i,true));
@@ -785,25 +890,34 @@ function exCard(e,i,isBonus){
   const sug=e.wt!=='BW'?suggestWeight(e):null;
   const showSug=sug&&parseFloat(sug.wt)!==parseFloat(e.wt);
   const isOne=ONE_SIDE_EX.includes(e.n);
-
-  // 🛠️ แก้ไข UI: ดึงข้อมูลประวัติซ้อมและน้ำหนักของครั้งก่อนมาสร้างชิปข้อมูลให้เปรียบเทียบง่ายขึ้น
-  const lastLift = lastEntry(e.n);
-  const lastLiftHtml = lastLift ? `<div class="last-lift-info">ครั้งก่อน: <b>${lastLift.wt === 'BW' ? 'Bodyweight' : lastLift.wt + ' kg'}</b> × ${lastLift.sets}×${lastLift.reps} (${lastLift.date.slice(5)})</div>` : '';
+  
+  // --- ส่วนที่เพิ่มใหม่: สร้าง HTML สำหรับประวัติ 3 ครั้งล่าสุด ---
+  const past3 = getLast3Entries(e.n);
+  let pastHtml = '';
+  if(past3.length > 0) {
+    pastHtml = `<div class="past-records">
+      ${past3.map(p => `<div class="past-row"><span class="past-date">${shortDate(p.date)}</span> <span class="past-val"><b>${p.wt==='BW'?'BW':p.wt+'kg'}</b> × ${p.sets}×${p.reps}</span></div>`).join('')}
+    </div>`;
+  }
+  // --------------------------------------------------------
 
   return `<div class="ex${allDone?' done':''}${isBonus?' bonus':''}" id="ex-${i}">
     <div class="ex-head">
-      <div><div class="ex-name" onclick="toggleHow(${i})">${e.n}${isPR?'<span class="pr-flag">PR</span>':''}</div><div class="ex-cue">${e.cue}</div></div>
+      <div><div class="ex-name" onclick="toggleHow(${i})">${e.n}${isPR?'<span class="pr-flag">PR</span>':''}${e.isCable?'<span class="cable-tag">CABLE</span>':''}</div><div class="ex-cue">${e.cue}</div></div>
       <div class="ex-rx" onclick="editExercise('${cur}','${e.n}')">${rxOf(e)}</div>
     </div>
-    ${lastLiftHtml}
     ${showSug?`<div class="suggest"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"></path></svg>แนะนำ ${sug.wt}kg · ${sug.reason}</div>`:''}
     <div class="ex-meta">
       <span class="wt-chip" onclick="editExercise('${cur}','${e.n}')">${e.wt==='BW'?'Bodyweight':e.wt+' kg'}<span class="edit-ico">✎</span></span>
-      ${e.wt!=='BW'&&!isNaN(parseFloat(e.wt))?`<span class="plate-btn" onclick="showPlates('${e.wt}',${isOne})"><svg viewBox="0 0 24 24"><rect x="2" y="8" width="3" height="8"></rect><rect x="19" y="8" width="3" height="8"></rect><rect x="6" y="5" width="3" height="14"></rect><rect x="15" y="5" width="3" height="14"></rect><line x1="9" y1="12" x2="15" y2="12"></line></svg>แผ่น</span>`:''}
+      ${!e.isCable&&e.wt!=='BW'&&!isNaN(parseFloat(e.wt))?`<span class="plate-btn" onclick="showPlates('${e.wt}',${isOne})"><svg viewBox="0 0 24 24"><rect x="2" y="8" width="3" height="8"></rect><rect x="19" y="8" width="3" height="8"></rect><rect x="6" y="5" width="3" height="14"></rect><rect x="15" y="5" width="3" height="14"></rect><line x1="9" y1="12" x2="15" y2="12"></line></svg>แผ่น</span>`:''}
       ${e.plate?`<span style="font-size:11px;color:var(--muted)">${e.plate}</span>`:''}
     </div>
+    
+    ${pastHtml} <!-- แทรกกล่องประวัติตรงนี้ -->
+    
     <div class="dots">${dots}</div>
     <button class="rest-trigger" onclick="startRest()"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"></circle><path d="M12 9v4l2 2M9 2h6"></path></svg>Rest 90s</button>
+    ${e.alt||e.isCable?`<button class="cable-toggle${e.isCable?' on':''}" onclick="toggleAlt(${i})"><svg viewBox="0 0 24 24"><path d="M17 2l4 4-4 4"></path><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><path d="M7 22l-4-4 4-4"></path><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>${e.isCable?'↩ กลับท่าเดิม: '+e.origN:'🔀 ลอง Cable: '+e.alt.n}</button>`:''}
     <button class="how-toggle" onclick="toggleHow(${i})">▾ วิธีทำ</button>
     <div class="how-body" id="how-${i}"><div class="how-inner"><ol>${e.how.map(h=>`<li>${h}</li>`).join('')}</ol>${e.tip?`<div class="how-tip">${e.tip}</div>`:''}</div></div>
   </div>`;
@@ -818,20 +932,22 @@ function toggleSet(i,j){
   updateProgress();
 }
 function toggleHow(i){document.getElementById('how-'+i).classList.toggle('open');}
+function toggleAlt(i){
+  if(!state.altEx)state.altEx={};
+  const k=cur+'_'+i;
+  state.altEx[k]=!state.altEx[k];
+  // ล้างเซตของท่านี้ใหม่ เผื่อจำนวนเซตของ cable ต่างจากท่าเดิม
+  const w=getWorkout(cur);const all=[...w.ex,...w.bonus];
+  if(state.checks[cur])state.checks[cur][i]=new Array(all[i].sets).fill(false);
+  saveState();renderToday();
+  showToast(state.altEx[k]?'สลับเป็น Cable แล้ว':'กลับท่าเดิมแล้ว');
+}
 function updateProgress(){
-  const data = getWorkout(cur);
-  if(!data){
-    document.getElementById('doneN').textContent = 0;
-    document.getElementById('totalN').textContent = '/ 0';
-    document.getElementById('progressFill').style.width = '0%';
-    document.getElementById('complete').classList.remove('show');
-    return;
-  }
-  let total=0,done=0;
+  const all=[...getWorkout(cur).ex,...getWorkout(cur).bonus];let total=0,done=0;
   state.checks[cur].forEach(arr=>arr.forEach(f=>{total++;if(f)done++;}));
   document.getElementById('doneN').textContent=done;
   document.getElementById('totalN').textContent='/ '+total;
-  document.getElementById('progressFill').style.width=(total > 0 ? (done/total*100) : 0)+'%';
+  document.getElementById('progressFill').style.width=(done/total*100)+'%';
   document.getElementById('complete').classList.toggle('show',done===total&&total>0);
 }
 
@@ -854,6 +970,62 @@ function showPlates(wtStr,oneSide){
     ${used.map(p=>`<div class="plate-list-row"><span style="color:var(--cream)">${p.w} kg</span><span style="color:var(--gold);font-family:'Oswald'">× ${p.n}</span></div>`).join('')||'<div style="color:var(--faint);font-size:13px">Barbell เปล่า</div>'}
     <div class="modal-actions"><button class="btn btn-ghost" style="width:100%;flex:1" onclick="closeModal()">ปิด</button></div>`;
   openModal();
+}
+
+/* ── PLATE CALCULATOR TAB ── */
+let pcMode='barbell',pcOneSide=false;
+function platesModeSet(mode){
+  pcMode=mode;
+  document.getElementById('seg-plate-bb').classList.toggle('on',mode==='barbell');
+  document.getElementById('seg-plate-db').classList.toggle('on',mode==='dumbbell');
+  document.getElementById('pc-oneside-wrap').style.display=mode==='barbell'?'flex':'none';
+  document.getElementById('pc-hint').textContent=mode==='barbell'
+    ?'หักน้ำหนัก Barbell 6.5 kg · คำนวณเพิ่มทีละ 1 kg จำนวน 5 step'
+    :'Dumbbell — ไม่หักน้ำหนักบาร์ · คำนวณเพิ่มทีละ 1 kg จำนวน 5 step';
+  calcPlateSteps();
+}
+function platesSideSet(one){
+  pcOneSide=one;
+  document.getElementById('seg-plate-both').classList.toggle('on',!one);
+  document.getElementById('seg-plate-one').classList.toggle('on',one);
+  calcPlateSteps();
+}
+function calcPlateSteps(){
+  const box=document.getElementById('pc-results');
+  const raw=document.getElementById('pc-target').value;
+  const val=parseFloat(raw);
+  if(raw===''||isNaN(val)||val<=0){
+    box.innerHTML='<div class="pc-empty">กรอกน้ำหนักที่ต้องการด้านบน<br>เพื่อดูแผ่นที่ต้องใส่ 5 step ถัดไป</div>';
+    return;
+  }
+  const isBar=pcMode==='barbell';
+  const sideLbl=n=>isBar?(pcOneSide?`แผ่นด้านเดียว (${n} kg)`:`แต่ละข้าง (${n} kg)`):(pcOneSide?`รวม (${n} kg)`:`แต่ละข้าง (${n} kg)`);
+  let html='';
+  for(let i=0;i<5;i++){
+    const target=fmt(val+i);
+    const {used,achieved,exact,per}=calcPlates(target,pcOneSide,isBar);
+    let vis='';
+    if(used.length){
+      const mk=(p)=>Array(p.n).fill('').map(()=>`<span class="pv-plate" style="background:${p.c};width:${p.w>=5?'22px':'17px'};height:${20+p.w*1.6}px">${p.w}</span>`).join('');
+      if(pcOneSide){
+        vis=`<div class="plate-vis">${isBar?'<span class="pv-collar"></span><span class="pv-bar"></span><span class="pv-collar"></span>':''}${used.map(mk).join('')}</div>`;
+      }else{
+        const left=[...used].reverse().map(mk).join('');const right=used.map(mk).join('');
+        vis=`<div class="plate-vis">${left}${isBar?'<span class="pv-collar"></span><span class="pv-bar"></span><span class="pv-collar"></span>':''}${right}</div>`;
+      }
+    }
+    html+=`<div class="ex" style="cursor:default">
+      <div class="ex-head">
+        <div class="ex-name" style="font-size:16px"><span class="pc-step-badge">Step ${i+1}</span><br>${target} kg</div>
+        <div class="ex-rx">${achieved} kg</div>
+      </div>
+      ${!exact?`<div class="pc-warn">⚠ ${target} kg ไม่พอดี — ใช้น้ำหนักที่พอดีที่สุดคือ ${achieved} kg</div>`:''}
+      ${vis}
+      <div style="font-size:12px;color:var(--muted);margin:10px 0 6px">${sideLbl(per)}</div>
+      ${used.map(p=>`<div class="plate-list-row"><span style="color:var(--cream)">${p.w} kg</span><span style="color:var(--gold);font-family:'Oswald'">× ${p.n}</span></div>`).join('')||`<div style="color:var(--faint);font-size:13px">${isBar?'Barbell เปล่า':'ไม่ต้องใส่แผ่น'}</div>`}
+    </div>`;
+  }
+  box.innerHTML=html;
 }
 
 /* ── EDIT ── */
@@ -901,29 +1073,15 @@ function saveNote(){
 
 /* ── LOG TODAY + PR DETECT ── */
 function logToday(){
-  const w=getWorkout(cur);
-  const note=state.notes[todayStr()+'_'+cur]||'';
-  const existing=state.history.findIndex(h=>h.date===todayStr()&&h.day===cur);
-  let entry={date:todayStr(),day:cur,note};
-
-  if(!w) {
-    // กรณีตารางซ้อมวันพักฟื้นหรือ Cardio ให้บันทึกตามคู่มือคำแนะนำ
-    if(cur==='cardio') entry.cardio="Pickleball / Active Cardio Session";
-    else if(cur==='rest') entry.note=note || "Rest Day";
-    if(existing>=0)state.history[existing]=entry;else state.history.push(entry);
-    saveState();
-    showToast('บันทึกลง History แล้ว ✓');
-    return;
-  }
-
-  const all=[...w.ex,...w.bonus];const exData=[];
+  const w=getWorkout(cur);const all=[...w.ex,...w.bonus];const exData=[];
   all.forEach((e,i)=>{const doneSets=(state.checks[cur][i]||[]).filter(x=>x).length;if(doneSets>0)exData.push([e.n,e.wt,doneSets,e.reps]);});
   if(exData.length===0){showToast('ยังไม่ได้บันทึกเซตใดเลย');return;}
   const prevPRs=getPRs();
   const newPRs=[];
   exData.forEach(e=>{const w2=parseFloat(e[1]);if(!isNaN(w2)&&(!prevPRs[e[0]]||w2>prevPRs[e[0]].wt))newPRs.push(`${e[0]} — ${e[1]}kg`);});
-  
-  entry.ex = exData;
+  const note=state.notes[todayStr()+'_'+cur]||'';
+  const existing=state.history.findIndex(h=>h.date===todayStr()&&h.day===cur);
+  const entry={date:todayStr(),day:cur,ex:exData,note};
   if(existing>=0)state.history[existing]=entry;else state.history.push(entry);
   saveState();
   if(newPRs.length>0){
@@ -938,29 +1096,19 @@ function renderHistory(){
   const sorted=[...state.history].sort((a,b)=>b.date.localeCompare(a.date));
   document.getElementById('histSub').textContent=`${sorted.length} sessions ที่บันทึกไว้`;
   if(sorted.length===0){list.innerHTML=`<div class="empty"><svg viewBox="0 0 24 24"><path d="M12 8v4l3 2M3 12a9 9 0 1018 0 9 9 0 00-18 0z"></path></svg><div class="empty-h">ยังไม่มีประวัติ</div><div class="empty-p">บันทึก session แรกจากหน้า Today</div></div>`;return;}
-  
-  // 🛠️ แก้ไข UI: เพิ่มระบบรายละเอียด Accordion Collapse และปุ่มลบ Session สำหรับ Cardio/Rest
   list.innerHTML=sorted.map((h,idx)=>{
     const realIdx=state.history.indexOf(h);let summary='',detail='';
     if(h.cardio){summary=h.cardio;}
     else if(h.ex){summary=h.ex.slice(0,3).map(e=>e[0]).join(' · ')+(h.ex.length>3?` +${h.ex.length-3}`:'');detail=h.ex.map(e=>`<div class="hist-ex-row"><span class="hist-ex-name">${e[0]}</span><span class="hist-ex-val">${e[1]==='BW'?'BW':e[1]+'kg'} × ${e[2]}×${e[3]}</span></div>`).join('');}
-    else {summary=h.note || "Rest day";}
-    
     return `<div class="hist-item" onclick="toggleHist(${idx})">
       <div class="hist-top"><span class="hist-date">${thaiDate(h.date)} · ${h.date.slice(5)}</span><span class="hist-badge badge-${h.day}">${h.day==='cardio'?'Cardio':h.day==='rest'?'Rest':'Day '+h.day}</span></div>
       <div class="hist-summary">${summary}</div>
-      <div class="hist-detail" id="hd-${idx}">
-        <div class="hist-detail-inner">
-          ${detail}
-          ${h.note && h.ex ? `<div class="hist-note">${h.note}</div>`:''}
-          <button class="btn btn-ghost" style="width:100%;margin-top:12px;flex:1;border-color:rgba(226,75,74,0.2);color:var(--red)" onclick="event.stopPropagation();deleteHist(${realIdx})">ลบ session นี้</button>
-        </div>
-      </div>
+      ${detail||h.note?`<div class="hist-detail" id="hd-${idx}"><div class="hist-detail-inner">${detail}${h.note?`<div class="hist-note">${h.note}</div>`:''}<button class="btn btn-ghost" style="width:100%;margin-top:12px;flex:1" onclick="event.stopPropagation();deleteHist(${realIdx})">ลบ session นี้</button></div></div>`:''}
     </div>`;
   }).join('');
 }
 function toggleHist(idx){const el=document.getElementById('hd-'+idx);if(el)el.classList.toggle('open');}
-function deleteHist(realIdx){if(confirm('ต้องการลบประวัติการออกกำลังกายรอบนี้ใช่หรือไม่?')){state.history.splice(realIdx,1);saveState();renderHistory();showToast('ลบประวัติแล้ว');}}
+function deleteHist(realIdx){state.history.splice(realIdx,1);saveState();renderHistory();showToast('ลบแล้ว');}
 
 /* ── ADD BACKDATED ── */
 function openAddLog(){
@@ -1116,7 +1264,7 @@ function importJson(ev){
       const data=JSON.parse(e.target.result);
       if(data.history){
         state=data;
-        await saveState(); 
+        await saveState(); // อัปโหลดไฟล์ JSON ที่ import เข้าไปที่ Cloud ทันที
         showToast('Import สำเร็จ ✓');
         switchPage('history');
       }else showToast('ไฟล์ไม่ถูกต้อง');
@@ -1130,15 +1278,21 @@ function download(name,content,type){
 }
 async function resetAll(){
   if(confirm('ล้างข้อมูลเพื่อโหลดประวัติ 54 sessions ชุดใหม่?')){
+    // บังคับสร้างก้อนข้อมูลเป็นชุดใหม่ล่าสุด (ดึงจาก SEED_HISTORY)
     state = {
       checks: {},
       dateStamp: todayStr(),
       history: SEED_HISTORY.slice(),
       custom: {},
       body: SEED_BODY.slice(),
-      notes: {}
+      notes: {},
+      altEx: {}
     };
+    
+    // สั่งเซฟทับขึ้น Firebase และ Local ไปตรงๆ เลย (แก้ปัญหาแอปดึงของเก่ามาทับ)
     await saveState();
+    
+    // รีเฟรชหน้าจอ
     switchPage('today');
     if(curPage==='history') renderHistory();
     showToast('โหลดข้อมูลชุดใหม่สำเร็จ ✓');
@@ -1186,10 +1340,10 @@ function stopRest(){
   document.getElementById('timer').classList.remove('show','urgent');
 }
 
-// แนะนำ 3000ms เพื่อให้อ่านสถานะแจ้งเตือน Cloud บนหน้าจอพกพาได้ครบถ้วน
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
 function resetDay(){const all=[...getWorkout(cur).ex,...getWorkout(cur).bonus];state.checks[cur]=all.map(e=>new Array(e.sets).fill(false));saveState();renderToday();showToast('ล้างเซตแล้ว');}
 
+// เริ่มต้นแอปพลิเคชันและเชื่อมต่อ Cloud
 initApp();
 
 </script>

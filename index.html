@@ -38,6 +38,10 @@
   .today-lbl{font-family:'Oswald',sans-serif;font-size:13px;font-weight:600;letter-spacing:0.2em;color:var(--faint);text-transform:uppercase;margin-bottom:2px}
   .day-title{font-family:'Oswald',sans-serif;font-size:52px;font-weight:700;line-height:0.94;letter-spacing:0.01em;text-transform:uppercase;margin-bottom:10px}
   .day-sub{font-family:'Oswald',sans-serif;font-size:14px;font-weight:500;letter-spacing:0.13em;color:var(--faint);text-transform:uppercase}
+  .streak{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  .streak-chip{font-family:'Oswald',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.08em;color:var(--gold);background:rgba(200,162,60,0.08);border:0.5px solid rgba(200,162,60,0.25);border-radius:20px;padding:5px 12px}
+  .streak-chip.dim{color:var(--muted);background:transparent;border-color:var(--line2)}
+  .swap-btn{font-size:12px;color:var(--gold);background:none;border:none;padding:8px 14px 0 0;cursor:pointer;font-family:'Inter',sans-serif}
 
   .daypick{display:flex;gap:6px;margin:22px 0 18px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
   .daypick::-webkit-scrollbar{display:none}
@@ -344,6 +348,7 @@
     <div class="today-lbl">Today</div>
     <h1 class="day-title" id="dayTitle">—</h1>
     <div class="day-sub" id="daySub">—</div>
+    <div class="streak" id="streak"></div>
   </header>
   <div class="daypick" id="daypick"></div>
   <div id="progressBlock">
@@ -477,8 +482,8 @@ const WORKOUTS={
     {n:'BB Bench Press',cue:'ลด bar 4 วิ แตะอก press เร็ว · ครบ 4×6 สะอาด → +2.5kg',wt:'30.5',sets:4,reps:6,rest:'2-3 min',rs:150,plate:'แต่ละข้าง: 10 + 2',how:['นอนหงาย มือกว้างกว่าไหล่นิดๆ','ลด bar ลงช้า 4 วิ จนแตะอก','press ขึ้นเร็ว ข้อศอกเอนเข้า ~75°'],tip:'arch หลังเล็กน้อย ปกป้องไหล่'},
     {n:'Deadlift',cue:'hip hinge ก่อน bar ชิดขา · ครบ 4×6 สะอาด → +2.5kg',wt:'50.5',sets:4,reps:6,rest:'2-3 min',rs:150,plate:'แต่ละข้าง: 10 + 5 + 5 + 2',how:['bar เหนือกลางเท้า จับ pronated','หลังตรง core เกร็ง ยืนขึ้นช้า','bar ชิดขาตลอด'],tip:'สะโพกถอยหลัง ไม่ใช่ย่อเข่า'},
     {n:'BB Overhead Press',cue:'strict press ไม่ leg drive · ทุกเซตถึง 8 → +1kg',wt:'17.5',sets:3,reps:8,rng:'6-8',rest:'2-3 min',rs:150,plate:'แต่ละข้าง: 5 + 0.5',how:['ยืนตรง จับ bar กว้างกว่าไหล่','press ขึ้นตรง bar เลยศีรษะ','lockout ข้อศอกด้านบน'],tip:'หน้าท้องเกร็ง อย่าให้หลังแอ่น'},
-    {n:'Lat Pulldown',cue:'vertical pull — ดึงด้วยศอก จับหลวมๆ (wide grip)',wt:'30',sets:3,reps:8,rng:'6-8',rest:'90 s',rs:90,plate:'Cable stack (ปรับตามเครื่องจริง)',how:['นั่งจับ bar กว้างกว่าไหล่เล็กน้อย จับหลวมๆ','ดึง bar ลงมาที่อกบน ดึงด้วยศอกชี้ลงด้านหลัง ไม่ใช้แรงเหวี่ยง','ปล่อยขึ้นช้าควบคุม จนแขนเกือบเหยียดสุด'],tip:'ครั้งแรกที่ใช้เครื่อง: เลือกน้ำหนักที่เหลือแรง 2-3 เรป (30-35kg) · ถ้าข้อมือเจ็บ ใช้ neutral หรือ underhand grip'},
-    {n:'DB Lateral Raise',cue:'ยกช้า ไม่ swing · เบา เน้น form',wt:'5',sets:3,reps:12,rng:'10-12',rest:'60 s',rs:60,plate:'DB ข้างละ 5',how:['ยืนตรง DB ข้างลำตัว','ยกออกข้างถึงระดับไหล่','ลงช้า 3 วิ'],tip:'ถ้า swing = ลดน้ำหนัก · จะใช้ cable ทีละข้างแทนก็ได้'},
+    {n:'Lat Pulldown',alt:'Neutral-Grip Pulldown',cue:'vertical pull — ดึงด้วยศอก จับหลวมๆ (wide grip)',wt:'30',sets:3,reps:8,rng:'6-8',rest:'90 s',rs:90,plate:'Cable stack (ปรับตามเครื่องจริง)',how:['นั่งจับ bar กว้างกว่าไหล่เล็กน้อย จับหลวมๆ','ดึง bar ลงมาที่อกบน ดึงด้วยศอกชี้ลงด้านหลัง ไม่ใช้แรงเหวี่ยง','ปล่อยขึ้นช้าควบคุม จนแขนเกือบเหยียดสุด'],tip:'ครั้งแรกที่ใช้เครื่อง: เลือกน้ำหนักที่เหลือแรง 2-3 เรป (30-35kg) · ถ้าข้อมือเจ็บ ใช้ neutral หรือ underhand grip'},
+    {n:'DB Lateral Raise',alt:'Cable Lateral Raise',cue:'ยกช้า ไม่ swing · เบา เน้น form',wt:'5',sets:3,reps:12,rng:'10-12',rest:'60 s',rs:60,plate:'DB ข้างละ 5',how:['ยืนตรง DB ข้างลำตัว','ยกออกข้างถึงระดับไหล่','ลงช้า 3 วิ'],tip:'ถ้า swing = ลดน้ำหนัก · จะใช้ cable ทีละข้างแทนก็ได้'},
     {n:'Rope Pushdown',cue:'ข้อศอกแนบลำตัว บีบ tricep ล่างสุด · แทน Skull Crusher',wt:'15',sets:3,reps:10,rng:'8-10',rest:'60-90 s',rs:75,plate:'Cable stack 15-20 (ปรับตามเครื่องจริง)',how:['ยืนหน้า cable จับเชือกคู่ ข้อศอกแนบลำตัว','ดันลงจนแขนเหยียดตรง กางปลายเชือกออกเล็กน้อยด้านล่าง','ปล่อยขึ้นช้าควบคุม ข้อศอกอยู่กับที่'],tip:'ถ้าข้อศอกกางออกจากลำตัว = หนักเกิน · เบากว่า Skull Crusher ต่อข้อมือและข้อศอก'},
     {n:'DB Overhead Tricep Ext',cue:'long head — ยืดเต็มที่ · น้ำหนักเดิมจากครั้งก่อน',wt:'10',sets:2,reps:10,rng:'8-10',rest:'60-90 s',rs:75,plate:'DB ชิ้นเดียว สองมือ',how:['จับ DB ชิ้นเดียวสองมือ ยกเหนือหัว','งอข้อศอกลงหลัง ช้า 3 วิ','extend กลับ'],tip:'ข้อศอกอยู่กับที่'},
     {n:'Dead Bug',cue:'core — กดหลังแนบพื้น · 10 ครั้ง/ข้าง',wt:'BW',sets:2,reps:10,rest:'60 s',rs:60,plate:'',how:['นอนหงาย แขนชี้ขึ้น เข่า 90°','กดหลังแนบพื้นตลอด','ยืดแขนซ้าย+ขาขวาพร้อมกัน'],tip:'หลังลอย = ทำช้าลง'},
@@ -496,15 +501,25 @@ const WORKOUTS={
   C:{title:'POSTERIOR + ARMS',tone:'rust',sub:'RDL · Incline · Pulldown · Split Squat · แขน',ex:[
     {n:'Romanian Deadlift',cue:'ลงจนตึง hamstring · เริ่มราว 80% ของ Deadlift',wt:'40.5',sets:3,reps:8,rng:'6-8',rest:'2-3 min',rs:150,plate:'แต่ละข้าง: 10 + 5 + 2',how:['ยืนตรง hinge สะโพกถอยหลัง','ลด bar ชิดขา จนตึง hamstring','ขึ้นโดย squeeze glute'],tip:'ไม่ต้องลงถึงพื้น'},
     {n:'Incline DB Press',cue:'bench 30-45° · เหลือแรง 2 เรปเสมอ',wt:'14',sets:3,reps:8,rng:'6-8',rest:'2 min',rs:120,plate:'DB ข้างละ 14',how:['bench 30-45° DB ระดับอก','press ขึ้น ควบคุม','ลงช้าจนยืด pec'],tip:'DB ดีกว่า BB เรื่องไหล่'},
-    {n:'T-Bar Row',cue:'squeeze สะบักด้านบน · ข้อมือเจ็บ → สลับเป็น Seated Cable Row',wt:'28.5',sets:3,reps:8,rng:'6-8',rest:'2 min',rs:120,plate:'ด้านเดียว: 10 + 5 + 5 + 2',how:['ยืนคร่อม bar เอียงตัว ~45° หลังตรง','ดึงปลาย bar เข้าหาท้องส่วนล่าง ศอกชิดลำตัว','squeeze สะบักค้าง 1 วิ ลงช้าๆ'],tip:'ถ้าข้อมือขวาเจ็บ ให้ทำ Seated Cable Row จับ neutral grip แทน (น้ำหนักราว 30)'},
+    {n:'T-Bar Row',alt:'Seated Cable Row',cue:'squeeze สะบักด้านบน · ข้อมือเจ็บ → สลับเป็น Seated Cable Row',wt:'28.5',sets:3,reps:8,rng:'6-8',rest:'2 min',rs:120,plate:'ด้านเดียว: 10 + 5 + 5 + 2',how:['ยืนคร่อม bar เอียงตัว ~45° หลังตรง','ดึงปลาย bar เข้าหาท้องส่วนล่าง ศอกชิดลำตัว','squeeze สะบักค้าง 1 วิ ลงช้าๆ'],tip:'ถ้าข้อมือขวาเจ็บ ให้ทำ Seated Cable Row จับ neutral grip แทน (น้ำหนักราว 30)'},
     {n:'Neutral-Grip Pulldown',cue:'vertical pull — จับแคบ ฝ่ามือเข้าหากัน',wt:'30',sets:3,reps:8,rng:'6-8',rest:'90 s',rs:90,plate:'Cable stack (ปรับตามเครื่องจริง)',how:['นั่งจับ handle แบบ neutral (ฝ่ามือหันเข้าหากัน)','ดึงลงมาที่อกบน ศอกชี้ลงชิดลำตัว','ปล่อยขึ้นช้าควบคุม'],tip:'จับ neutral เบาต่อข้อมือกว่า wide grip'},
     {n:'Bulgarian Split Squat',cue:'unilateral — เข่าหน้าไม่บิดเข้าใน · 8 ครั้ง/ข้าง · แทน Goblet Squat',wt:'9',sets:2,reps:8,rest:'2 min',rs:120,plate:'DB ข้างละ 9 (ถือสองมือ ข้างลำตัว)',how:['วางหลังเท้าบนม้านั่ง (ใช้หลังเท้า ไม่ใช่ปลายเท้า)','ลงจนต้นขาหลังเกือบขนานพื้น เข่าหน้างอ ~90°','ดันพื้นขึ้นด้วยเท้าหน้า ทำครบเซตก่อนสลับข้าง'],tip:'สัปดาห์แรกทำ 2 เซตตามแผน ตั้งแต่สัปดาห์ที่ 2 กดที่ ✎ เพิ่มเป็น 3 เซต · สะโพกต้องขนานพื้นตลอด ห้ามบิด'},
-    {n:'Face Pull',cue:'rear delt — ดึงเข้าหน้า ศอกสูงกว่ามือ',wt:'10',sets:3,reps:12,rng:'10-12',rest:'60 s',rs:60,plate:'Cable stack (เบา ปรับตามเครื่องจริง)',how:['ตั้ง pulley ระดับหน้า ใช้เชือก','ดึงเชือกเข้าหาใบหน้า ศอกสูงกว่ามือ แยกปลายเชือกออก','squeeze สะบักค้าง 1 วิ ปล่อยช้า'],tip:'ไม่มีเชือก → ใช้ DB Reverse Fly แทน'},
-    {n:'Rope Hammer Curl',cue:'brachialis — ฝ่ามือเข้าหากัน · แทน BB Reverse Curl',wt:'12',sets:2,reps:10,rng:'8-10',rest:'60-90 s',rs:75,plate:'Cable stack 12-15 (ปรับตามเครื่องจริง)',how:['ตั้ง pulley ต่ำ จับเชือกฝ่ามือเข้าหากัน','ศอกแนบลำตัว ม้วนขึ้นช้าๆ ไม่แกว่ง','ลงช้า 3 วิ'],tip:'ถ้าใช้ DB hammer curl หรือ cable curl แทนก็ได้ · ข้อมือตรงตลอด'},
+    {n:'Face Pull',alt:'DB Reverse Fly',cue:'rear delt — ดึงเข้าหน้า ศอกสูงกว่ามือ',wt:'10',sets:3,reps:12,rng:'10-12',rest:'60 s',rs:60,plate:'Cable stack (เบา ปรับตามเครื่องจริง)',how:['ตั้ง pulley ระดับหน้า ใช้เชือก','ดึงเชือกเข้าหาใบหน้า ศอกสูงกว่ามือ แยกปลายเชือกออก','squeeze สะบักค้าง 1 วิ ปล่อยช้า'],tip:'ไม่มีเชือก → ใช้ DB Reverse Fly แทน'},
+    {n:'Rope Hammer Curl',alt:'Cable Curl',cue:'brachialis — ฝ่ามือเข้าหากัน · แทน BB Reverse Curl',wt:'12',sets:2,reps:10,rng:'8-10',rest:'60-90 s',rs:75,plate:'Cable stack 12-15 (ปรับตามเครื่องจริง)',how:['ตั้ง pulley ต่ำ จับเชือกฝ่ามือเข้าหากัน','ศอกแนบลำตัว ม้วนขึ้นช้าๆ ไม่แกว่ง','ลงช้า 3 วิ'],tip:'ถ้าใช้ DB hammer curl หรือ cable curl แทนก็ได้ · ข้อมือตรงตลอด'},
     {n:'OH Cable Tricep Ext',cue:'long head — ยืดเต็มที่ · แทน Kickback',wt:'10',sets:2,reps:10,rng:'8-10',rest:'60-90 s',rs:75,plate:'Cable stack 10-15 (ปรับตามเครื่องจริง)',how:['ตั้ง pulley สูง หันหลังให้เครื่อง จับเชือกสองมือเหนือหัว','ก้าวเท้าหนึ่งก้าว ต้นแขนชิดหู','เหยียดแขนไปข้างหน้าจนตรง แล้วปล่อยกลับช้าๆ'],tip:'ต้นแขนนิ่ง ข้อศอกไม่กางออก'},
-    {n:'Cable Crunch',cue:'core — ม้วนลำตัว ไม่ใช่ก้มด้วยสะโพก · แทน Ab Wheel',wt:'15',sets:3,reps:12,rng:'10-12',rest:'60 s',rs:60,plate:'Cable stack 15-20 (ปรับตามเครื่องจริง)',how:['คุกเข่าหน้าเครื่อง pulley สูง จับเชือกข้างหน้าผาก','ม้วนลำตัวลงจนศอกใกล้เข่า หลังโค้ง','ปล่อยกลับช้าๆ'],tip:'ไม่มีเชือก → ทำ Side Plank ค้าง 30 วิ/ข้าง แทน'},
+    {n:'Cable Crunch',alt:'Side Plank',cue:'core — ม้วนลำตัว ไม่ใช่ก้มด้วยสะโพก · แทน Ab Wheel',wt:'15',sets:3,reps:12,rng:'10-12',rest:'60 s',rs:60,plate:'Cable stack 15-20 (ปรับตามเครื่องจริง)',how:['คุกเข่าหน้าเครื่อง pulley สูง จับเชือกข้างหน้าผาก','ม้วนลำตัวลงจนศอกใกล้เข่า หลังโค้ง','ปล่อยกลับช้าๆ'],tip:'ไม่มีเชือก → ทำ Side Plank ค้าง 30 วิ/ข้าง แทน'},
     {n:'Calf Raise',cue:'ยกส้นเท้าสูงสุด ค้าง 1 วิ · ถือ DB สองมือ',wt:'10',sets:2,reps:12,rng:'10-12',rest:'60 s',rs:60,plate:'DB สองมือ รวมประมาณ 10 (ข้างละ 5)',how:['ยืนตรง ปลายเท้าวางขอบขั้นบันไดหรือพื้นเรียบ ถือ DB สองมือ','ยกส้นเท้าขึ้นสูงสุด ค้าง 1 วิที่จุดบนสุด','ลดลงช้าๆ ให้ส้นเท้าต่ำกว่าจุดเริ่ม'],tip:'ตัดท่านี้ก่อนถ้าเวลาไม่พอ'},
   ],bonus:[]},
+};
+
+/* ทางเลือกสำหรับสลับท่า (ข้อมือเจ็บ / ไม่มีอุปกรณ์) — กดปุ่มสลับที่การ์ดท่านั้น รีเซ็ตทุกวัน */
+const ALT_DEFS={
+  'Neutral-Grip Pulldown':{cue:'vertical pull — จับแคบ ฝ่ามือเข้าหากัน (แทน wide grip)',wt:'30',reps:8,rng:'6-8',rest:'90 s',rs:90,plate:'Cable stack (ปรับตามเครื่องจริง)',how:['นั่งจับ handle แบบ neutral (ฝ่ามือหันเข้าหากัน)','ดึงลงมาที่อกบน ศอกชี้ลงชิดลำตัว','ปล่อยขึ้นช้าควบคุม'],tip:'จับ neutral เบาต่อข้อมือกว่า wide grip'},
+  'Cable Lateral Raise':{cue:'ทีละข้าง ยกช้า ไม่ swing (แทน DB)',wt:'3',reps:12,rng:'10-12',rest:'60 s',rs:60,plate:'Cable stack เบา ทีละข้าง (ปรับตามเครื่องจริง)',how:['ตั้ง pulley ต่ำ ยืนข้างเครื่อง จับ handle ด้วยมือที่ไกลเครื่อง','ยกออกข้างถึงระดับไหล่ ศอกงอเล็กน้อย','ลงช้า 3 วิ ทำครบเซตแล้วสลับข้าง'],tip:'cable ให้แรงต้านสม่ำเสมอตลอดช่วงการเคลื่อนไหว'},
+  'Seated Cable Row':{cue:'neutral grip — บีบสะบัก (แทน T-Bar Row)',wt:'30',reps:8,rng:'6-8',rest:'2 min',rs:120,plate:'Cable stack (ปรับตามเครื่องจริง)',how:['นั่งหลังตรง เท้ายันแท่น เข่างอเล็กน้อย จับ handle แบบ neutral','ดึงเข้าหาท้อง ศอกชิดลำตัว','บีบสะบักค้าง 1 วิ ปล่อยช้า'],tip:'ไม่ต้องถือ bar หนัก เบาต่อข้อมือขวา'},
+  'DB Reverse Fly':{cue:'rear delt — บีบสะบัก (แทน Face Pull)',wt:'4',reps:12,rng:'10-12',rest:'60 s',rs:60,plate:'DB ข้างละ 4-5',how:['เอนตัวหน้า 45° DB ห้อยลง','ยกออกข้าง บีบสะบัก','ข้อศอกงอเล็กน้อย'],tip:'ไม่มีเชือกสำหรับ Face Pull ใช้ท่านี้แทน'},
+  'Cable Curl':{cue:'ข้อมือเป็นกลาง ศอกแนบลำตัว (แทน Rope Hammer Curl)',wt:'12',reps:10,rng:'8-10',rest:'60-90 s',rs:75,plate:'Cable stack 12-15 (ปรับตามเครื่องจริง)',how:['ตั้ง pulley ต่ำ ยืนตรง จับ bar สั้นหรือ handle','ศอกแนบลำตัว ม้วนขึ้นช้า ข้อมือตรง ไม่งอ','ลงช้า 3 วิ'],tip:'ข้อมือตรงตลอด = ถนอมข้อมือขวา'},
+  'Side Plank':{cue:'core — ตัวเป็นเส้นตรง · ค้าง 30 วิ/ข้าง (แทน Cable Crunch)',wt:'BW',reps:30,rng:'',rest:'60 s',rs:60,plate:'',how:['นอนตะแคง ข้อศอกแนบพื้น','ยก hip ตัวเป็นเส้นตรง ค้าง 30 วิ','สลับข้าง'],tip:'anti-lateral flexion · ช่อง Rep คือจำนวนวินาที'},
 };
 
 const GUIDES={
@@ -671,9 +686,11 @@ function initApp() {
     if(!state.custom)state.custom={};
     if(!state.body)state.body=SEED_BODY.slice();
     if(!state.notes)state.notes={};
+    if(!state.swaps)state.swaps={};
     
     if(state.dateStamp!==todayStr()){
       state.checks={};
+      state.swaps={};
       state.dateStamp=todayStr();
       await saveState();
     }
@@ -699,6 +716,8 @@ function fmt(n){return parseFloat(n.toFixed(2));}
 
 function getWorkout(key){
   const base=JSON.parse(JSON.stringify(WORKOUTS[key]));
+  const sw=(state.swaps&&state.swaps[key])||{};
+  base.ex=base.ex.map(e=>{const a=sw[e.n];return(a&&ALT_DEFS[a])?{...e,...ALT_DEFS[a],n:a,alt:null,from:e.n,sets:e.sets}:e;});
   if(state.custom[key]){
     [...base.ex,...base.bonus].forEach(e=>{
       const c=state.custom[key][e.n];
@@ -706,6 +725,55 @@ function getWorkout(key){
     });
   }
   return base;
+}
+/* ── STREAK (สัปดาห์ที่ฝึกเวทอย่างน้อย 2 ครั้ง) ── */
+function _p2(n){return String(n).padStart(2,'0');}
+function weekKey(dStr){const [y,m,d]=dStr.split('-').map(Number);const dt=new Date(y,m-1,d);dt.setDate(dt.getDate()-((dt.getDay()+6)%7));return `${dt.getFullYear()}-${_p2(dt.getMonth()+1)}-${_p2(dt.getDate())}`;}
+function getStreak(){
+  const counts={};
+  state.history.forEach(h=>{if(h.ex&&h.ex.length){const k=weekKey(h.date);counts[k]=(counts[k]||0)+1;}});
+  const now=new Date();
+  let w=new Date(now.getFullYear(),now.getMonth(),now.getDate());w.setDate(w.getDate()-((w.getDay()+6)%7));
+  const thisKey=`${w.getFullYear()}-${_p2(w.getMonth()+1)}-${_p2(w.getDate())}`;
+  let n=0,first=true;
+  for(let i=0;i<200;i++){
+    const k=`${w.getFullYear()}-${_p2(w.getMonth()+1)}-${_p2(w.getDate())}`;
+    const v=counts[k]||0;
+    if(v>=2)n++;else if(!first)break;
+    first=false;w.setDate(w.getDate()-7);
+  }
+  return{n,thisWeek:counts[thisKey]||0};
+}
+function renderStreak(){
+  const el=document.getElementById('streak');if(!el)return;
+  const s=getStreak();
+  el.innerHTML=(s.n>0?`<span class="streak-chip">🔥 สตรีค ${s.n} สัปดาห์</span>`:`<span class="streak-chip dim">ยังไม่มีสตรีค · ฝึกให้ครบ 2 ครั้งในสัปดาห์นี้</span>`)+`<span class="streak-chip dim">สัปดาห์นี้ ${s.thisWeek}/3 ครั้ง</span>`;
+}
+
+/* ── e1RM (Epley) ── */
+function epley(w,r){return w*(1+r/30);}
+function getE1(){
+  const m={};
+  state.history.filter(h=>h.ex).forEach(h=>h.ex.forEach(e=>{
+    const w=parseFloat(e[1]),r=parseFloat(e[3]);
+    if(isNaN(w)||isNaN(r)||w<=0)return;
+    const v=epley(w,r);if(!m[e[0]]||v>m[e[0]])m[e[0]]=v;
+  }));
+  return m;
+}
+
+/* ── SWAP ท่า ── */
+function swapExercise(orig){
+  if(!state.swaps)state.swaps={};
+  if(!state.swaps[cur])state.swaps[cur]={};
+  const idx=WORKOUTS[cur].ex.findIndex(e=>e.n===orig);
+  if(idx<0)return;
+  if(state.swaps[cur][orig])delete state.swaps[cur][orig];
+  else state.swaps[cur][orig]=WORKOUTS[cur].ex[idx].alt;
+  const w=getWorkout(cur);
+  state.checks[cur][idx]=new Array(w.ex[idx].sets).fill(false);
+  saveState();renderToday();
+  showToast(state.swaps[cur][orig]?`สลับเป็น ${w.ex[idx].n}`:`กลับเป็น ${w.ex[idx].n}`);
 }
 function rxOf(e){return `${e.sets} × ${e.rng||e.reps}`;}
 
@@ -836,6 +904,7 @@ function renderWeekStrip(){
 function renderToday(){
   document.getElementById('datePill').textContent=thaiDate();
   renderWeekStrip();
+  renderStreak();
   const isWorkout=!!WORKOUTS[cur];
   const data=isWorkout?getWorkout(cur):GUIDES[cur];
   const tone=data.tone;
@@ -897,6 +966,7 @@ function exCard(e,i,isBonus){
     
     <div class="dots">${dots}</div>
     <button class="rest-trigger" onclick="startRest(${e.rs||90})"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"></circle><path d="M12 9v4l2 2M9 2h6"></path></svg>Rest ${e.rest||'90s'}</button>
+    ${e.alt?`<button class="swap-btn" onclick="swapExercise('${e.n}')">↔ สลับเป็น ${e.alt}</button>`:''}${e.from?`<button class="swap-btn" onclick="swapExercise('${e.from}')">↩ กลับเป็น ${e.from}</button>`:''}
     <button class="how-toggle" onclick="toggleHow(${i})">▾ วิธีทำ</button>
     <div class="how-body" id="how-${i}"><div class="how-inner"><ol>${e.how.map(h=>`<li>${h}</li>`).join('')}</ol>${e.tip?`<div class="how-tip">${e.tip}</div>`:''}</div></div>
   </div>`;
@@ -1064,8 +1134,10 @@ function logToday(){
   all.forEach((e,i)=>{const doneSets=(state.checks[cur][i]||[]).filter(x=>x).length;if(doneSets>0)exData.push([e.n,e.wt,doneSets,e.reps]);});
   if(exData.length===0){showToast('ยังไม่ได้บันทึกเซตใดเลย');return;}
   const prevPRs=getPRs();
+  const prevE1=getE1();
   const newPRs=[];
   exData.forEach(e=>{const w2=parseFloat(e[1]);if(!isNaN(w2)&&(!prevPRs[e[0]]||w2>prevPRs[e[0]].wt))newPRs.push(`${e[0]} — ${e[1]}kg`);});
+  exData.forEach(e=>{const w2=parseFloat(e[1]),r2=parseFloat(e[3]);if(isNaN(w2)||isNaN(r2)||w2<=0)return;const isWt=!prevPRs[e[0]]||w2>prevPRs[e[0]].wt;const v=epley(w2,r2);if(!isWt&&prevE1[e[0]]&&v>prevE1[e[0]]+0.01)newPRs.push(`${e[0]} — e1RM ≈ ${fmt(v)}kg (${e[1]}kg × ${e[3]})`);});
   const note=state.notes[todayStr()+'_'+cur]||'';
   const existing=state.history.findIndex(h=>h.date===todayStr()&&h.day===cur);
   const entry={date:todayStr(),day:cur,ex:exData,note};
@@ -1143,7 +1215,7 @@ function renderPRStats(){
     <div class="stat-card"><div class="stat-val">${prs['Deadlift']?prs['Deadlift'].wt:'—'}</div><div class="stat-lbl">Deadlift PR (kg)</div></div>
     <div class="stat-card"><div class="stat-val">${prs['Back Squat']?prs['Back Squat'].wt:'—'}</div><div class="stat-lbl">Squat PR (kg)</div></div>`;
   const sorted=Object.entries(prs).sort((a,b)=>b[1].wt-a[1].wt);
-  document.getElementById('prList').innerHTML=sorted.length?sorted.map(([name,d])=>`<div class="pr-row" onclick="showProgression('${name.replace(/'/g,"\\'")}')"><div><div class="pr-name">${name}</div><div class="pr-meta">${thaiDate(d.date)} · ${d.date.slice(5)}</div></div><div class="pr-right"><div class="pr-val">${d.wt} kg</div><span class="pr-chev">›</span></div></div>`).join(''):`<div class="empty"><div class="empty-p">ยังไม่มีข้อมูล PR</div></div>`;
+  document.getElementById('prList').innerHTML=sorted.length?sorted.map(([name,d])=>`<div class="pr-row" onclick="showProgression('${name.replace(/'/g,"\\'")}')"><div><div class="pr-name">${name}</div><div class="pr-meta">${thaiDate(d.date)} · ${d.date.slice(5)}${isNaN(parseFloat(d.reps))?'':' · e1RM ≈ '+fmt(epley(d.wt,parseFloat(d.reps)))+'kg'}</div></div><div class="pr-right"><div class="pr-val">${d.wt} kg</div><span class="pr-chev">›</span></div></div>`).join(''):`<div class="empty"><div class="empty-p">ยังไม่มีข้อมูล PR</div></div>`;
 }
 function showProgression(exName){
   const points=[];

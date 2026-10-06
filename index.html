@@ -473,35 +473,37 @@ const PLATES=[{w:10,av:1,c:'#1E1E2E'},{w:5,av:2,c:'#185FA5'},{w:2.75,av:2,c:'#1D
 const ONE_SIDE_EX=['Landmine Press','T-Bar Row'];
 
 const WORKOUTS={
-  A:{title:'PUSH DAY',tone:'gold',sub:'อก · Deadlift · ไหล่ · Tricep',ex:[
-    {n:'Deadlift',cue:'hip hinge ก่อน bar ชิดขา',wt:'47.5',sets:4,reps:6,plate:'แต่ละข้าง: 10+5+2.5+2.5+0.5',how:['bar เหนือกลางเท้า จับ pronated','หลังตรง core เกร็ง ยืนขึ้นช้า','bar ชิดขาตลอด'],tip:'สะโพกถอยหลัง ไม่ใช่ย่อเข่า'},
-    {n:'BB Bench Press',cue:'ลด bar 4 วิ แตะอก press เร็ว',wt:'28.5',sets:4,reps:6,plate:'แต่ละข้าง: 10 + 1',how:['นอนหงาย มือกว้างกว่าไหล่นิดๆ','ลด bar ลงช้า 4 วิ จนแตะอก','press ขึ้นเร็ว ข้อศอกเอนเข้า ~75°'],tip:'arch หลังเล็กน้อย ปกป้องไหล่'},
-    {n:'BB Overhead Press',cue:'strict press ไม่ leg drive',wt:'19.5',sets:3,reps:8,plate:'แต่ละข้าง: 5 + 1 + 0.5',how:['ยืนตรง จับ bar กว้างกว่าไหล่','press ขึ้นตรง bar เลยศีรษะ','lockout ข้อศอกด้านบน'],tip:'หน้าท้องเกร็ง อย่าให้หลังแอ่น'},
-    {n:'DB Lateral Raise',cue:'ยกช้า ไม่ swing',wt:'5',sets:3,reps:12,plate:'DB ข้างละ 5',how:['ยืนตรง DB ข้างลำตัว','ยกออกข้างถึงระดับไหล่','ลงช้า 3 วิ'],tip:'ถ้า swing = ลดน้ำหนัก'},
-    {n:'Skull Crusher',cue:'ข้อศอกชี้ขึ้น ไม่บาน',wt:'14.5',sets:3,reps:12,plate:'แต่ละข้าง: 2.5 + 1 + 0.5',how:['นอน bench จับ bar neutral grip','ลด bar ลงหน้าผาก ช้า 3 วิ','press กลับด้วย tricep'],tip:'neutral grip ปกป้องข้อมือ'},
-    {n:'DB Overhead Tricep Ext',cue:'long head — ยืดเต็มที่',wt:'8',sets:3,reps:12,plate:'DB ชิ้นเดียว สองมือ',how:['จับ DB ชิ้นเดียวสองมือ ยกเหนือหัว','งอข้อศอกลงหลัง ช้า 3 วิ','extend กลับ'],tip:'ข้อศอกอยู่กับที่'},
-    {n:'Dead Bug',cue:'core — กดหลังแนบพื้น',wt:'BW',sets:3,reps:10,plate:'',how:['นอนหงาย แขนชี้ขึ้น เข่า 90°','กดหลังแนบพื้นตลอด','ยืดแขนซ้าย+ขาขวาพร้อมกัน'],tip:'หลังลอย = ทำช้าลง'},
-    {n:'Plank',cue:'ลำตัวตรง เกร็ง glute',wt:'BW',sets:3,reps:45,plate:'',how:['ข้อศอกแนบพื้น ลำตัวตรง','เกร็ง core + glute ตลอด'],tip:'สะโพกหย่อน = พักก่อน'},
+  A:{title:'PUSH + LATS',tone:'gold',sub:'อก · Deadlift · ไหล่ · Lats · Tricep',ex:[
+    {n:'BB Bench Press',cue:'ลด bar 4 วิ แตะอก press เร็ว · ครบ 4×6 สะอาด → +2.5kg',wt:'30.5',sets:4,reps:6,rest:'2-3 min',rs:150,plate:'แต่ละข้าง: 10 + 2',how:['นอนหงาย มือกว้างกว่าไหล่นิดๆ','ลด bar ลงช้า 4 วิ จนแตะอก','press ขึ้นเร็ว ข้อศอกเอนเข้า ~75°'],tip:'arch หลังเล็กน้อย ปกป้องไหล่'},
+    {n:'Deadlift',cue:'hip hinge ก่อน bar ชิดขา · ครบ 4×6 สะอาด → +2.5kg',wt:'50.5',sets:4,reps:6,rest:'2-3 min',rs:150,plate:'แต่ละข้าง: 10 + 5 + 5 + 2',how:['bar เหนือกลางเท้า จับ pronated','หลังตรง core เกร็ง ยืนขึ้นช้า','bar ชิดขาตลอด'],tip:'สะโพกถอยหลัง ไม่ใช่ย่อเข่า'},
+    {n:'BB Overhead Press',cue:'strict press ไม่ leg drive · ทุกเซตถึง 8 → +1kg',wt:'17.5',sets:3,reps:8,rng:'6-8',rest:'2-3 min',rs:150,plate:'แต่ละข้าง: 5 + 0.5',how:['ยืนตรง จับ bar กว้างกว่าไหล่','press ขึ้นตรง bar เลยศีรษะ','lockout ข้อศอกด้านบน'],tip:'หน้าท้องเกร็ง อย่าให้หลังแอ่น'},
+    {n:'Lat Pulldown',cue:'vertical pull — ดึงด้วยศอก จับหลวมๆ (wide grip)',wt:'30',sets:3,reps:8,rng:'6-8',rest:'90 s',rs:90,plate:'Cable stack (ปรับตามเครื่องจริง)',how:['นั่งจับ bar กว้างกว่าไหล่เล็กน้อย จับหลวมๆ','ดึง bar ลงมาที่อกบน ดึงด้วยศอกชี้ลงด้านหลัง ไม่ใช้แรงเหวี่ยง','ปล่อยขึ้นช้าควบคุม จนแขนเกือบเหยียดสุด'],tip:'ครั้งแรกที่ใช้เครื่อง: เลือกน้ำหนักที่เหลือแรง 2-3 เรป (30-35kg) · ถ้าข้อมือเจ็บ ใช้ neutral หรือ underhand grip'},
+    {n:'DB Lateral Raise',cue:'ยกช้า ไม่ swing · เบา เน้น form',wt:'5',sets:3,reps:12,rng:'10-12',rest:'60 s',rs:60,plate:'DB ข้างละ 5',how:['ยืนตรง DB ข้างลำตัว','ยกออกข้างถึงระดับไหล่','ลงช้า 3 วิ'],tip:'ถ้า swing = ลดน้ำหนัก · จะใช้ cable ทีละข้างแทนก็ได้'},
+    {n:'Rope Pushdown',cue:'ข้อศอกแนบลำตัว บีบ tricep ล่างสุด · แทน Skull Crusher',wt:'15',sets:3,reps:10,rng:'8-10',rest:'60-90 s',rs:75,plate:'Cable stack 15-20 (ปรับตามเครื่องจริง)',how:['ยืนหน้า cable จับเชือกคู่ ข้อศอกแนบลำตัว','ดันลงจนแขนเหยียดตรง กางปลายเชือกออกเล็กน้อยด้านล่าง','ปล่อยขึ้นช้าควบคุม ข้อศอกอยู่กับที่'],tip:'ถ้าข้อศอกกางออกจากลำตัว = หนักเกิน · เบากว่า Skull Crusher ต่อข้อมือและข้อศอก'},
+    {n:'DB Overhead Tricep Ext',cue:'long head — ยืดเต็มที่ · น้ำหนักเดิมจากครั้งก่อน',wt:'10',sets:2,reps:10,rng:'8-10',rest:'60-90 s',rs:75,plate:'DB ชิ้นเดียว สองมือ',how:['จับ DB ชิ้นเดียวสองมือ ยกเหนือหัว','งอข้อศอกลงหลัง ช้า 3 วิ','extend กลับ'],tip:'ข้อศอกอยู่กับที่'},
+    {n:'Dead Bug',cue:'core — กดหลังแนบพื้น · 10 ครั้ง/ข้าง',wt:'BW',sets:2,reps:10,rest:'60 s',rs:60,plate:'',how:['นอนหงาย แขนชี้ขึ้น เข่า 90°','กดหลังแนบพื้นตลอด','ยืดแขนซ้าย+ขาขวาพร้อมกัน'],tip:'หลังลอย = ทำช้าลง'},
   ],bonus:[]},
-  B:{title:'PULL DAY',tone:'cream',sub:'Squat · Row · Landmine · Rear Delt',ex:[
-    {n:'Back Squat',cue:'ลงต่ำกว่า parallel',wt:'41.5',sets:4,reps:6,plate:'แต่ละข้าง: 10 + 5 + 2.5',how:['bar พาด trap ไม่ใช่คอ','เท้ากว้างสะโพก ปลายเท้าเปิด 30°','ลงช้า 4 วิ depth ต่ำกว่า parallel'],tip:'มองตรง อย่าก้มหน้า'},
-    {n:'BB Hip Thrust',cue:'squeeze glute ด้านบน',wt:'28.5',sets:3,reps:8,plate:'แต่ละข้าง: 10 + 1',how:['หลังพิง bench bar พาด hip','เท้ากว้างสะโพก เข่า 90°','ยก hip จนตัวตรง'],tip:'มี foam รองที่ hip'},
-    {n:'Bent Over Row',cue:'squeeze สะบักด้านบน',wt:'31.5',sets:4,reps:6,plate:'แต่ละข้าง: 10 + 2.5',how:['เอียงตัว 45° หลังตรง','ดึงเข้าหน้าท้องส่วนล่าง','squeeze สะบักด้านบนสุด'],tip:'ถ้า swing = หนักเกิน'},
-    {n:'Landmine Press',cue:'ใส่แผ่นด้านเดียว',wt:'28.5',sets:3,reps:8,plate:'ด้านเดียว: 10 + 10 + 2',how:['ยืนข้างๆ ปลาย bar','จับปลาย bar มือเดียว','press ขึ้น diagonal สลับข้าง'],tip:'ช่วย rotator cuff'},
-    {n:'DB Reverse Fly',cue:'rear delt — บีบสะบัก',wt:'4',sets:3,reps:12,plate:'DB ข้างละ 4-5',how:['เอนตัวหน้า 45° DB ห้อยลง','ยกออกข้าง บีบสะบัก','ข้อศอกงอเล็กน้อย'],tip:'rear delt ชอบ volume'},
-    {n:'Drag Curl',cue:'bar ชิดลำตัว',wt:'13.5',sets:3,reps:10,plate:'แต่ละข้าง: 2.5 + 1',how:['จับ bar supinated','ดึงขึ้นชิดลำตัว ข้อศอกถอยหลัง','เป้า long head'],tip:'bar ชิดเนื้อตลอด'},
-    {n:'Bench Leg Raise',cue:'core — หลังแนบม้านั่ง',wt:'BW',sets:3,reps:15,plate:'',how:['นอน bench จับขอบด้านหัว','ยกขาตรง 90° ช้าๆ','หลังแนบม้านั่ง'],tip:'หลังลอย = งอเข่า'},
-    {n:'Calf Raise',cue:'ยกส้นเท้าสูงสุด ค้าง 1 วิ',wt:'BW',sets:4,reps:15,plate:'',how:['ยืนตรง ปลายเท้าวางขอบขั้นบันไดหรือพื้นเรียบ','ยกส้นเท้าขึ้นสูงสุด ค้าง 1 วิที่จุดบนสุด','ลดลงช้าๆ ให้ส้นเท้าต่ำกว่าจุดเริ่ม'],tip:'ถือ DB เพิ่มน้ำหนักได้เมื่อ BW เบาไป'},
+  B:{title:'LEGS + BACK',tone:'cream',sub:'Squat · Row · Cable Press · Rear Delt · Bicep',ex:[
+    {n:'Back Squat',cue:'ลงต่ำกว่า parallel · ครบ 4 เซตที่ 8 → +2.5kg',wt:'30.5',sets:4,reps:8,rng:'6-8',rest:'2-3 min',rs:150,plate:'แต่ละข้าง: 10 + 2',how:['bar พาด trap ไม่ใช่คอ','เท้ากว้างสะโพก ปลายเท้าเปิด 30°','ลงช้า 4 วิ depth ต่ำกว่า parallel'],tip:'มองตรง อย่าก้มหน้า · ตอนนี้ราว 66% ของ peak ให้เวลา 6-8 สัปดาห์ในการไต่กลับ'},
+    {n:'Bent Over Row',cue:'squeeze สะบักด้านบน',wt:'30.5',sets:4,reps:8,rng:'6-8',rest:'2-3 min',rs:150,plate:'แต่ละข้าง: 10 + 2',how:['เอียงตัว 45° หลังตรง','ดึงเข้าหน้าท้องส่วนล่าง','squeeze สะบักด้านบนสุด'],tip:'ถ้า swing = หนักเกิน'},
+    {n:'Single-Arm Cable Press',cue:'ยืน ดันขึ้นและข้ามลำตัว · 8 ครั้ง/ข้าง · แทน Landmine Press',wt:'8',sets:3,reps:8,rest:'90 s',rs:90,plate:'Cable stack 8-10 ต่อข้าง (ปรับตามเครื่องจริง)',how:['ตั้ง pulley ต่ำ ยืนข้างเครื่อง จับ handle มือเดียว','ก้าวเท้าให้มั่นคง core เกร็ง','press ขึ้นแนวเฉียงข้ามไปอีกด้านของลำตัว','ปล่อยกลับช้าๆ ทำครบเซตก่อนสลับข้าง'],tip:'ลำตัวไม่หมุนตามแรง ถ้าหมุน = ลดน้ำหนัก'},
+    {n:'BB Hip Thrust',cue:'squeeze glute ด้านบน · น้ำหนักเดิมจากครั้งก่อน',wt:'28.5',sets:3,reps:8,rest:'90 s',rs:90,plate:'แต่ละข้าง: 10 + 1',how:['หลังพิง bench bar พาด hip','เท้ากว้างสะโพก เข่า 90°','ยก hip จนตัวตรง'],tip:'มี foam รองที่ hip'},
+    {n:'DB Reverse Fly',cue:'rear delt — บีบสะบัก · เบา เน้น form',wt:'4',sets:3,reps:12,rng:'10-12',rest:'60 s',rs:60,plate:'DB ข้างละ 4-5',how:['เอนตัวหน้า 45° DB ห้อยลง','ยกออกข้าง บีบสะบัก','ข้อศอกงอเล็กน้อย'],tip:'rear delt ชอบ volume · ใช้ cable ได้เช่นกัน'},
+    {n:'Cable Curl',cue:'ข้อมือเป็นกลาง ศอกแนบลำตัว · แทน Drag Curl',wt:'15',sets:3,reps:10,rng:'8-10',rest:'60-90 s',rs:75,plate:'Cable stack 15-20 (ปรับตามเครื่องจริง)',how:['ตั้ง pulley ต่ำ ยืนตรง จับ bar สั้นหรือ handle','ศอกแนบลำตัว ม้วนขึ้นช้า ข้อมือตรง ไม่งอ','ลงช้า 3 วิ'],tip:'ข้อมือตรงตลอด = ถนอมข้อมือขวา'},
+    {n:'Calf Raise',cue:'ยกส้นเท้าสูงสุด ค้าง 1 วิ · ถือ DB สองมือ',wt:'10',sets:3,reps:12,rng:'10-12',rest:'60 s',rs:60,plate:'DB สองมือ รวมประมาณ 10 (ข้างละ 5)',how:['ยืนตรง ปลายเท้าวางขอบขั้นบันไดหรือพื้นเรียบ ถือ DB สองมือ','ยกส้นเท้าขึ้นสูงสุด ค้าง 1 วิที่จุดบนสุด','ลดลงช้าๆ ให้ส้นเท้าต่ำกว่าจุดเริ่ม'],tip:'ปรับน้ำหนัก DB ให้ทำได้ 10-12 เรป'},
+    {n:'Bench Leg Raise',cue:'core — หลังแนบม้านั่ง',wt:'BW',sets:2,reps:12,rng:'10-12',rest:'60 s',rs:60,plate:'',how:['นอน bench จับขอบด้านหัว','ยกขาตรง 90° ช้าๆ','หลังแนบม้านั่ง'],tip:'หลังลอย = งอเข่า'},
   ],bonus:[]},
-  C:{title:'LB + CORE',tone:'rust',sub:'RDL · Incline · T-Bar · Quad · Tricep',ex:[
-    {n:'Romanian Deadlift',cue:'ลงจนตึง hamstring',wt:'40.5',sets:4,reps:8,plate:'แต่ละข้าง: 10 + 5 + 2',how:['ยืนตรง hinge สะโพกถอยหลัง','ลด bar ชิดขา จนตึง hamstring','ขึ้นโดย squeeze glute'],tip:'ไม่ต้องลงถึงพื้น'},
-    {n:'Incline DB Press',cue:'bench 30-45°',wt:'14',sets:4,reps:8,plate:'DB ข้างละ 14',how:['bench 30-45° DB ระดับอก','press ขึ้น ควบคุม','ลงช้าจนยืด pec'],tip:'DB ดีกว่า BB เรื่องไหล่'},
-    {n:'T-Bar Row',cue:'ใส่แผ่นด้านเดียว',wt:'31.5',sets:4,reps:8,plate:'ด้านเดียว: 10 + 10 + 5',how:['เอียงตัว 45° จับ handle','ดึงเข้าอก ข้อศอกชิดลำตัว','squeeze สะบัก'],tip:'ระวังข้อมือ'},
-    {n:'Goblet Squat',cue:'quad — ถือ DB แนวตั้ง',wt:'18',sets:3,reps:12,plate:'DB ชิ้นเดียว แนวตั้ง',how:['ถือ DB แนวตั้งระดับอก','squat ลงลึก','ขึ้นเร็ว เน้น quad'],tip:'เพิ่ม quad frequency'},
-    {n:'BB Reverse Curl',cue:'brachialis — grip คว่ำ',wt:'11.5',sets:3,reps:12,plate:'แต่ละข้าง: 2.5',how:['จับ bar pronated','ม้วนขึ้นช้า ข้อศอกแนบลำตัว','เป้า brachialis'],tip:'เน้น form มากกว่าน้ำหนัก'},
-    {n:'DB Tricep Kickback',cue:'extend จนตรง',wt:'6',sets:3,reps:12,plate:'DB ข้างละ 6',how:['เอนตัวหน้า ต้นแขนชิดลำตัว','extend แขนไปหลังจนตรง','squeeze tricep'],tip:'ต้นแขนนิ่ง'},
-    {n:'Ab Wheel Rollout',cue:'core — roll ช้าๆ',wt:'BW',sets:3,reps:10,plate:'',how:['คุกเข่า roll ออกช้าๆ','หยุดก่อนหน้าท้องแตะพื้น','ดึงกลับด้วย core'],tip:'roll ครึ่งทางก่อนได้'},
-    {n:'Side Plank',cue:'core — ตัวเป็นเส้นตรง',wt:'BW',sets:3,reps:40,plate:'',how:['นอนตะแคง ข้อศอกแนบพื้น','ยก hip ตัวเป็นเส้นตรง','สลับข้าง'],tip:'anti-lateral flexion'},
+  C:{title:'POSTERIOR + ARMS',tone:'rust',sub:'RDL · Incline · Pulldown · Split Squat · แขน',ex:[
+    {n:'Romanian Deadlift',cue:'ลงจนตึง hamstring · เริ่มราว 80% ของ Deadlift',wt:'40.5',sets:3,reps:8,rng:'6-8',rest:'2-3 min',rs:150,plate:'แต่ละข้าง: 10 + 5 + 2',how:['ยืนตรง hinge สะโพกถอยหลัง','ลด bar ชิดขา จนตึง hamstring','ขึ้นโดย squeeze glute'],tip:'ไม่ต้องลงถึงพื้น'},
+    {n:'Incline DB Press',cue:'bench 30-45° · เหลือแรง 2 เรปเสมอ',wt:'14',sets:3,reps:8,rng:'6-8',rest:'2 min',rs:120,plate:'DB ข้างละ 14',how:['bench 30-45° DB ระดับอก','press ขึ้น ควบคุม','ลงช้าจนยืด pec'],tip:'DB ดีกว่า BB เรื่องไหล่'},
+    {n:'T-Bar Row',cue:'squeeze สะบักด้านบน · ข้อมือเจ็บ → สลับเป็น Seated Cable Row',wt:'28.5',sets:3,reps:8,rng:'6-8',rest:'2 min',rs:120,plate:'ด้านเดียว: 10 + 5 + 5 + 2',how:['ยืนคร่อม bar เอียงตัว ~45° หลังตรง','ดึงปลาย bar เข้าหาท้องส่วนล่าง ศอกชิดลำตัว','squeeze สะบักค้าง 1 วิ ลงช้าๆ'],tip:'ถ้าข้อมือขวาเจ็บ ให้ทำ Seated Cable Row จับ neutral grip แทน (น้ำหนักราว 30)'},
+    {n:'Neutral-Grip Pulldown',cue:'vertical pull — จับแคบ ฝ่ามือเข้าหากัน',wt:'30',sets:3,reps:8,rng:'6-8',rest:'90 s',rs:90,plate:'Cable stack (ปรับตามเครื่องจริง)',how:['นั่งจับ handle แบบ neutral (ฝ่ามือหันเข้าหากัน)','ดึงลงมาที่อกบน ศอกชี้ลงชิดลำตัว','ปล่อยขึ้นช้าควบคุม'],tip:'จับ neutral เบาต่อข้อมือกว่า wide grip'},
+    {n:'Bulgarian Split Squat',cue:'unilateral — เข่าหน้าไม่บิดเข้าใน · 8 ครั้ง/ข้าง · แทน Goblet Squat',wt:'9',sets:2,reps:8,rest:'2 min',rs:120,plate:'DB ข้างละ 9 (ถือสองมือ ข้างลำตัว)',how:['วางหลังเท้าบนม้านั่ง (ใช้หลังเท้า ไม่ใช่ปลายเท้า)','ลงจนต้นขาหลังเกือบขนานพื้น เข่าหน้างอ ~90°','ดันพื้นขึ้นด้วยเท้าหน้า ทำครบเซตก่อนสลับข้าง'],tip:'สัปดาห์แรกทำ 2 เซตตามแผน ตั้งแต่สัปดาห์ที่ 2 กดที่ ✎ เพิ่มเป็น 3 เซต · สะโพกต้องขนานพื้นตลอด ห้ามบิด'},
+    {n:'Face Pull',cue:'rear delt — ดึงเข้าหน้า ศอกสูงกว่ามือ',wt:'10',sets:3,reps:12,rng:'10-12',rest:'60 s',rs:60,plate:'Cable stack (เบา ปรับตามเครื่องจริง)',how:['ตั้ง pulley ระดับหน้า ใช้เชือก','ดึงเชือกเข้าหาใบหน้า ศอกสูงกว่ามือ แยกปลายเชือกออก','squeeze สะบักค้าง 1 วิ ปล่อยช้า'],tip:'ไม่มีเชือก → ใช้ DB Reverse Fly แทน'},
+    {n:'Rope Hammer Curl',cue:'brachialis — ฝ่ามือเข้าหากัน · แทน BB Reverse Curl',wt:'12',sets:2,reps:10,rng:'8-10',rest:'60-90 s',rs:75,plate:'Cable stack 12-15 (ปรับตามเครื่องจริง)',how:['ตั้ง pulley ต่ำ จับเชือกฝ่ามือเข้าหากัน','ศอกแนบลำตัว ม้วนขึ้นช้าๆ ไม่แกว่ง','ลงช้า 3 วิ'],tip:'ถ้าใช้ DB hammer curl หรือ cable curl แทนก็ได้ · ข้อมือตรงตลอด'},
+    {n:'OH Cable Tricep Ext',cue:'long head — ยืดเต็มที่ · แทน Kickback',wt:'10',sets:2,reps:10,rng:'8-10',rest:'60-90 s',rs:75,plate:'Cable stack 10-15 (ปรับตามเครื่องจริง)',how:['ตั้ง pulley สูง หันหลังให้เครื่อง จับเชือกสองมือเหนือหัว','ก้าวเท้าหนึ่งก้าว ต้นแขนชิดหู','เหยียดแขนไปข้างหน้าจนตรง แล้วปล่อยกลับช้าๆ'],tip:'ต้นแขนนิ่ง ข้อศอกไม่กางออก'},
+    {n:'Cable Crunch',cue:'core — ม้วนลำตัว ไม่ใช่ก้มด้วยสะโพก · แทน Ab Wheel',wt:'15',sets:3,reps:12,rng:'10-12',rest:'60 s',rs:60,plate:'Cable stack 15-20 (ปรับตามเครื่องจริง)',how:['คุกเข่าหน้าเครื่อง pulley สูง จับเชือกข้างหน้าผาก','ม้วนลำตัวลงจนศอกใกล้เข่า หลังโค้ง','ปล่อยกลับช้าๆ'],tip:'ไม่มีเชือก → ทำ Side Plank ค้าง 30 วิ/ข้าง แทน'},
+    {n:'Calf Raise',cue:'ยกส้นเท้าสูงสุด ค้าง 1 วิ · ถือ DB สองมือ',wt:'10',sets:2,reps:12,rng:'10-12',rest:'60 s',rs:60,plate:'DB สองมือ รวมประมาณ 10 (ข้างละ 5)',how:['ยืนตรง ปลายเท้าวางขอบขั้นบันไดหรือพื้นเรียบ ถือ DB สองมือ','ยกส้นเท้าขึ้นสูงสุด ค้าง 1 วิที่จุดบนสุด','ลดลงช้าๆ ให้ส้นเท้าต่ำกว่าจุดเริ่ม'],tip:'ตัดท่านี้ก่อนถ้าเวลาไม่พอ'},
   ],bonus:[]},
 };
 
@@ -700,12 +702,12 @@ function getWorkout(key){
   if(state.custom[key]){
     [...base.ex,...base.bonus].forEach(e=>{
       const c=state.custom[key][e.n];
-      if(c){if(c.wt!==undefined)e.wt=c.wt;if(c.sets!==undefined)e.sets=c.sets;if(c.reps!==undefined)e.reps=c.reps;}
+      if(c){if(c.wt!==undefined)e.wt=c.wt;if(c.sets!==undefined)e.sets=c.sets;if(c.reps!==undefined){e.reps=c.reps;delete e.rng;}}
     });
   }
   return base;
 }
-function rxOf(e){return `${e.sets} × ${e.reps}`;}
+function rxOf(e){return `${e.sets} × ${e.rng||e.reps}`;}
 
 /* ── PR + SUGGEST helpers ── */
 function getPRs(){
@@ -894,7 +896,7 @@ function exCard(e,i,isBonus){
     ${pastHtml} <!-- แทรกกล่องประวัติตรงนี้ -->
     
     <div class="dots">${dots}</div>
-    <button class="rest-trigger" onclick="startRest()"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"></circle><path d="M12 9v4l2 2M9 2h6"></path></svg>Rest 90s</button>
+    <button class="rest-trigger" onclick="startRest(${e.rs||90})"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"></circle><path d="M12 9v4l2 2M9 2h6"></path></svg>Rest ${e.rest||'90s'}</button>
     <button class="how-toggle" onclick="toggleHow(${i})">▾ วิธีทำ</button>
     <div class="how-body" id="how-${i}"><div class="how-inner"><ol>${e.how.map(h=>`<li>${h}</li>`).join('')}</ol>${e.tip?`<div class="how-tip">${e.tip}</div>`:''}</div></div>
   </div>`;
@@ -905,7 +907,7 @@ function toggleSet(i,j){
   const exEl=document.getElementById('ex-'+i);const dots=exEl.querySelectorAll('.dot');
   dots[j].className='dot'+(state.checks[cur][i][j]?' fill':'');
   if(state.checks[cur][i].every(x=>x))exEl.classList.add('done');else exEl.classList.remove('done');
-  if(state.checks[cur][i][j])startRest();
+  if(state.checks[cur][i][j]){const _w=getWorkout(cur);const _e=[..._w.ex,..._w.bonus][i];startRest((_e&&_e.rs)||90);}
   updateProgress();
 }
 function toggleHow(i){document.getElementById('how-'+i).classList.toggle('open');}
@@ -1159,7 +1161,7 @@ function showProgression(exName){
 }
 
 /* ── VOLUME ── */
-const MUSCLE_MAP={'BB Bench Press':'Chest','Incline DB Press':'Chest','Incline BB Bench':'Chest','Deadlift':'Back','Bent Over Row':'Back','T-Bar Row':'Back','Back Squat':'Legs','Goblet Squat':'Legs','Romanian Deadlift':'Legs','BB Hip Thrust':'Legs','Calf Raise':'Legs','BB Overhead Press':'Shoulders','BB OHP':'Shoulders','Landmine Press':'Shoulders','DB Lateral Raise':'Shoulders','DB Reverse Fly':'Shoulders','Skull Crusher':'Tricep','DB OH Tricep Ext':'Tricep','DB Overhead Tricep Ext':'Tricep','DB Tricep Kickback':'Tricep','Tricep Dips':'Tricep','BB Curl':'Bicep','Drag Curl':'Bicep','BB Reverse Curl':'Bicep'};
+const MUSCLE_MAP={'BB Bench Press':'Chest','Incline DB Press':'Chest','Incline BB Bench':'Chest','Deadlift':'Back','Bent Over Row':'Back','T-Bar Row':'Back','Back Squat':'Legs','Goblet Squat':'Legs','Romanian Deadlift':'Legs','BB Hip Thrust':'Legs','Calf Raise':'Legs','BB Overhead Press':'Shoulders','BB OHP':'Shoulders','Landmine Press':'Shoulders','DB Lateral Raise':'Shoulders','DB Reverse Fly':'Shoulders','Skull Crusher':'Tricep','DB OH Tricep Ext':'Tricep','DB Overhead Tricep Ext':'Tricep','DB Tricep Kickback':'Tricep','Tricep Dips':'Tricep','BB Curl':'Bicep','Drag Curl':'Bicep','BB Reverse Curl':'Bicep','Lat Pulldown':'Back','Neutral-Grip Pulldown':'Back','Rope Pushdown':'Tricep','OH Cable Tricep Ext':'Tricep','Single-Arm Cable Press':'Chest','Cable Curl':'Bicep','Rope Hammer Curl':'Bicep','Face Pull':'Shoulders','Bulgarian Split Squat':'Legs','Seated Cable Row':'Back'};
 const MUSCLE_COLORS={Chest:'#C8A23C',Back:'#5B9BD5',Legs:'#D8632C',Shoulders:'#9B7FD4',Tricep:'#1D9E75',Bicep:'#E24B4A'};
 function renderVolume(){
   const last14=state.history.filter(h=>h.ex).slice(-9);
@@ -1301,8 +1303,8 @@ function closeModal(){document.getElementById('modalBg').classList.remove('show'
 const R=19,CIRC=2*Math.PI*R;
 document.getElementById('ring').style.strokeDasharray=CIRC;
 
-function startRest(){
-  restLeft=90;restTotal=90;
+function startRest(sec){
+  sec=sec||90;restLeft=sec;restTotal=sec;
   const t=document.getElementById('timer');
   t.classList.add('show');
   t.classList.remove('urgent');

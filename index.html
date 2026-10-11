@@ -97,7 +97,8 @@
 
   .how-toggle{font-size:12px;color:var(--blue);background:none;border:none;padding:8px 0 0;cursor:pointer;font-family:'Inter',sans-serif}
   .how-body{max-height:0;overflow:hidden;transition:max-height 0.3s ease}
-  .how-body.open{max-height:340px}
+  .how-body.open{max-height:2400px}
+  .how-actions{display:flex;gap:18px}
   .how-inner{font-size:13px;color:var(--muted);line-height:1.7;margin-top:10px;padding-top:12px;border-top:0.5px solid var(--line)}
   .how-inner ol{padding-left:18px;margin:0}
   .how-tip{margin-top:8px;padding:8px 11px;background:rgba(200,162,60,0.07);border-radius:8px;font-size:12px;color:var(--gold-dim);line-height:1.5}
@@ -687,7 +688,8 @@ function initApp() {
     if(!state.body)state.body=SEED_BODY.slice();
     if(!state.notes)state.notes={};
     if(!state.swaps)state.swaps={};
-    
+    if(!state.howEdits)state.howEdits={};
+
     if(state.dateStamp!==todayStr()){
       state.checks={};
       state.swaps={};
@@ -724,8 +726,16 @@ function getWorkout(key){
       if(c){if(c.wt!==undefined)e.wt=c.wt;if(c.sets!==undefined)e.sets=c.sets;if(c.reps!==undefined){e.reps=c.reps;delete e.rng;}}
     });
   }
+  // วิธีทำ/คำแนะนำที่ผู้ใช้แก้เอง (ผูกกับชื่อท่า) — เก็บแยกใน state.howEdits ไม่ปนกับน้ำหนัก/เซต/การติ๊ก
+  const he=state.howEdits||{};
+  [...base.ex,...(base.bonus||[])].forEach(e=>{
+    const h=he[e.n];if(!h)return;
+    if(Array.isArray(h.how)&&h.how.length)e.how=h.how.map(escHtml);
+    if(typeof h.tip==='string')e.tip=escHtml(h.tip);
+  });
   return base;
 }
+function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 /* ── STREAK (สัปดาห์ที่ฝึกเวทอย่างน้อย 2 ครั้ง) ── */
 function _p2(n){return String(n).padStart(2,'0');}
 function weekKey(dStr){const [y,m,d]=dStr.split('-').map(Number);const dt=new Date(y,m-1,d);dt.setDate(dt.getDate()-((dt.getDay()+6)%7));return `${dt.getFullYear()}-${_p2(dt.getMonth()+1)}-${_p2(dt.getDate())}`;}
@@ -967,7 +977,7 @@ function exCard(e,i,isBonus){
     <div class="dots">${dots}</div>
     <button class="rest-trigger" onclick="startRest(${e.rs||90})"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"></circle><path d="M12 9v4l2 2M9 2h6"></path></svg>Rest ${e.rest||'90s'}</button>
     ${e.alt?`<button class="swap-btn" onclick="swapExercise('${e.n}')">↔ สลับเป็น ${e.alt}</button>`:''}${e.from?`<button class="swap-btn" onclick="swapExercise('${e.from}')">↩ กลับเป็น ${e.from}</button>`:''}
-    <button class="how-toggle" onclick="toggleHow(${i})">▾ วิธีทำ</button>
+    <div class="how-actions"><button class="how-toggle" onclick="toggleHow(${i})">▾ วิธีทำ</button><button class="how-toggle" onclick="editHow('${e.n}')">✎ แก้ไข${(state.howEdits&&state.howEdits[e.n])?' •':''}</button></div>
     <div class="how-body" id="how-${i}"><div class="how-inner"><ol>${e.how.map(h=>`<li>${h}</li>`).join('')}</ol>${e.tip?`<div class="how-tip">${e.tip}</div>`:''}</div></div>
   </div>`;
 }
@@ -1112,6 +1122,43 @@ function resetExercise(dayKey,exName){
   if(e)patchChecksForExercise(dayKey,exName,e.sets);
   saveState();closeModal();
   if(curPage==='today'&&cur===dayKey)renderToday();showToast('คืนค่าเริ่มต้นแล้ว');
+}
+
+/* ── EDIT HOW-TO (วิธีทำ) ── */
+function editHow(exName){
+  const w=getWorkout(cur);const e=[...w.ex,...(w.bonus||[])].find(x=>x.n===exName);if(!e)return;
+  const saved=(state.howEdits&&state.howEdits[exName])||null;
+  // ถ้าเคยแก้แล้ว ใช้ข้อความต้นฉบับที่พิมพ์ไว้ (plain text) ไม่ใช่ข้อความที่ escape แล้ว
+  const steps=saved&&Array.isArray(saved.how)&&saved.how.length?saved.how:e.how;
+  const tip=saved&&typeof saved.tip==='string'?saved.tip:(e.tip||'');
+  const body=document.getElementById('modalBody');
+  body.innerHTML=`<div class="modal-handle"></div><div class="modal-title">${escHtml(e.n)}</div>
+    <div class="field"><div class="field-lbl">ขั้นตอน (1 บรรทัด = 1 ขั้นตอน)</div><textarea id="how-ed-steps" style="min-height:170px">${escHtml(steps.join('\n'))}</textarea></div>
+    <div class="field" style="margin-top:12px"><div class="field-lbl">คำแนะนำ / Tip (เว้นว่างได้)</div><textarea id="how-ed-tip" style="min-height:80px">${escHtml(tip)}</textarea></div>
+    <div class="modal-actions"><button class="btn btn-save" onclick="saveHow('${e.n}')">บันทึก</button><button class="btn btn-ghost" onclick="resetHow('${e.n}')">คืนค่าเดิม</button><button class="btn btn-ghost" onclick="closeModal()">ปิด</button></div>`;
+  openModal();
+}
+function _reopenHow(exName){
+  renderToday();
+  const w=getWorkout(cur);const idx=[...w.ex,...(w.bonus||[])].findIndex(x=>x.n===exName);
+  const el=idx>=0&&document.getElementById('how-'+idx);if(el)el.classList.add('open');
+}
+function saveHow(exName){
+  const steps=document.getElementById('how-ed-steps').value.split('\n')
+    .map(s=>s.trim().replace(/^\d+\s*[.)]\s*/,'')).filter(Boolean);
+  const tip=document.getElementById('how-ed-tip').value.trim();
+  if(!steps.length){showToast('ต้องมีอย่างน้อย 1 ขั้นตอน');return;}
+  if(!state.howEdits)state.howEdits={};
+  state.howEdits[exName]={how:steps,tip};
+  saveState();closeModal();
+  if(curPage==='today')_reopenHow(exName);
+  showToast('บันทึกวิธีทำ '+exName+' แล้ว');
+}
+function resetHow(exName){
+  if(state.howEdits)delete state.howEdits[exName];
+  saveState();closeModal();
+  if(curPage==='today')_reopenHow(exName);
+  showToast('คืนค่าวิธีทำเดิมแล้ว');
 }
 
 /* ── NOTE ── */

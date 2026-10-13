@@ -163,7 +163,15 @@
   .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold)}
   .stat-val{font-family:'Oswald',sans-serif;font-size:30px;font-weight:700;line-height:1;color:var(--gold)}
   .stat-lbl{font-size:11px;color:var(--muted);margin-top:6px;letter-spacing:0.04em}
+  :root{--dayA:#5B9BD5;--dayB:#7FB04A;--dayC:#F0912E}
   .pr-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 0;border-bottom:0.5px solid var(--line);cursor:pointer}
+  .pr-lead{display:flex;align-items:stretch;gap:10px;min-width:0}
+  .day-bar{width:4px;border-radius:2px;display:flex;flex-direction:column;overflow:hidden;flex:none;background:var(--line)}
+  .day-bar i{flex:1;display:block}
+  .day-chip{display:inline-block;font-family:'Oswald',sans-serif;font-size:10px;font-weight:600;letter-spacing:0.04em;padding:1px 6px;border-radius:8px;margin-right:4px;color:#0A0806}
+  .pr-row.inactive .pr-name{color:var(--faint)}
+  .day-legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin:-4px 0 10px;align-items:center}
+  .day-legend .day-chip{margin-right:5px}
   .pr-row:last-child{border-bottom:none}
   .pr-row:active{opacity:0.7}
   .pr-name{font-size:14px;color:var(--cream)}
@@ -385,6 +393,7 @@
   <div id="stats-pr">
     <div class="stat-grid" id="statGrid"></div>
     <div class="sec-label">Personal records · แตะดูกราฟ</div>
+    <div class="day-legend"><span><span class="day-chip" style="background:var(--dayA)">A</span>Day A</span><span><span class="day-chip" style="background:var(--dayB)">B</span>Day B</span><span><span class="day-chip" style="background:var(--dayC)">C</span>Day C</span><span style="color:var(--faint)">จาง = ไม่อยู่ในโปรแกรมแล้ว</span></div>
     <div id="prList"></div>
   </div>
   <div id="stats-vol" style="display:none"></div>
@@ -1254,6 +1263,11 @@ function statsTab(t){
   ['pr','vol','road'].forEach(x=>{document.getElementById('seg-'+x).classList.toggle('on',x===t);document.getElementById('stats-'+x).style.display=x===t?'block':'none';});
   if(t==='pr')renderPRStats();if(t==='vol')renderVolume();if(t==='road')renderRoadmap();
 }
+function activeDays(){
+  const m={};const add=(n,d)=>{if(!n)return;(m[n]=m[n]||[]);if(!m[n].includes(d))m[n].push(d);};
+  ['A','B','C'].forEach(d=>{const w=WORKOUTS[d];if(!w)return;[...w.ex,...(w.bonus||[])].forEach(e=>{add(e.n,d);if(e.alt)add(e.alt,d);});});
+  return m;
+}
 function renderPRStats(){
   const workouts=state.history.filter(h=>h.ex);const cardios=state.history.filter(h=>h.cardio);
   const prs=getPRs();
@@ -1263,7 +1277,8 @@ function renderPRStats(){
     <div class="stat-card"><div class="stat-val">${prs['Deadlift']?prs['Deadlift'].wt:'—'}</div><div class="stat-lbl">Deadlift PR (kg)</div></div>
     <div class="stat-card"><div class="stat-val">${prs['Back Squat']?prs['Back Squat'].wt:'—'}</div><div class="stat-lbl">Squat PR (kg)</div></div>`;
   const sorted=Object.entries(prs).sort((a,b)=>b[1].wt-a[1].wt);
-  document.getElementById('prList').innerHTML=sorted.length?sorted.map(([name,d])=>`<div class="pr-row" onclick="showProgression('${name.replace(/'/g,"\\'")}')"><div><div class="pr-name">${name}</div><div class="pr-meta">${thaiDate(d.date)} · ${d.date.slice(5)}${isNaN(parseFloat(d.reps))?'':' · e1RM ≈ '+fmt(epley(d.wt,parseFloat(d.reps)))+'kg'}</div></div><div class="pr-right"><div class="pr-val">${d.wt} kg</div><span class="pr-chev">›</span></div></div>`).join(''):`<div class="empty"><div class="empty-p">ยังไม่มีข้อมูล PR</div></div>`;
+  const dm=activeDays();
+  document.getElementById('prList').innerHTML=sorted.length?sorted.map(([name,d])=>{const ds=dm[name]||[];const bar=ds.length?`<span class="day-bar">${ds.map(x=>`<i style="background:var(--day${x})"></i>`).join('')}</span>`:`<span class="day-bar"></span>`;const chips=ds.map(x=>`<span class="day-chip" style="background:var(--day${x})">${x}</span>`).join('');return `<div class="pr-row${ds.length?'':' inactive'}" onclick="showProgression('${name.replace(/'/g,"\\'")}')"><div class="pr-lead">${bar}<div><div class="pr-name">${name}</div><div class="pr-meta">${chips}${thaiDate(d.date)} · ${d.date.slice(5)}${isNaN(parseFloat(d.reps))?'':' · e1RM ≈ '+fmt(epley(d.wt,parseFloat(d.reps)))+'kg'}</div></div></div><div class="pr-right"><div class="pr-val">${d.wt} kg</div><span class="pr-chev">›</span></div></div>`}).join(''):`<div class="empty"><div class="empty-p">ยังไม่มีข้อมูล PR</div></div>`;
 }
 function showProgression(exName){
   const points=[];

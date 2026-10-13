@@ -170,6 +170,15 @@
   .day-bar i{flex:1;display:block}
   .day-chip{display:inline-block;font-family:'Oswald',sans-serif;font-size:10px;font-weight:600;letter-spacing:0.04em;padding:1px 6px;border-radius:8px;margin-right:4px;color:#0A0806}
   .pr-row.inactive .pr-name{color:var(--faint)}
+  .flt-row{display:flex;gap:6px;overflow-x:auto;padding:2px 0 8px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .flt-row::-webkit-scrollbar{display:none}
+  .flt-lbl{font-size:10px;letter-spacing:0.08em;color:var(--faint);text-transform:uppercase;margin:6px 0 2px}
+  .flt{flex:none;font-size:12px;padding:6px 13px;border-radius:16px;border:0.5px solid var(--line2);background:var(--card);color:var(--muted);cursor:pointer;font-family:'Inter',sans-serif}
+  .flt.on{border-color:var(--gold);background:rgba(200,162,60,0.12);color:var(--gold)}
+  .flt.on.fA{border-color:var(--dayA);background:rgba(91,155,213,0.14);color:var(--dayA)}
+  .flt.on.fB{border-color:var(--dayB);background:rgba(127,176,74,0.14);color:var(--dayB)}
+  .flt.on.fC{border-color:var(--dayC);background:rgba(240,145,46,0.14);color:var(--dayC)}
+  .flt-count{font-size:11px;color:var(--faint);margin:2px 0 6px}
   .day-legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin:-4px 0 10px;align-items:center}
   .day-legend .day-chip{margin-right:5px}
   .pr-row:last-child{border-bottom:none}
@@ -393,6 +402,9 @@
   <div id="stats-pr">
     <div class="stat-grid" id="statGrid"></div>
     <div class="sec-label">Personal records · แตะดูกราฟ</div>
+    <div class="flt-lbl">วัน</div><div class="flt-row" id="fltDay"></div>
+    <div class="flt-lbl">กล้ามเนื้อ</div><div class="flt-row" id="fltMus"></div>
+    <div class="flt-count" id="fltCount"></div>
     <div class="day-legend"><span><span class="day-chip" style="background:var(--dayA)">A</span>Day A</span><span><span class="day-chip" style="background:var(--dayB)">B</span>Day B</span><span><span class="day-chip" style="background:var(--dayC)">C</span>Day C</span><span style="color:var(--faint)">จาง = ไม่อยู่ในโปรแกรมแล้ว</span></div>
     <div id="prList"></div>
   </div>
@@ -1263,6 +1275,17 @@ function statsTab(t){
   ['pr','vol','road'].forEach(x=>{document.getElementById('seg-'+x).classList.toggle('on',x===t);document.getElementById('stats-'+x).style.display=x===t?'block':'none';});
   if(t==='pr')renderPRStats();if(t==='vol')renderVolume();if(t==='road')renderRoadmap();
 }
+let fltDay='all',fltMus='all';
+const MUSCLE_EXTRA={'Front Squat':'Legs','DB Squat':'Legs','Sumo Squat':'Legs','DB Stiff Leg Deadlift':'Legs','Single-Leg DB RDL':'Legs','Single-Leg Hip Thrust':'Legs','DB Step-Ups':'Legs','Lunges':'Legs','DB Lunge':'Legs','DB Bench Press':'Chest','DB Fly':'Chest','Incline DB Row':'Back','Bent Over DB Row':'Back','Chest-Supported Row':'Back','One-Arm Row':'Back','Straight Arm DB Row':'Back','DB Shoulder Press':'Shoulders','Seated DB OHP':'Shoulders','DB Front Raise':'Shoulders','DB Curls':'Bicep','Alternate DB Curl':'Bicep','DB preacher curl':'Bicep'};
+const MUS_LIST=[['Chest','Chest'],['Back','Back'],['Legs','Legs'],['Shoulders','Shoulders'],['Tricep','Tricep'],['Bicep','Bicep']];
+function muscleOf(n){return MUSCLE_MAP[n]||MUSCLE_EXTRA[n]||null;}
+function setFlt(kind,v){if(kind==='day')fltDay=v;else fltMus=v;renderPRStats();}
+function renderFilters(){
+  const dayBtn=(v,l)=>`<button class="flt${fltDay===v?' on':''}${v!=='all'?' f'+v:''}" onclick="setFlt('day','${v}')">${l}</button>`;
+  document.getElementById('fltDay').innerHTML=dayBtn('all','ทั้งหมด')+dayBtn('A','Day A')+dayBtn('B','Day B')+dayBtn('C','Day C');
+  const mb=(v,l)=>`<button class="flt${fltMus===v?' on':''}" onclick="setFlt('mus','${v}')">${l}</button>`;
+  document.getElementById('fltMus').innerHTML=mb('all','ทั้งหมด')+MUS_LIST.map(m=>mb(m[0],m[1])).join('');
+}
 function activeDays(){
   const m={};const add=(n,d)=>{if(!n)return;(m[n]=m[n]||[]);if(!m[n].includes(d))m[n].push(d);};
   ['A','B','C'].forEach(d=>{const w=WORKOUTS[d];if(!w)return;[...w.ex,...(w.bonus||[])].forEach(e=>{add(e.n,d);if(e.alt)add(e.alt,d);});});
@@ -1276,9 +1299,11 @@ function renderPRStats(){
     <div class="stat-card"><div class="stat-val">${cardios.length}</div><div class="stat-lbl">Cardio sessions</div></div>
     <div class="stat-card"><div class="stat-val">${prs['Deadlift']?prs['Deadlift'].wt:'—'}</div><div class="stat-lbl">Deadlift PR (kg)</div></div>
     <div class="stat-card"><div class="stat-val">${prs['Back Squat']?prs['Back Squat'].wt:'—'}</div><div class="stat-lbl">Squat PR (kg)</div></div>`;
-  const sorted=Object.entries(prs).sort((a,b)=>b[1].wt-a[1].wt);
-  const dm=activeDays();
-  document.getElementById('prList').innerHTML=sorted.length?sorted.map(([name,d])=>{const ds=dm[name]||[];const bar=ds.length?`<span class="day-bar">${ds.map(x=>`<i style="background:var(--day${x})"></i>`).join('')}</span>`:`<span class="day-bar"></span>`;const chips=ds.map(x=>`<span class="day-chip" style="background:var(--day${x})">${x}</span>`).join('');return `<div class="pr-row${ds.length?'':' inactive'}" onclick="showProgression('${name.replace(/'/g,"\\'")}')"><div class="pr-lead">${bar}<div><div class="pr-name">${name}</div><div class="pr-meta">${chips}${thaiDate(d.date)} · ${d.date.slice(5)}${isNaN(parseFloat(d.reps))?'':' · e1RM ≈ '+fmt(epley(d.wt,parseFloat(d.reps)))+'kg'}</div></div></div><div class="pr-right"><div class="pr-val">${d.wt} kg</div><span class="pr-chev">›</span></div></div>`}).join(''):`<div class="empty"><div class="empty-p">ยังไม่มีข้อมูล PR</div></div>`;
+  const dm=activeDays();renderFilters();
+  const allSorted=Object.entries(prs).sort((a,b)=>b[1].wt-a[1].wt);
+  const sorted=allSorted.filter(([n])=>(fltDay==='all'||(dm[n]||[]).includes(fltDay))&&(fltMus==='all'||muscleOf(n)===fltMus));
+  document.getElementById('fltCount').textContent=(fltDay==='all'&&fltMus==='all')?'':`แสดง ${sorted.length} จาก ${allSorted.length} ท่า`;
+  document.getElementById('prList').innerHTML=sorted.length?sorted.map(([name,d])=>{const ds=dm[name]||[];const bar=ds.length?`<span class="day-bar">${ds.map(x=>`<i style="background:var(--day${x})"></i>`).join('')}</span>`:`<span class="day-bar"></span>`;const chips=ds.map(x=>`<span class="day-chip" style="background:var(--day${x})">${x}</span>`).join('');return `<div class="pr-row${ds.length?'':' inactive'}" onclick="showProgression('${name.replace(/'/g,"\\'")}')"><div class="pr-lead">${bar}<div><div class="pr-name">${name}</div><div class="pr-meta">${chips}${thaiDate(d.date)} · ${d.date.slice(5)}${isNaN(parseFloat(d.reps))?'':' · e1RM ≈ '+fmt(epley(d.wt,parseFloat(d.reps)))+'kg'}</div></div></div><div class="pr-right"><div class="pr-val">${d.wt} kg</div><span class="pr-chev">›</span></div></div>`}).join(''):`<div class="empty"><div class="empty-p">${allSorted.length?'ไม่มีท่าที่ตรงกับตัวกรอง':'ยังไม่มีข้อมูล PR'}</div></div>`;
 }
 function showProgression(exName){
   const points=[];
